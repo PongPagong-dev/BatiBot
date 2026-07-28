@@ -249,6 +249,37 @@ class ItBot:
         except Exception as e:
             self.log(f"[BOT] history write failed: {e}")
 
+    def _pick_game_display(self, reason=""):
+        """Capture each display and keep the one that is NOT the emulator
+        launcher. MuMu Nx puts apps on separate virtual displays, so the
+        first id (the launcher) is usually the wrong one."""
+        ids = self.adb.list_displays()
+        if len(ids) < 2:
+            return False
+        self.log(f"[ADB] {len(ids)} displays - looking for the one showing the game"
+                 + (f" ({reason})" if reason else ""))
+        launcher_marks = ("MUMU STORE", "APP CLONER", "SEARCH GAMES")
+        best = None
+        for did in ids:
+            self.adb.set_display(did)
+            im = self.adb.screenshot()
+            if im is None:
+                continue
+            txt = _all_text(ocr_boxes(im))
+            if not txt.strip():
+                continue
+            if any(m in txt for m in launcher_marks):
+                self.log(f"[ADB]   display {did}: emulator launcher")
+                continue
+            self.log(f"[ADB]   display {did}: game content -> using this one")
+            best = did
+            break
+        if best:
+            self.adb.set_display(best)
+            return True
+        self.adb.set_display(ids[0])
+        return False
+
     def _new_career_flags(self):
         self._trainee = ""
         self._rating = 0
@@ -287,13 +318,23 @@ class ItBot:
             return
         img = self.adb.screenshot()
         if img is None:
-            self.log("[BOT] no screenshot - is the emulator running?")
+            devs = ""
+            try:
+                devs = self.adb._run(["devices"], timeout=10).strip().replace("\n", " ")
+            except Exception:
+                pass
+            self.log(f"[BOT] no screenshot from {self.adb.address}. adb says: {devs or '(nothing)'}")
+            self.log("[BOT] if the device is missing or 'offline', restart the emulator; "
+                     "if it is listed as 'device', tell Claude - the screenshot method needs changing.")
             self.state = "error: screenshot"
             return
         h, w = img.shape[:2]
         if (w, h) != (720, 1280):
             self.log(f"[BOT] note: working at {w}x{h} via auto-scaling. "
                      f"720x1280 (DPI 240) is still the recommended MuMu setting.")
+        # MuMu Nx runs apps on their own virtual displays: choose the one
+        # showing the game up front rather than after failed launches
+        self._pick_game_display("startup")
         self._new_career_flags()
 
         while not self._stop.is_set():
@@ -332,6 +373,33 @@ class ItBot:
         if rep >= 60:
             self.log("[STUCK] still stuck after many escapes - stopping so nothing is wasted")
             self._stop.set()
+            return
+
+        # ---- emulator home screen: the game is not running -> launch it -----
+        if ("MUMU STORE" in txt or "APP CLONER" in txt or "SEARCH GAMES" in txt) \
+                and "DELETE DATA" not in txt:
+            self._set_state("emulator home")
+            tries = getattr(self, "_launch_tries", 0) + 1
+            self._launch_tries = tries
+            if self._pick_game_display("launcher visible - checking the other displays"):
+                return          # found the game on another display
+            p = _find(boxes, "Umamusume", 78)
+            if p:
+                self.log("[BOT] game is not running - launching Umamusume")
+                self.adb.tap(*p, "Umamusume icon")
+                time.sleep(25)          # splash + title take a while
+            else:
+                self.log("[BOT] on the emulator home screen but the Umamusume "
+                         "icon is not visible - open the game manually")
+                time.sleep(10)
+            return
+
+        # ---- title screen after launch ---------------------------------------
+        if "TAP TO START" in txt or "TAP HERE TO DISPLAY" in txt:
+            self._set_state("title screen")
+            self.log("[BOT] title screen - tapping to start")
+            self.adb.tap(360, 640, "tap to start")
+            time.sleep(6)
             return
 
         # ---- 0. hard stops -------------------------------------------------

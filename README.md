@@ -30,6 +30,60 @@ the game's own data. After a game update adds new skills or cards, run
 **update-data.bat** once (the game must be installed on the same PC via
 Steam; otherwise pass the path to `master.mdb`). Restart BatiBot after.
 
+## Troubleshooting
+
+### "cannot connect to emulator" / connect failed (10061)
+
+The bot talks to the emulator over ADB, so the emulator must be running
+and its ADB port must match the address in the bot's Connection settings.
+
+**MuMu Player Nx uses a different port than MuMu Player 12.** Nx usually
+listens on **16416** (sometimes 7555 or 5557); MuMu 12 uses 16384. To find
+yours, in a Command Prompt:
+
+    tasklist | findstr /i mumu
+    netstat -ano | findstr <the PID of MuMuNxDevice.exe or MuMuPlayer.exe>
+
+Look for `LISTENING` lines on `127.0.0.1:<port>`, then test it:
+
+    adb connect 127.0.0.1:16416
+    adb devices
+
+Whatever answers with `device` goes into Connection > ADB address, then Save
+and restart the bot.
+
+Also check ADB is enabled: MuMu settings > **Developer options** > ADB debug
+> **Enable local connection**, then restart the instance.
+
+### The bot sees the emulator home screen, or taps go to the wrong place
+
+Turn **OFF** "App running" (keep apps alive in the background) in MuMu
+settings > **Others**. MuMu's own warning says it "may affect the
+functionality of some script-based apps" - it runs apps on separate virtual
+displays, so the bot ends up reading one screen and tapping another. With it
+off, the game and the taps share one display again. Restart the instance
+after changing it.
+
+### Wrong resolution / DPI
+
+720x1280 with **DPI 240** is the tested setup. Other resolutions work (the
+bot scales automatically) but the DPI must match, or the game lays its UI
+out differently and buttons move:
+
+| Resolution  | DPI |
+|-------------|-----|
+| 720 x 1280  | 240 |
+| 1080 x 1920 | 360 |
+
+Portrait 9:16 is required either way.
+
+### It clicks something odd once, then recovers
+
+Normal. If the bot ever taps the same spot repeatedly with nothing
+happening, it logs `[STUCK]`, saves `logs/stuck_screen.png` and tries escape
+taps. Send that PNG if you report a problem - it shows exactly what the bot
+was looking at.
+
 ## Disclaimer
 
 Automation is against Cygames' Terms of Service. This bot only presses
