@@ -1,0 +1,5234 @@
+{
+ "WARNINGSHOT": {
+  "n": "Warning Shot!",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "XCELERATION": {
+  "n": "Xceleration",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "REDACE": {
+  "n": "Red Ace",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "FOCUSEDMIND": {
+  "n": "Focused Mind",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "CORAZNARDIENTE": {
+  "n": "Corazón ☆ Ardiente",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "EMPRESSSPRIDE": {
+  "n": "Empress's Pride",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "1STPLACEKISS": {
+  "n": "1st Place Kiss☆",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "FEELTHEBURN": {
+  "n": "Feel the Burn!",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "INTRODUCTIONTOPHYSIOLOGY": {
+  "n": "Introduction to Physiology",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "VISFORVICTORY": {
+  "n": "V Is for Victory!",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "CLASSREPSPEEDBAKUSHIN": {
+  "n": "Class Rep + Speed = Bakushin",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "CLEARHEART": {
+  "n": "Clear Heart",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "SUPERDUPERSTOKED": {
+  "n": "Super-Duper Stoked",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "LUCKBEWITHME": {
+  "n": "Luck Be with Me!",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "ICANWINSOMETIMESRIGHT": {
+  "n": "I Can Win Sometimes, Right?",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "CALLMEKING": {
+  "n": "Call Me King",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "READYGO": {
+  "n": "Ready, Go!",
+  "g": 240,
+  "c": 0,
+  "r": 3
+ },
+ "ENGINESLIT": {
+  "n": "Engines LIT!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SHOOTINGSTAR": {
+  "n": "Shooting Star",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "THEVIEWFROMTHELEADISMINE": {
+  "n": "The View from the Lead Is Mine!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SKYHIGHTEIOSTEP": {
+  "n": "Sky-High Teio Step",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "REDSHIFTLP1211M": {
+  "n": "Red Shift/LP1211-M",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "LIGHTSOFVAUDEVILLE": {
+  "n": "Lights of Vaudeville",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "TRIUMPHANTPULSE": {
+  "n": "Triumphant Pulse",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "ANCHORSAWEIGH": {
+  "n": "Anchors Aweigh!",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "CUTANDDRIVE": {
+  "n": "Cut and Drive!",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "RESPLENDENTREDACE": {
+  "n": "Resplendent Red Ace",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "SHOOTINGFORVICTORY": {
+  "n": "Shooting for Victory!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "WHERETHERESAWILLTHERESAWAY": {
+  "n": "Where There's a Will, There's a Way",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "YOUANDMEONEONONE": {
+  "n": "You and Me! One-on-One!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "THEDUTYOFDIGNITYCALLS": {
+  "n": "The Duty of Dignity Calls",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "VICTORIAPORPLANCHA": {
+  "n": "Victoria por plancha ☆",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "THISDANCEISFORVITTORIA": {
+  "n": "This Dance Is for Vittoria!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SHADOWBREAK": {
+  "n": "Shadow Break",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "BEHOLDTHINEEMPERORSDIVINEMIGHT": {
+  "n": "Behold Thine Emperor's Divine Might",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "BLAZINGPRIDE": {
+  "n": "Blazing Pride",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "OMGTHEFINALSPRINT": {
+  "n": "OMG! (ﾟ∀ﾟ)  The Final Sprint! ☆",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "ANGLINGANDSCHEMING": {
+  "n": "Angling and Scheming",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "WHITELIGHTNINGCOMINTHROUGH": {
+  "n": "White Lightning Comin' Through!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "FAIRYTALE": {
+  "n": "Fairy Tale",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "WINQED": {
+  "n": "∴win Q.E.D.",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "FLASHYLANDING": {
+  "n": "Flashy☆Landing",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "CHASINGAFTERYOU": {
+  "n": "Chasing After You",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "G001STF": {
+  "n": "G00 1st. F∞;",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "LETSPUMPSOMEIRON": {
+  "n": "Let's Pump Some Iron!",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "YUMMYSPEED": {
+  "n": "YUMMY☆SPEED!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SNOWBRIGHTSNOWFLIGHT": {
+  "n": "Snow Bright, Snow Flight",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BLUEROSECLOSER": {
+  "n": "Blue Rose Closer",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "ALLCHARGEDITSGOTIME": {
+  "n": "All Charged! It's Go Time!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "UMA2": {
+  "n": "U=ma2",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "SHOOTINGSTAROFDIOSKOUROI": {
+  "n": "Shooting Star of Dioskouroi",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "NOWWERECRUISIN": {
+  "n": "Now We're Cruisin'!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "OURTICKETTOWIN": {
+  "n": "Our Ticket to Win!",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "TRIGGERBEAT": {
+  "n": "trigger:BEAT",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SCHWARZESSCHWERT": {
+  "n": "Schwarzes Schwert",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "LOOKATCURREN": {
+  "n": "#LookatCurren",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "APRINCESSMUSTSEIZEVICTORY": {
+  "n": "A Princess Must Seize Victory!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "KEEPITREAL": {
+  "n": "KEEP IT REAL.",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "GENIUSXBAKUSHINVICTORY": {
+  "n": "Genius x Bakushin = Victory",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "IMPOSSIBLE": {
+  "n": "I'm Possible!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "DINGDONGBOO": {
+  "n": "Ding Dong, Boo!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "VICTORYBELONGSTOMESTRELITZIA": {
+  "n": "Victory belongs to me—Strelitzia! ☆",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "PUREHEART": {
+  "n": "Pure Heart",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "SPARKLYSTARDOM": {
+  "n": "SPARKLY☆STARDOM",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "RAISEMYSOULSBLADE": {
+  "n": "Raise My Soul's Blade!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "POPPOLISH": {
+  "n": "Pop & Polish",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "LAUGHATTHEODDS": {
+  "n": "Laugh at the Odds",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "NEMESIS": {
+  "n": "Nemesis",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "BUDDINGBLOSSOM": {
+  "n": "Budding Blossom",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SUPERDUPERCLIMAX": {
+  "n": "Super-Duper Climax",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "REDHOTDISCIPLINE": {
+  "n": "Red-Hot Discipline!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "MAGICALMARVELOUSWORLD": {
+  "n": "Magical☆Marvelous★World",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ISEEVICTORYINMYFUTURE": {
+  "n": "I See Victory in My Future!",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "LYRICALJOURNEY": {
+  "n": "Lyrical Journey",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "INEVERGOOFUP": {
+  "n": "I Never Goof Up!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "MOVINGPASTANDBEYOND": {
+  "n": "Moving Past, and Beyond",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "JUSTALITTLEFARTHER": {
+  "n": "Just a Little Farther!",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "PRIDEFULKING": {
+  "n": "Prideful King",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "GOGOMUN": {
+  "n": "Go, Go, Mun!",
+  "g": 340,
+  "c": 0,
+  "r": 4
+ },
+ "KEEPPUSHINGAHEAD": {
+  "n": "Keep Pushing Ahead",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "HANDSINTHEAIRLIKEYADONTCARE": {
+  "n": "Hands in the Air Like Ya Don't Care!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TURBOBLAST": {
+  "n": "Turbo BLAST!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ETERNALENCOMPASSINGSHINE": {
+  "n": "Eternal Encompassing Shine",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "VICTORYCHEER": {
+  "n": "Victory Cheer!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "AMBITIONTOSURPASSTHESAKURA": {
+  "n": "Ambition to Surpass the Sakura",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SEIRIOS": {
+  "n": "Seirios",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ALIFELONGDREAMAMOMENTSFLIGHT": {
+  "n": "A Lifelong Dream, A Moment's Flight",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "PEERLESSDANCEOFFLOWERINGFLAMES": {
+  "n": "Peerless Dance of Flowering Flames",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "LOVELYSPRINGBREEZE": {
+  "n": "Lovely Spring Breeze",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "WORLDINBLOOM": {
+  "n": "World in Bloom",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUNNYBREEZE": {
+  "n": "Sunny Breeze",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MISSIONTRIUMPH": {
+  "n": "Mission: Triumph",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUBLIMATEDTHUNDER": {
+  "n": "Sublimated Thunder",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EVERSUPREME": {
+  "n": "Ever Supreme",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SILENTLETTER": {
+  "n": "Silent Letter",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LUCKRUNSMYWAY": {
+  "n": "Luck Runs My Way",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SHINEONTOMAKOMAI": {
+  "n": "Shine On, Tomakomai! ☆",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "NEVERSAYNEVER": {
+  "n": "Never Say Never",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUNRISEBANNERKATSURAGIACE": {
+  "n": "Sunrise Banner—Katsuragi Ace!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ADASTRA": {
+  "n": "Ad Astra",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BANGMIRACLESHOT": {
+  "n": "Bang! Miracle Shot ☆",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DAZZLNDIVER": {
+  "n": "Dazzl'n ♪ Diver",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "AHEADOFTHEHORIZON": {
+  "n": "Ahead of the Horizon",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CERTAINVICTORY": {
+  "n": "Certain Victory",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "AKISSFORCOURAGE": {
+  "n": "A Kiss for Courage",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "RAVISSANT": {
+  "n": "Ravissant",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "FESTIVEMIRACLE": {
+  "n": "Festive Miracle",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "564ESCAPADES": {
+  "n": "564 Escapades",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "INTOHIGHGEAR": {
+  "n": "Into High Gear!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "QUEENSLUMINATION": {
+  "n": "Queen's Lumination",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "JOYFULVOYAGE": {
+  "n": "Joyful Voyage!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SUPERIORHEAL": {
+  "n": "Superior Heal",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "FIRSTBITEOFTHEFEAST": {
+  "n": "First Bite of the Feast!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LEGACYOFTHESTRONG": {
+  "n": "Legacy of the Strong",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "CONDORSFURY": {
+  "n": "Condor's Fury",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "BARCAROLEOFBLESSINGS": {
+  "n": "Barcarole of Blessings",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "FREEFROMTHEASHES": {
+  "n": "Free From the Ashes",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ARROWSWHISTLESHADOWSDISPERSE": {
+  "n": "Arrows Whistle, Shadows Disperse",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "ETERNALMOMENTS": {
+  "n": "Eternal Moments",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "THEMOEAAAATHANKSFORMYLIFE": {
+  "n": "THE MOE AAAA Thanks for My Life",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BREAKITDOWN": {
+  "n": "Break It Down!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "LIGHTNINGFLARE": {
+  "n": "Lightning Flare",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BESTDAYEVER": {
+  "n": "Best Day Ever",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "PRESENTSFROMX": {
+  "n": "Presents from X",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "FLOWERYMANEUVER": {
+  "n": "Flowery☆Maneuver",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "OPERATIONCACAO": {
+  "n": "Operation Cacao",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "AWARMCUPFORYOU": {
+  "n": "A Warm Cup for You",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EVERYROSEHASITSFANGS": {
+  "n": "Every Rose Has Its Fangs",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "FRESHPARLOR": {
+  "n": "Fresh☆Parlor",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUMMERHALATION": {
+  "n": "Summer Halation",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FIRELIGHT": {
+  "n": "Firelight",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TICKETTOYOURDREAMS": {
+  "n": "Ticket to Your Dreams!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GUTENAPPETIT": {
+  "n": "Guten Appetit ♪",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "ONETRUECOLOR": {
+  "n": "One True Color",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "DANCINGINTHELEAVES": {
+  "n": "Dancing in the Leaves",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "CHERRYSCRAMBLE": {
+  "n": "Cherry☆Scramble",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GIVEMUMMYAHUG": {
+  "n": "Give Mummy a Hug ♡",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "STAR": {
+  "n": "α-star*",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "USGIRLIESKEEPWINNIN": {
+  "n": "Us Girlies Keep Winnin'! ♪",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HEPHAESTUS": {
+  "n": "Hephaestus",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FLOWERINGDREAMS": {
+  "n": "Flowering Dreams",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "114THTIMESTHECHARM": {
+  "n": "114th Time's the Charm",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SCORCHINGSUMMERTECH": {
+  "n": "Scorching Summer Tech!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BOUNTIFULHARVEST": {
+  "n": "Bountiful Harvest",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "SPOOKYSCARYHAPPY": {
+  "n": "Spooky, Scary, Happy",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "WHEREVERTHISWONDERLEADS": {
+  "n": "Wherever This Wonder Leads",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "GOGOGOAL": {
+  "n": "Go☆Go☆Goal!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "LOUDERTRACENCHEER": {
+  "n": "Louder! Tracen Cheer!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "TUMBLYPOWERDRIVE": {
+  "n": "Tumbly Power Drive!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RAINCLOUDBOLT": {
+  "n": "Rain Cloud Bolt",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BRINGONTHEBANQUET": {
+  "n": "Bring on the Banquet!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "WATCHMEBLOOM": {
+  "n": "Watch! Me! BLOOM!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DANSERLEPRSENT": {
+  "n": "Danser le Présent",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DREAMSDONNEDWITHPRIDE": {
+  "n": "Dreams Donned with Pride!",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "YOURSMILESPARKLESASTHEWAVES": {
+  "n": "Your Smile Sparkles as the Waves",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "RIGHTHANDED": {
+  "n": "Right-Handed ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "RIGHTHANDEDDEMON": {
+  "n": "Right-Handed Demon",
+  "g": 461,
+  "c": 130,
+  "r": 2
+ },
+ "LEFTHANDED": {
+  "n": "Left-Handed ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "TOKYORACECOURSE": {
+  "n": "Tokyo Racecourse ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "NAKAYAMARACECOURSE": {
+  "n": "Nakayama Racecourse ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "HANSHINRACECOURSE": {
+  "n": "Hanshin Racecourse ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "KYOTORACECOURSE": {
+  "n": "Kyoto Racecourse ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "YODOINVICTA": {
+  "n": "Yodo Invicta",
+  "g": 461,
+  "c": 130,
+  "r": 2
+ },
+ "CHUKYORACECOURSE": {
+  "n": "Chukyo Racecourse ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "SAPPORORACECOURSE": {
+  "n": "Sapporo Racecourse ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "HAKODATERACECOURSE": {
+  "n": "Hakodate Racecourse ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "FUKUSHIMARACECOURSE": {
+  "n": "Fukushima Racecourse ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "NIIGATARACECOURSE": {
+  "n": "Niigata Racecourse ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "KOKURARACECOURSE": {
+  "n": "Kokura Racecourse ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "STANDARDDISTANCE": {
+  "n": "Standard Distance ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "NONSTANDARDDISTANCE": {
+  "n": "Non-Standard Distance ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "FIRMCONDITIONS": {
+  "n": "Firm Conditions ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "FIRMCOURSEMENACE": {
+  "n": "Firm Course Menace",
+  "g": 461,
+  "c": 130,
+  "r": 2
+ },
+ "WETCONDITIONS": {
+  "n": "Wet Conditions ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "SPRINGRUNNER": {
+  "n": "Spring Runner ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "SPRINGSPECTACLE": {
+  "n": "Spring Spectacle",
+  "g": 461,
+  "c": 130,
+  "r": 2
+ },
+ "SUMMERRUNNER": {
+  "n": "Summer Runner ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "SUMMERGUST": {
+  "n": "Summer Gust",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FALLRUNNER": {
+  "n": "Fall Runner ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "FALLFRENZY": {
+  "n": "Fall Frenzy",
+  "g": 461,
+  "c": 130,
+  "r": 2
+ },
+ "WINTERRUNNER": {
+  "n": "Winter Runner ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "SUNNYDAYS": {
+  "n": "Sunny Days ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "CLOUDYDAYS": {
+  "n": "Cloudy Days ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "RAINYDAYS": {
+  "n": "Rainy Days ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "SNOWYDAYS": {
+  "n": "Snowy Days ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "INNERPOSTPROFICIENCY": {
+  "n": "Inner Post Proficiency ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "OUTERPOSTPROFICIENCY": {
+  "n": "Outer Post Proficiency ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "MAVERICK": {
+  "n": "Maverick ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "COMPETITIVESPIRIT": {
+  "n": "Competitive Spirit ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "TARGETINSIGHT": {
+  "n": "Target in Sight ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "LONGSHOT": {
+  "n": "Long Shot ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "PROFESSOROFCURVATURE": {
+  "n": "Professor of Curvature",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "CORNERADEPT": {
+  "n": "Corner Adept ○",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "CORNERCONNOISSEUR": {
+  "n": "Corner Connoisseur",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "CORNERACCELERATION": {
+  "n": "Corner Acceleration ○",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "SWINGINGMAESTRO": {
+  "n": "Swinging Maestro",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "CORNERRECOVERY": {
+  "n": "Corner Recovery ○",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "BEELINEBURST": {
+  "n": "Beeline Burst",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "STRAIGHTAWAYADEPT": {
+  "n": "Straightaway Adept",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "RUSHINGGALE": {
+  "n": "Rushing Gale!",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "STRAIGHTAWAYACCELERATION": {
+  "n": "Straightaway Acceleration",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "BREATHOFFRESHAIR": {
+  "n": "Breath of Fresh Air",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "STRAIGHTAWAYRECOVERY": {
+  "n": "Straightaway Recovery",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "CONCENTRATION": {
+  "n": "Concentration",
+  "g": 394,
+  "c": 140,
+  "r": 2
+ },
+ "FOCUS": {
+  "n": "Focus",
+  "g": 129,
+  "c": 140,
+  "r": 1
+ },
+ "IRONWILL": {
+  "n": "Iron Will",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "LAYLOW": {
+  "n": "Lay Low",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "CENTERSTAGE": {
+  "n": "Center Stage",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "PRUDENTPOSITIONING": {
+  "n": "Prudent Positioning",
+  "g": 129,
+  "c": 120,
+  "r": 1
+ },
+ "ITSON": {
+  "n": "It's On!",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "RAMPUP": {
+  "n": "Ramp Up",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "INDOMITABLE": {
+  "n": "Indomitable",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "PACESTRATEGY": {
+  "n": "Pace Strategy",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "UNRUFFLED": {
+  "n": "Unruffled",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "CALMINACROWD": {
+  "n": "Calm in a Crowd",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "NOSTOPPINGME": {
+  "n": "No Stopping Me!",
+  "g": 394,
+  "c": 150,
+  "r": 2
+ },
+ "NIMBLENAVIGATOR": {
+  "n": "Nimble Navigator",
+  "g": 174,
+  "c": 150,
+  "r": 1
+ },
+ "LANELEGERDEMAIN": {
+  "n": "Lane Legerdemain",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "GOWITHTHEFLOW": {
+  "n": "Go with the Flow",
+  "g": 129,
+  "c": 120,
+  "r": 1
+ },
+ "INBODYANDMIND": {
+  "n": "In Body and Mind",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "HOMESTRETCHHASTE": {
+  "n": "Homestretch Haste",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "TAKINGTHELEAD": {
+  "n": "Taking the Lead",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "EARLYLEAD": {
+  "n": "Early Lead",
+  "g": 217,
+  "c": 120,
+  "r": 1
+ },
+ "ESCAPEARTIST": {
+  "n": "Escape Artist",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "FASTPACED": {
+  "n": "Fast-Paced",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "UNRESTRAINED": {
+  "n": "Unrestrained",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "FINALPUSH": {
+  "n": "Final Push",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "CALMANDCOLLECTED": {
+  "n": "Calm and Collected",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "STAMINATOSPARE": {
+  "n": "Stamina to Spare",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "RACEPLANNER": {
+  "n": "Race Planner",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "PREFERREDPOSITION": {
+  "n": "Preferred Position",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "SPEEDSTAR": {
+  "n": "Speed Star",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "PREPAREDTOPASS": {
+  "n": "Prepared to Pass",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "FASTFURIOUS": {
+  "n": "Fast & Furious",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "POSITIONPILFER": {
+  "n": "Position Pilfer",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "ONYOURLEFT": {
+  "n": "On Your Left!",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "SLICKSURGE": {
+  "n": "Slick Surge",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "RISINGDRAGON": {
+  "n": "Rising Dragon",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "OUTERSWELL": {
+  "n": "Outer Swell",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "SLEEPINGLION": {
+  "n": "Sleeping Lion",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "STANDINGBY": {
+  "n": "Standing By",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "STURMUNDDRANG": {
+  "n": "Sturm und Drang",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "MASTERFULGAMBIT": {
+  "n": "Masterful Gambit",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "ENCROACHINGSHADOW": {
+  "n": "Encroaching Shadow",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "STRAIGHTAWAYSPURT": {
+  "n": "Straightaway Spurt",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "TURBOSPRINT": {
+  "n": "Turbo Sprint",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "SPRINTINGGEAR": {
+  "n": "Sprinting Gear",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "WAITANDSEE": {
+  "n": "Wait-and-See",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "BLINDINGFLASH": {
+  "n": "Blinding Flash",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "GAPCLOSER": {
+  "n": "Gap Closer",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "MILEMAVEN": {
+  "n": "Mile Maven",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "PRODUCTIVEPLAN": {
+  "n": "Productive Plan",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "KEENEYE": {
+  "n": "Keen Eye",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "WATCHFULEYE": {
+  "n": "Watchful Eye",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "FURIOUSFEAT": {
+  "n": "Furious Feat",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "UPDRAFTERS": {
+  "n": "Updrafters",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "TRACKBLAZER": {
+  "n": "Trackblazer",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "ROSYOUTLOOK": {
+  "n": "Rosy Outlook",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "KILLERTUNES": {
+  "n": "Killer Tunes",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "UPTEMPO": {
+  "n": "Up-Tempo",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "UNYIELDING": {
+  "n": "Unyielding",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "STEADFAST": {
+  "n": "Steadfast",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "COOLDOWN": {
+  "n": "Cooldown",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "DEEPBREATHS": {
+  "n": "Deep Breaths",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "INNATEEXPERIENCE": {
+  "n": "Innate Experience",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "INSIDESCOOP": {
+  "n": "Inside Scoop",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "ADRENALINERUSH": {
+  "n": "Adrenaline Rush",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "EXTRATANK": {
+  "n": "Extra Tank",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "TRICKFRONT": {
+  "n": "Trick (Front)",
+  "g": 217,
+  "c": 140,
+  "r": 1
+ },
+ "TANTALIZINGTRICK": {
+  "n": "Tantalizing Trick",
+  "g": 508,
+  "c": 140,
+  "r": 2
+ },
+ "TRICKREAR": {
+  "n": "Trick (Rear)",
+  "g": 217,
+  "c": 140,
+  "r": 1
+ },
+ "FRENZIEDFRONTRUNNERS": {
+  "n": "Frenzied Front Runners",
+  "g": 174,
+  "c": 130,
+  "r": 1
+ },
+ "FRENZIEDPACECHASERS": {
+  "n": "Frenzied Pace Chasers",
+  "g": 174,
+  "c": 130,
+  "r": 1
+ },
+ "FRENZIEDLATESURGERS": {
+  "n": "Frenzied Late Surgers",
+  "g": 174,
+  "c": 130,
+  "r": 1
+ },
+ "FRENZIEDENDCLOSERS": {
+  "n": "Frenzied End Closers",
+  "g": 174,
+  "c": 130,
+  "r": 1
+ },
+ "SUBDUEDFRONTRUNNERS": {
+  "n": "Subdued Front Runners",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "FLUSTEREDFRONTRUNNERS": {
+  "n": "Flustered Front Runners",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "HESITANTFRONTRUNNERS": {
+  "n": "Hesitant Front Runners",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "SUBDUEDPACECHASERS": {
+  "n": "Subdued Pace Chasers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "FLUSTEREDPACECHASERS": {
+  "n": "Flustered Pace Chasers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "HESITANTPACECHASERS": {
+  "n": "Hesitant Pace Chasers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "SUBDUEDLATESURGERS": {
+  "n": "Subdued Late Surgers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "FLUSTEREDLATESURGERS": {
+  "n": "Flustered Late Surgers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "HESITANTLATESURGERS": {
+  "n": "Hesitant Late Surgers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "SUBDUEDENDCLOSERS": {
+  "n": "Subdued End Closers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "FLUSTEREDENDCLOSERS": {
+  "n": "Flustered End Closers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "HESITANTENDCLOSERS": {
+  "n": "Hesitant End Closers",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "OIRACECOURSE": {
+  "n": "Oi Racecourse ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "SPRINTSTRAIGHTAWAYS": {
+  "n": "Sprint Straightaways ◎",
+  "g": 262,
+  "c": 110,
+  "r": 1
+ },
+ "SHOCKINGFLASH": {
+  "n": "Shocking Flash",
+  "g": 508,
+  "c": 150,
+  "r": 2
+ },
+ "SPRINTCORNERS": {
+  "n": "Sprint Corners ◎",
+  "g": 262,
+  "c": 110,
+  "r": 1
+ },
+ "STAGGERINGLEAD": {
+  "n": "Staggering Lead",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "HUGELEAD": {
+  "n": "Huge Lead",
+  "g": 262,
+  "c": 170,
+  "r": 1
+ },
+ "PLANX": {
+  "n": "Plan X",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "COUNTERMEASURE": {
+  "n": "Countermeasure",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "PERFECTPREP": {
+  "n": "Perfect Prep!",
+  "g": 394,
+  "c": 140,
+  "r": 2
+ },
+ "METICULOUSMEASURES": {
+  "n": "Meticulous Measures",
+  "g": 174,
+  "c": 140,
+  "r": 1
+ },
+ "ADOREDBYALL": {
+  "n": "Adored by All",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "INTIMIDATE": {
+  "n": "Intimidate",
+  "g": 262,
+  "c": 170,
+  "r": 1
+ },
+ "YOUVEGOTNOSHOT": {
+  "n": "You've Got No Shot",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "STOPRIGHTTHERE": {
+  "n": "Stop Right There!",
+  "g": 262,
+  "c": 170,
+  "r": 1
+ },
+ "MILESTRAIGHTAWAYS": {
+  "n": "Mile Straightaways ◎",
+  "g": 262,
+  "c": 110,
+  "r": 1
+ },
+ "MILECORNERS": {
+  "n": "Mile Corners ◎",
+  "g": 262,
+  "c": 110,
+  "r": 1
+ },
+ "CRESCENTGUST": {
+  "n": "Crescent Gust",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CHANGINGGEARS": {
+  "n": "Changing Gears",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "SHIFTINGGEARS": {
+  "n": "Shifting Gears",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "STEPONTHEGAS": {
+  "n": "Step on the Gas!",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "ACCELERATION": {
+  "n": "Acceleration",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "BIGSISTERLY": {
+  "n": "Big-Sisterly",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "UNYIELDINGSPIRIT": {
+  "n": "Unyielding Spirit",
+  "g": 217,
+  "c": 120,
+  "r": 1
+ },
+ "GREEDFORSPEED": {
+  "n": "Greed for Speed",
+  "g": 461,
+  "c": 160,
+  "r": 2
+ },
+ "SPEEDEATER": {
+  "n": "Speed Eater",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "BATTLEFORMATION": {
+  "n": "Battle Formation",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "OPENINGGAMBIT": {
+  "n": "Opening Gambit",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "MEDIUMSTRAIGHTAWAYS": {
+  "n": "Medium Straightaways ◎",
+  "g": 262,
+  "c": 110,
+  "r": 1
+ },
+ "FLASHFORWARD": {
+  "n": "Flash Forward",
+  "g": 508,
+  "c": 150,
+  "r": 2
+ },
+ "MEDIUMCORNERS": {
+  "n": "Medium Corners ◎",
+  "g": 262,
+  "c": 110,
+  "r": 1
+ },
+ "REFRACTIONARC": {
+  "n": "Refraction Arc",
+  "g": 508,
+  "c": 150,
+  "r": 2
+ },
+ "CLAIRVOYANCE": {
+  "n": "Clairvoyance",
+  "g": 334,
+  "c": 110,
+  "r": 2
+ },
+ "HAWKEYE": {
+  "n": "Hawkeye",
+  "g": 129,
+  "c": 110,
+  "r": 1
+ },
+ "LIGHTNINGSTEP": {
+  "n": "Lightning Step",
+  "g": 394,
+  "c": 140,
+  "r": 2
+ },
+ "THUNDERBOLTSTEP": {
+  "n": "Thunderbolt Step",
+  "g": 174,
+  "c": 140,
+  "r": 1
+ },
+ "MIRACULOUSSTEP": {
+  "n": "Miraculous Step",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "SOFTSTEP": {
+  "n": "Soft Step",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "DOMINATOR": {
+  "n": "Dominator",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "TETHER": {
+  "n": "Tether",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "MYSTIFYINGMURMUR": {
+  "n": "Mystifying Murmur",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "MURMUR": {
+  "n": "Murmur",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "LONGSTRAIGHTAWAYS": {
+  "n": "Long Straightaways ◎",
+  "g": 262,
+  "c": 110,
+  "r": 1
+ },
+ "BLASTFORWARD": {
+  "n": "Blast Forward",
+  "g": 508,
+  "c": 150,
+  "r": 2
+ },
+ "LONGCORNERS": {
+  "n": "Long Corners ◎",
+  "g": 262,
+  "c": 110,
+  "r": 1
+ },
+ "VANGUARDSPIRIT": {
+  "n": "Vanguard Spirit",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "KEEPINGTHELEAD": {
+  "n": "Keeping the Lead",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "VIPPASS": {
+  "n": "VIP Pass",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "PASSINGPRO": {
+  "n": "Passing Pro",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "OVERWHELMINGPRESSURE": {
+  "n": "Overwhelming Pressure",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "PRESSURE": {
+  "n": "Pressure",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "STAMINASIPHON": {
+  "n": "Stamina Siphon",
+  "g": 461,
+  "c": 160,
+  "r": 2
+ },
+ "STAMINAEATER": {
+  "n": "Stamina Eater",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "ILLUSIONIST": {
+  "n": "Illusionist",
+  "g": 334,
+  "c": 110,
+  "r": 2
+ },
+ "SMOKESCREEN": {
+  "n": "Smoke Screen",
+  "g": 129,
+  "c": 110,
+  "r": 1
+ },
+ "FRONTRUNNERSTRAIGHTAWAYS": {
+  "n": "Front Runner Straightaways ◎",
+  "g": 262,
+  "c": 140,
+  "r": 1
+ },
+ "FRONTRUNNERCORNERS": {
+  "n": "Front Runner Corners ◎",
+  "g": 262,
+  "c": 140,
+  "r": 1
+ },
+ "CRESCENTGALE": {
+  "n": "Crescent Gale",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SIXTHSENSE": {
+  "n": "Sixth Sense",
+  "g": 334,
+  "c": 110,
+  "r": 2
+ },
+ "DODGINGDANGER": {
+  "n": "Dodging Danger",
+  "g": 129,
+  "c": 110,
+  "r": 1
+ },
+ "TOPRUNNER": {
+  "n": "Top Runner",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "LEADERSPRIDE": {
+  "n": "Leader's Pride",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "RESTLESS": {
+  "n": "Restless",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "MOXIE": {
+  "n": "Moxie",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "REIGNITION": {
+  "n": "Reignition",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "SECONDWIND": {
+  "n": "Second Wind",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "RESTART": {
+  "n": "Restart",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "PACECHASERSTRAIGHTAWAYS": {
+  "n": "Pace Chaser Straightaways ◎",
+  "g": 262,
+  "c": 140,
+  "r": 1
+ },
+ "PACECHASERCORNERS": {
+  "n": "Pace Chaser Corners ◎",
+  "g": 262,
+  "c": 140,
+  "r": 1
+ },
+ "TECHNICIAN": {
+  "n": "Technician",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "SHREWDSTEP": {
+  "n": "Shrewd Step",
+  "g": 217,
+  "c": 120,
+  "r": 1
+ },
+ "DETERMINEDDESCENT": {
+  "n": "Determined Descent",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "STRAIGHTDESCENT": {
+  "n": "Straight Descent",
+  "g": 217,
+  "c": 120,
+  "r": 1
+ },
+ "GOURMAND": {
+  "n": "Gourmand",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "HYDRATE": {
+  "n": "Hydrate",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "SHATTERPROOF": {
+  "n": "Shatterproof",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "TACTICALTWEAK": {
+  "n": "Tactical Tweak",
+  "g": 217,
+  "c": 120,
+  "r": 1
+ },
+ "DAZZLINGDISORIENTATION": {
+  "n": "Dazzling Disorientation",
+  "g": 334,
+  "c": 110,
+  "r": 2
+ },
+ "DISORIENT": {
+  "n": "Disorient",
+  "g": 85,
+  "c": 110,
+  "r": 1
+ },
+ "LATESURGERSTRAIGHTAWAYS": {
+  "n": "Late Surger Straightaways ◎",
+  "g": 262,
+  "c": 140,
+  "r": 1
+ },
+ "SHARPSTREAK": {
+  "n": "Sharp Streak",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LATESURGERCORNERS": {
+  "n": "Late Surger Corners ◎",
+  "g": 262,
+  "c": 140,
+  "r": 1
+ },
+ "SHARPARC": {
+  "n": "Sharp Arc",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HARDWORKER": {
+  "n": "Hard Worker",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "FIGHTER": {
+  "n": "Fighter",
+  "g": 217,
+  "c": 120,
+  "r": 1
+ },
+ "15000000CC": {
+  "n": "15,000,000 CC",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "1500000CC": {
+  "n": "1,500,000 CC",
+  "g": 217,
+  "c": 120,
+  "r": 1
+ },
+ "RELAX": {
+  "n": "Relax",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "ASMALLBREATHER": {
+  "n": "A Small Breather",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "THEBIGGERPICTURE": {
+  "n": "The Bigger Picture",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "STUDIOUS": {
+  "n": "Studious",
+  "g": 85,
+  "c": 120,
+  "r": 1
+ },
+ "ALLSEEINGEYES": {
+  "n": "All-Seeing Eyes",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "SHARPGAZE": {
+  "n": "Sharp Gaze",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "ENDCLOSERSTRAIGHTAWAYS": {
+  "n": "End Closer Straightaways ◎",
+  "g": 262,
+  "c": 140,
+  "r": 1
+ },
+ "MOONLITFLASH": {
+  "n": "Moonlit Flash",
+  "g": 508,
+  "c": 150,
+  "r": 2
+ },
+ "ENDCLOSERCORNERS": {
+  "n": "End Closer Corners ◎",
+  "g": 262,
+  "c": 140,
+  "r": 1
+ },
+ "THECOASTISCLEAR": {
+  "n": "The Coast Is Clear!",
+  "g": 334,
+  "c": 110,
+  "r": 2
+ },
+ "ICANSEERIGHTTHROUGHYOU": {
+  "n": "I Can See Right Through You",
+  "g": 85,
+  "c": 110,
+  "r": 1
+ },
+ "GOHOMESPECIALIST": {
+  "n": "Go-Home Specialist",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "AFTERSCHOOLSTROLL": {
+  "n": "After-School Stroll",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "SERENITY": {
+  "n": "Serenity",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "LEVELHEADED": {
+  "n": "Levelheaded",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "CRUSADER": {
+  "n": "Crusader",
+  "g": 334,
+  "c": 110,
+  "r": 2
+ },
+ "STRATEGIST": {
+  "n": "Strategist",
+  "g": 85,
+  "c": 110,
+  "r": 1
+ },
+ "PETRIFYINGGAZE": {
+  "n": "Petrifying Gaze",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "INTENSEGAZE": {
+  "n": "Intense Gaze",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "FRONTRUNNERSAVVY": {
+  "n": "Front Runner Savvy ◎",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "PACECHASERSAVVY": {
+  "n": "Pace Chaser Savvy ◎",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "LATESURGERSAVVY": {
+  "n": "Late Surger Savvy ◎",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "ENDCLOSERSAVVY": {
+  "n": "End Closer Savvy ◎",
+  "g": 217,
+  "c": 130,
+  "r": 1
+ },
+ "SUPERLUCKYSEVEN": {
+  "n": "Super Lucky Seven",
+  "g": 334,
+  "c": 110,
+  "r": 2
+ },
+ "LUCKYSEVEN": {
+  "n": "Lucky Seven",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "TRIPLE7S": {
+  "n": "Triple 7s",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "HIGHLANDER": {
+  "n": "Highlander",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "UMASTAN": {
+  "n": "Uma Stan",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "SUPERSTAN": {
+  "n": "Superstan",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "GROUNDWORK": {
+  "n": "Groundwork",
+  "g": 217,
+  "c": 100,
+  "r": 1
+ },
+ "SOLIDPREPARATION": {
+  "n": "Solid Preparation",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TAILHELDHIGH": {
+  "n": "Tail Held High",
+  "g": 217,
+  "c": 100,
+  "r": 1
+ },
+ "TAILNINE": {
+  "n": "Tail Nine",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "SHAKEITOUT": {
+  "n": "Shake It Out",
+  "g": 217,
+  "c": 100,
+  "r": 1
+ },
+ "SYMPATHY": {
+  "n": "Sympathy",
+  "g": 129,
+  "c": 70,
+  "r": 1
+ },
+ "LONEWOLF": {
+  "n": "Lone Wolf",
+  "g": 129,
+  "c": 70,
+  "r": 1
+ },
+ "SLIPSTREAM": {
+  "n": "Slipstream",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "PERFECTSPOT": {
+  "n": "Perfect Spot!",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "PLAYTIMESOVER": {
+  "n": "Playtime's Over!",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "SEEYALATER": {
+  "n": "See Ya Later!",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "TRENDINGINTHECHARTS": {
+  "n": "Trending in the Charts!",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "TOPPICK": {
+  "n": "Top Pick",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "LEADTHECHARGE": {
+  "n": "Lead the Charge!",
+  "g": 394,
+  "c": 140,
+  "r": 2
+ },
+ "FORWARDMARCH": {
+  "n": "Forward, March!",
+  "g": 174,
+  "c": 140,
+  "r": 1
+ },
+ "LIEINWAIT": {
+  "n": "Lie in Wait",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "BESTILL": {
+  "n": "Be Still",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "COMEWHATMAY": {
+  "n": "Come What May",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "ALLIVEGOT": {
+  "n": "All I've Got",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "NECKANDNECK": {
+  "n": "Neck and Neck",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "HEADON": {
+  "n": "Head-On",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "MASTEROFTHESANDS": {
+  "n": "Master of the Sands",
+  "g": 508,
+  "c": 200,
+  "r": 2
+ },
+ "FAMILIARGROUND": {
+  "n": "Familiar Ground",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "HEADLINER": {
+  "n": "Headliner",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "FEATUREACT": {
+  "n": "Feature Act",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "DARINGSTRIKE": {
+  "n": "Daring Strike",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "EARLYSTART": {
+  "n": "Early Start",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "NOTHINGVENTURED": {
+  "n": "Nothing Ventured",
+  "g": 334,
+  "c": 120,
+  "r": 2
+ },
+ "RISKYBUSINESS": {
+  "n": "Risky Business",
+  "g": 129,
+  "c": 120,
+  "r": 1
+ },
+ "INHIGHSPIRITS": {
+  "n": "In High Spirits",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "LIGHTASAFEATHER": {
+  "n": "Light as a Feather",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "RUNAWAY": {
+  "n": "Runaway",
+  "g": 370,
+  "c": 200,
+  "r": 2
+ },
+ "BESTINJAPAN": {
+  "n": "Best in Japan",
+  "g": 508,
+  "c": 360,
+  "r": 2
+ },
+ "OFCALMMIND": {
+  "n": "Of Calm Mind",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "FREESPIRITED": {
+  "n": "Free-Spirited",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "FROMTHEBRINK": {
+  "n": "From the Brink",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "TAKETHECHANCE": {
+  "n": "Take the Chance",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "BURNINGSOUL": {
+  "n": "Burning Soul",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "FIGHTINGSPIRIT": {
+  "n": "Fighting Spirit",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "ELATED": {
+  "n": "Elated",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "EAGER": {
+  "n": "Eager",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "FULLOFVIGOR": {
+  "n": "Full of Vigor",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "PUMPED": {
+  "n": "Pumped",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "DAUNTLESS": {
+  "n": "Dauntless",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "FEARLESS": {
+  "n": "Fearless",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "WILDWIND": {
+  "n": "Wild Wind",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "WITHALLMYSOUL": {
+  "n": "With All My Soul",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "KEEPGOING": {
+  "n": "Keep Going!",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "FULLTHROTTLE": {
+  "n": "Full Throttle",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "RESTRAINT": {
+  "n": "Restraint",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "MASTEROFDECLINES": {
+  "n": "Master of Declines",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DOWNHILLSPEEDSTER": {
+  "n": "Downhill Speedster",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "HEARTALLSET": {
+  "n": "Heart All Set",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "ALLSET": {
+  "n": "All Set",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "KAWASAKIRACECOURSE": {
+  "n": "Kawasaki Racecourse ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "FUNABASHIRACECOURSE": {
+  "n": "Funabashi Racecourse ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "MORIOKARACECOURSE": {
+  "n": "Morioka Racecourse ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "NIGHTRACES": {
+  "n": "Night Races ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "SHARPTURNS": {
+  "n": "Sharp Turns ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "COLLABORATIVEGRADEDRACES": {
+  "n": "Collaborative Graded Races ◎",
+  "g": 174,
+  "c": 90,
+  "r": 1
+ },
+ "CHANCEOFVICTORY": {
+  "n": "Chance of Victory",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "SUNNYSIGN": {
+  "n": "Sunny Sign",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "CANTKEEPMEDOWN": {
+  "n": "Can't Keep Me Down",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "COMEBACK": {
+  "n": "Comeback",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "FULLSPEED": {
+  "n": "Full Speed!",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "FULLTILT": {
+  "n": "Full Tilt",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "CRYSTALCLEAR": {
+  "n": "Crystal Clear",
+  "g": 508,
+  "c": 150,
+  "r": 2
+ },
+ "RATIONAL": {
+  "n": "Rational",
+  "g": 217,
+  "c": 150,
+  "r": 1
+ },
+ "DANCERINTHEDIRT": {
+  "n": "Dancer in the Dirt",
+  "g": 508,
+  "c": 160,
+  "r": 2
+ },
+ "DOWNINTHEDIRT": {
+  "n": "Down in the Dirt ○",
+  "g": 217,
+  "c": 160,
+  "r": 1
+ },
+ "BETHECENTER": {
+  "n": "Be the Center!",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "GOTTHESPIRIT": {
+  "n": "Got the Spirit!",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "RUNLIKECRAZY": {
+  "n": "Run Like Crazy!",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "RAPIDGAIN": {
+  "n": "Rapid Gain",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "STRONGSTEPS": {
+  "n": "Strong Steps",
+  "g": 461,
+  "c": 120,
+  "r": 2
+ },
+ "SOLIDSTEPS": {
+  "n": "Solid Steps",
+  "g": 174,
+  "c": 120,
+  "r": 1
+ },
+ "MAESTROOFTHEMUD": {
+  "n": "Maestro of the Mud",
+  "g": 461,
+  "c": 130,
+  "r": 2
+ },
+ "MUDDY": {
+  "n": "Muddy ◎",
+  "g": 174,
+  "c": 110,
+  "r": 1
+ },
+ "DUSTCLOUDIDOL": {
+  "n": "Dust Cloud Idol",
+  "g": 461,
+  "c": 120,
+  "r": 2
+ },
+ "DUSTCLOUD": {
+  "n": "Dust Cloud",
+  "g": 174,
+  "c": 120,
+  "r": 1
+ },
+ "CATCHEMOFFGUARD": {
+  "n": "Catch 'Em Off Guard",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "OPPRESSION": {
+  "n": "Oppression",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "UNSTOPPABLE": {
+  "n": "Unstoppable",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "ONTHEATTACK": {
+  "n": "On the Attack",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "BREAKINAHEAD": {
+  "n": "Breakin' Ahead",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "BREAKINOUT": {
+  "n": "Breakin' Out",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "GIVINIT1000": {
+  "n": "Givin' It 1000%",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MADDASH": {
+  "n": "Mad Dash",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LEAPFORWARD": {
+  "n": "Leap Forward",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "AMBITIOUSBREEZE": {
+  "n": "Ambitious Breeze",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "ASPIRE": {
+  "n": "Aspire",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "CLAWFORWARD": {
+  "n": "Claw Forward",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "SCRAMBLE": {
+  "n": "Scramble",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "SOLIDSTRIKE": {
+  "n": "Solid Strike",
+  "g": 508,
+  "c": 170,
+  "r": 2
+ },
+ "STEADYGAIT": {
+  "n": "Steady Gait",
+  "g": 217,
+  "c": 170,
+  "r": 1
+ },
+ "RISKMAKER": {
+  "n": "Risk-Maker",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "RISKTAKER": {
+  "n": "Risk-Taker",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TOPGEAR": {
+  "n": "Top Gear",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "PEDALTOTHEMETAL": {
+  "n": "Pedal to the Metal",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "CANTEVENCATCHMYSHADOW": {
+  "n": "Can't Even Catch My Shadow",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "FIRMRESOLVE": {
+  "n": "Firm Resolve",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "HOTPURSUIT": {
+  "n": "Hot Pursuit",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "LATCHON": {
+  "n": "Latch On",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "BEASTMODE": {
+  "n": "Beast Mode",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "MYTRUESTRENGTH": {
+  "n": "My True Strength",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "RAZORSHARPSTEPS": {
+  "n": "Razor-Sharp Steps",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SHARPSTEPS": {
+  "n": "Sharp Steps",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RECKLESSCHARGE": {
+  "n": "Reckless Charge",
+  "g": 508,
+  "c": 180,
+  "r": 2
+ },
+ "NOLOOKINGBACK": {
+  "n": "No Looking Back",
+  "g": 217,
+  "c": 180,
+  "r": 1
+ },
+ "GONNABEUR1FRFR": {
+  "n": "Gonna Be Ur #1 FRFR",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BEAUTIFULFORM": {
+  "n": "Beautiful Form",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BREAKTHEMOLD": {
+  "n": "Break the Mold",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUPERBGAIT": {
+  "n": "Superb Gait",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GRACEFULGAIT": {
+  "n": "Graceful Gait",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "VYINGFORTHETHRONE": {
+  "n": "Vying for the Throne",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DIVINESPEED": {
+  "n": "Divine Speed",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HIGHSPEED": {
+  "n": "High Speed",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SURESHOT": {
+  "n": "Sure Shot",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LOCKEDON": {
+  "n": "Locked On",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MIRACLEFORMYFUTURE": {
+  "n": "Miracle for My Future",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LIGHTFOOTEDASAHARE": {
+  "n": "Light-Footed as a Hare",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UNDISTRACTED": {
+  "n": "Undistracted",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "INONEFELLSWOOP": {
+  "n": "In One Fell Swoop",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HURRYUP": {
+  "n": "Hurry Up!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LUMINESCENCE": {
+  "n": "Luminescence",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "IGNITION": {
+  "n": "Ignition",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UNRESTRAINEDPASSION": {
+  "n": "Unrestrained Passion",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RAMPAGINGPASSION": {
+  "n": "Rampaging Passion",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "STARTTHECHARGE": {
+  "n": "Start the Charge",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "AJOURNEYINASTEP": {
+  "n": "A Journey in a Step",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FIRSTSTEP": {
+  "n": "First Step",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PARTTHECLOUDS": {
+  "n": "Part the Clouds",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CONFIDENT": {
+  "n": "Confident",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RISINGPULSE": {
+  "n": "Rising Pulse",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RISINGHEAT": {
+  "n": "Rising Heat",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HIGHVOLTAGE": {
+  "n": "High Voltage",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BEATINGHEART": {
+  "n": "Beating Heart",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SENDIT": {
+  "n": "Send It! ☆",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "POPOFF": {
+  "n": "Pop Off!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BEFOREANYONE": {
+  "n": "Before Anyone!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GOINFIRST": {
+  "n": "Goin' First",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SINGULARITY": {
+  "n": "Singularity",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ADVENTURER": {
+  "n": "Adventurer",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BURNINGSPIRITSPD": {
+  "n": "Burning Spirit SPD",
+  "g": 633,
+  "c": 200,
+  "r": 2
+ },
+ "IGNITEDSPIRITSPD": {
+  "n": "Ignited Spirit SPD",
+  "g": 263,
+  "c": 200,
+  "r": 1
+ },
+ "BURNINGSPIRITSTA": {
+  "n": "Burning Spirit STA",
+  "g": 633,
+  "c": 200,
+  "r": 2
+ },
+ "IGNITEDSPIRITSTA": {
+  "n": "Ignited Spirit STA",
+  "g": 263,
+  "c": 200,
+  "r": 1
+ },
+ "BURNINGSPIRITPWR": {
+  "n": "Burning Spirit PWR",
+  "g": 633,
+  "c": 200,
+  "r": 2
+ },
+ "IGNITEDSPIRITPWR": {
+  "n": "Ignited Spirit PWR",
+  "g": 263,
+  "c": 200,
+  "r": 1
+ },
+ "BURNINGSPIRITGUTS": {
+  "n": "Burning Spirit GUTS",
+  "g": 633,
+  "c": 200,
+  "r": 2
+ },
+ "IGNITEDSPIRITGUTS": {
+  "n": "Ignited Spirit GUTS",
+  "g": 263,
+  "c": 200,
+  "r": 1
+ },
+ "BURNINGSPIRITWIT": {
+  "n": "Burning Spirit WIT",
+  "g": 633,
+  "c": 200,
+  "r": 2
+ },
+ "IGNITEDSPIRITWIT": {
+  "n": "Ignited Spirit WIT",
+  "g": 263,
+  "c": 200,
+  "r": 1
+ },
+ "RADIANTSTAR": {
+  "n": "Radiant Star",
+  "g": 633,
+  "c": 200,
+  "r": 2
+ },
+ "GLITTERINGSTAR": {
+  "n": "Glittering Star",
+  "g": 263,
+  "c": 200,
+  "r": 1
+ },
+ "IWANNAWINWITHYOU": {
+  "n": "I Wanna Win with You",
+  "g": 633,
+  "c": 200,
+  "r": 2
+ },
+ "ONTHEWAYTOOURDREAM": {
+  "n": "On the Way to Our Dream",
+  "g": 263,
+  "c": 200,
+  "r": 1
+ },
+ "PASTMYLIMITS": {
+  "n": "Past My Limits",
+  "g": 633,
+  "c": 200,
+  "r": 2
+ },
+ "EYESONTHEGOAL": {
+  "n": "Eyes on the Goal",
+  "g": 263,
+  "c": 200,
+  "r": 1
+ },
+ "RACINGSPIRITSPEED": {
+  "n": "Racing Spirit: Speed",
+  "g": 174,
+  "c": 150,
+  "r": 1
+ },
+ "RACINGSPIRITSTAMINA": {
+  "n": "Racing Spirit: Stamina",
+  "g": 174,
+  "c": 150,
+  "r": 1
+ },
+ "RACINGSPIRITPOWER": {
+  "n": "Racing Spirit: Power",
+  "g": 174,
+  "c": 150,
+  "r": 1
+ },
+ "RACINGSPIRITGUTS": {
+  "n": "Racing Spirit: Guts",
+  "g": 174,
+  "c": 150,
+  "r": 1
+ },
+ "RACINGSPIRITWIT": {
+  "n": "Racing Spirit: Wit",
+  "g": 174,
+  "c": 150,
+  "r": 1
+ },
+ "RACINGSPIRITMOOD": {
+  "n": "Racing Spirit: Mood",
+  "g": 174,
+  "c": 150,
+  "r": 1
+ },
+ "WISDOMOFTHESUN": {
+  "n": "Wisdom of the Sun",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUNSBLESSING": {
+  "n": "Sun's Blessing",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "WISDOMOFTHESEA": {
+  "n": "Wisdom of the Sea",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SEASBLESSING": {
+  "n": "Sea's Blessing",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "WISDOMOFTHEEARTH": {
+  "n": "Wisdom of the Earth",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EARTHSBLESSING": {
+  "n": "Earth's Blessing",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UNQUENCHEDTHIRST": {
+  "n": "Unquenched Thirst",
+  "g": 0,
+  "c": 0,
+  "r": 1
+ },
+ "UNCHANGING": {
+  "n": "Unchanging",
+  "g": 0,
+  "c": 0,
+  "r": 2
+ },
+ "TOWARDSTHESCENERYISEEK": {
+  "n": "Towards the Scenery I Seek",
+  "g": 0,
+  "c": 0,
+  "r": 1
+ },
+ "CREEPINGANXIETY": {
+  "n": "Creeping Anxiety",
+  "g": 0,
+  "c": 0,
+  "r": 1
+ },
+ "BLATANTFEAR": {
+  "n": "Blatant Fear",
+  "g": 0,
+  "c": 0,
+  "r": 2
+ },
+ "DREAMRUN": {
+  "n": "Dream Run",
+  "g": 0,
+  "c": 0,
+  "r": 2
+ },
+ "SHOWMEWHATLIESBEYOND": {
+  "n": "Show Me What Lies Beyond!",
+  "g": 0,
+  "c": 0,
+  "r": 1
+ },
+ "HOIYAHAVEAGOODRUN": {
+  "n": "Hoiya! Have a Good Run!",
+  "g": 0,
+  "c": 0,
+  "r": 1
+ },
+ "ASAFRIENDANDRIVAL": {
+  "n": "As a Friend and Rival",
+  "g": 0,
+  "c": 0,
+  "r": 1
+ },
+ "CHEERSOFAFELLOWDREAMER": {
+  "n": "Cheers of a Fellow Dreamer",
+  "g": 0,
+  "c": 0,
+  "r": 2
+ },
+ "CHINUPDERBYUMAMUSUME": {
+  "n": "Chin Up, Derby Umamusume!",
+  "g": 0,
+  "c": 0,
+  "r": 1
+ },
+ "FORTHETEAM": {
+  "n": "For the Team",
+  "g": 0,
+  "c": 0,
+  "r": 2
+ },
+ "RULEROFJAPAN": {
+  "n": "Ruler of Japan",
+  "g": 340,
+  "c": 0,
+  "r": 5
+ },
+ "CARNIVALBONUS": {
+  "n": "Carnival Bonus",
+  "g": 0,
+  "c": 0,
+  "r": 1
+ },
+ "MEDIUMRACEENTHUSIAST": {
+  "n": "Medium Race Enthusiast",
+  "g": 508,
+  "c": 0,
+  "r": 1
+ },
+ "LONGRACEENTHUSIAST": {
+  "n": "Long Race Enthusiast",
+  "g": 508,
+  "c": 0,
+  "r": 1
+ },
+ "MILERACEENTHUSIAST": {
+  "n": "Mile Race Enthusiast",
+  "g": 508,
+  "c": 0,
+  "r": 1
+ },
+ "SPRINTRACEENTHUSIAST": {
+  "n": "Sprint Race Enthusiast",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DIRTRACEENTHUSIAST": {
+  "n": "Dirt Race Enthusiast",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ENERGETICHERO": {
+  "n": "Energetic Hero",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUNNYHERO": {
+  "n": "Sunny Hero",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RAINYHERO": {
+  "n": "Rainy Hero",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "INNERHERO": {
+  "n": "Inner Hero",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "OUTERHERO": {
+  "n": "Outer Hero",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FRIENDLYHERO": {
+  "n": "Friendly Hero",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DASHINGHERO": {
+  "n": "Dashing Hero",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GLUTTONOUSRULER": {
+  "n": "Gluttonous Ruler",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ACCELERATINGTOMYDREAMS": {
+  "n": "Accelerating to My Dreams!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUNSHINENSPIRIT": {
+  "n": "Sunshine 'n' Spirit!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RULEROFSUMMER": {
+  "n": "Ruler of Summer",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "OVERWHELMINGADVANCE": {
+  "n": "Overwhelming Advance",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GUTSIESTINJAPAN": {
+  "n": "Gutsiest in Japan",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FULLYFOCUSED": {
+  "n": "Fully Focused",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "OTHERWORLDLYFRONTRUNNER": {
+  "n": "Otherworldly Front-Runner",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ULTRAMARINEGETAWAY": {
+  "n": "Ultramarine Getaway",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RFAGAAZUL": {
+  "n": "Ráfaga Azul",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TALENTEDTECHNIQUE": {
+  "n": "Talented Technique",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TEIOSTEP": {
+  "n": "Teio Step",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RACINGPRODIGY": {
+  "n": "Racing Prodigy",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TOTHEENDSOFTHEEARTH": {
+  "n": "To the Ends of the Earth",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LETSFLOORITBABY": {
+  "n": "Let's Floor It, Baby!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "REVVEDUPREDHOT": {
+  "n": "Revved Up Red-Hot",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "YOUCANTHANDLEME": {
+  "n": "You Can't Handle Me ☆",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "QUEENOFTHESTAGE": {
+  "n": "Queen of the Stage",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DAZZLINGSTAR": {
+  "n": "Dazzling Star",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ENTERTAINER": {
+  "n": "Entertainer",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "STUNNINGTRICK": {
+  "n": "Stunning Trick",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "KASAMATSUSBOTTOMLESSPIT": {
+  "n": "Kasamatsu's Bottomless Pit",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CORNEREDBYTHEBEAST": {
+  "n": "Cornered by the Beast",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FULLBELLYFULLENERGY": {
+  "n": "Full Belly, Full Energy",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HOLIDAYMIRACLE": {
+  "n": "Holiday Miracle",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HERLORDSHIPSEETHALL": {
+  "n": "Her Lordship Seeth All",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ITSALLGOINDOWNHILLFROMHERE": {
+  "n": "It's All Goin' Downhill from Here!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GOLSHISOUTOFBODYEXPERIENCE": {
+  "n": "Golshi's Out-of-Body Experience",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HAVESOMESQUIDKID": {
+  "n": "Have Some Squid, Kid!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ASWIGOFSTRENGTH": {
+  "n": "A Swig of Strength",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FEETOFFURY": {
+  "n": "Feet of Fury",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CUTTINTHROUGH": {
+  "n": "Cuttin' Through!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "KICKITINTOTOPGEAR": {
+  "n": "Kick It into Top Gear!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PERFECTLYTUNED": {
+  "n": "Perfectly Tuned",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FIRSTPLACEISMINE": {
+  "n": "First Place Is MINE!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ROUGHQUEEN": {
+  "n": "Rough Queen",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DOORTOMYDREAM": {
+  "n": "Door to My Dream",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SHOOTINSTRAIGHTAHEAD": {
+  "n": "Shootin' Straight Ahead!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FRONTIERSPIRIT": {
+  "n": "Frontier Spirit",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TAKINYALLONAWILDRIDE": {
+  "n": "Takin' Y'all on a Wild Ride!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MAYTHEBESTUMAWIN": {
+  "n": "May the Best Uma Win!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "YAMATONADESHIKO": {
+  "n": "Yamato Nadeshiko",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "INDOMITABLESPIRIT": {
+  "n": "Indomitable Spirit",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "COMFORTINGHEAL": {
+  "n": "Comforting Heal",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "THEMAGICOFCOURAGE": {
+  "n": "The Magic of Courage",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CRYOFVICTORY": {
+  "n": "Cry of Victory",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "POROROCAROAR": {
+  "n": "Pororoca Roar",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ENGAGINGENGINE": {
+  "n": "Engaging Engine!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CAKECUTTINTIME": {
+  "n": "Cake-Cuttin' Time!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ASBEFITSAMEJIRO": {
+  "n": "As Befits a Mejiro",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TOPCLASSCOMPOSURE": {
+  "n": "Top-Class Composure",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RIGOROUSREST": {
+  "n": "Rigorous Rest",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ABOVETHECLOUDLINE": {
+  "n": "Above the Cloudline",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CLASSYSUMMER": {
+  "n": "Classy Summer",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ANEARNESTBREATHER": {
+  "n": "An Earnest Breather",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EYESOFTHECONDOR": {
+  "n": "Eyes of the Condor",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PERFORMINGPERFECTO": {
+  "n": "Performing Perfecto!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HEROICFLURRY": {
+  "n": "Heroic Flurry",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RISINGCONDOR": {
+  "n": "Rising Condor",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ENTRANCEOFTHECENTURIALOVERLORD": {
+  "n": "Entrance of the Centurial Overlord!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "THELEADINGACTOR": {
+  "n": "The Leading Actor",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MAESTROOFTHEWALTZ": {
+  "n": "Maestro of the Waltz",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "NEVERABEATLATE": {
+  "n": "Never a Beat Late!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DECISIVESTRIKE": {
+  "n": "Decisive Strike",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "INTHEWOLFSMAW": {
+  "n": "In the Wolf's Maw",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BLAZINGWOLF": {
+  "n": "Blazing Wolf",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RAVENOUSBEAST": {
+  "n": "Ravenous Beast",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EYESOFANEMPEROR": {
+  "n": "Eyes of an Emperor",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UNQUESTIONEDMIGHT": {
+  "n": "Unquestioned Might",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UNWAVERINGEXPRESSION": {
+  "n": "Unwavering Expression",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "AUTUMNGRACE": {
+  "n": "Autumn Grace",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ASTHEEMPRESSWILLS": {
+  "n": "As the Empress Wills",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UNTOUCHABLEBEAUTY": {
+  "n": "Untouchable Beauty",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DIGNIFIEDEMPRESS": {
+  "n": "Dignified Empress",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MOONLIGHTSOMMELIER": {
+  "n": "Moonlight Sommelier",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ULTIMATEUMASIMP": {
+  "n": "Ultimate Uma Simp",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BESTVIEWOFANYONE": {
+  "n": "Best View of Anyone!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RUNLIKETHEFICSDUETOMORROW": {
+  "n": "Run Like the Fic's Due Tomorrow!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BACKFORMOREMOE": {
+  "n": "Back for More Moe!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "QUICKREEL": {
+  "n": "Quick Reel",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BREAKAWAYSCHEME": {
+  "n": "Breakaway Scheme",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RUNIFYOUCAN": {
+  "n": "Run If You Can ♪",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RECORDRUNNER": {
+  "n": "Record Runner",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GONEINAFLASH": {
+  "n": "Gone in a Flash",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PARADISETAIL": {
+  "n": "Paradise Tail",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "APRAYERFOROURPREDECESSORS": {
+  "n": "A Prayer for Our Predecessors",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CMONLETSDOTHIS": {
+  "n": "C'mon, Let's Do This!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ROYALSTAR": {
+  "n": "Royal Star",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HEAVENLYDESCENT": {
+  "n": "Heavenly Descent",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EMBOLDENINGMEMORIES": {
+  "n": "Emboldening Memories",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SPEAROFMORRGAN": {
+  "n": "Spear of Morrígan",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ALLACCORDINGTOPLAN": {
+  "n": "All According to Plan",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "STRATEGICCOOLDOWN": {
+  "n": "Strategic Cooldown",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "VERYIMPORTANTPOSITIONING": {
+  "n": "Very Important Positioning",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SPEEDYSANTA": {
+  "n": "Speedy Santa",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "YOUCOPY": {
+  "n": "You copy?",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ICOPY": {
+  "n": "I copy!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SOFTWHITEWHISPER": {
+  "n": "Soft White Whisper",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BARRELROLL": {
+  "n": "Barrel Roll!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "COFFEEBREAK": {
+  "n": "Coffee Break",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DONTLEAVEME": {
+  "n": "Don't Leave Me...",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "OVERCLOCK": {
+  "n": "Overclock",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "OVERCOMEANYSTRIFE": {
+  "n": "Overcome Any Strife",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MALFUNCTIONMITIGATION": {
+  "n": "Malfunction Mitigation",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PERFECTBOOST": {
+  "n": "Perfect Boost",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LETTHOSEMUSCLESSING": {
+  "n": "Let Those Muscles SING!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BULKUPAWAY": {
+  "n": "Bulk Up & Away!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HELPINGGRANTYOURDREAM": {
+  "n": "Helping Grant Your Dream",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GIVEYOUATASTEOFGLORY": {
+  "n": "Give You a Taste of Glory",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FULLTANK": {
+  "n": "Full Tank!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ALWAYSHUNGRYFORMORE": {
+  "n": "Always Hungry for More!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LIKETHEYDOINTHECITY": {
+  "n": "Like They Do in the City!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SNOWGALSKNOWHOWTASLED": {
+  "n": "Snow Gals Know Howta Sled!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HEROICDETERMINATION": {
+  "n": "Heroic Determination",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DARKASSASSIN": {
+  "n": "Dark Assassin",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ICANDOTHIS": {
+  "n": "I Can Do This!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TRICKANDTREAT": {
+  "n": "Trick and Treat",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "STUBBORNSIS": {
+  "n": "Stubborn Sis",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "WINDGODSWRATH": {
+  "n": "Wind God's Wrath",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PERFECTORDERUP": {
+  "n": "Perfect ♪ Order Up!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SLICKSERVING": {
+  "n": "Slick Serving",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LATENTONE": {
+  "n": "Latent One",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EFFICIENTRESTMETHODOLOGY": {
+  "n": "Efficient Rest Methodology",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DEVILSLAPLACE": {
+  "n": "Devil's Laplace",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BLINDINGLUXON": {
+  "n": "Blinding Luxon",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "QUIETPROMISE": {
+  "n": "Quiet Promise",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SELFDESTRUCTIVECOMET": {
+  "n": "Self-Destructive Comet",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FIREFIGHTERSASCENT": {
+  "n": "Firefighter's Ascent",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EXPERTONTHEDIRT": {
+  "n": "Expert on the Dirt",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FANDANCE": {
+  "n": "Fan Dance",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "STANDOUTSTEP": {
+  "n": "Standout Step",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "NEVEREVERGIVEUP": {
+  "n": "Never Ever Give Up",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "WINNINGROAD": {
+  "n": "Winning Road",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SUPERPOWEREDENGINES": {
+  "n": "Superpowered Engines!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ICANFLY": {
+  "n": "I Can Fly!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UPLIFT": {
+  "n": "Uplift",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LOSEMYSELF": {
+  "n": "Lose Myself",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BLINDINGMAGIA": {
+  "n": "Blinding Magia",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ONMYHONOR": {
+  "n": "On My Honor",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RECIPEFORVICTORY": {
+  "n": "Recipe for Victory",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DARKFLASH": {
+  "n": "Dark Flash",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CUTECHAOS": {
+  "n": "#CuteChaos♪",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GOTYOUDOWNBAD": {
+  "n": "#GotYouDownBad♪",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "THINKOFME": {
+  "n": "#ThinkOfMe",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BEAUTIFULSPRINT": {
+  "n": "#BeautifulSprint",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UNSTOPPABLEPRINCESS": {
+  "n": "Unstoppable Princess",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RISINGROADRAGE": {
+  "n": "Rising Road Rage",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PRISTINEFORESIGHT": {
+  "n": "Pristine Foresight",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "STAROFTHERUNWAY": {
+  "n": "Star of the Runway",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GOLDENFORMATION": {
+  "n": "Golden Formation",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GEAREDTOSTRIKE": {
+  "n": "Geared to Strike",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BAKUSHINSPRINT": {
+  "n": "Bakushin SPRINT!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BAKUSHINLEAD": {
+  "n": "Bakushin LEAD!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FULLCHARGEBAKUSHIIIN": {
+  "n": "Full Charge! BAKUSHIIIN!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BAKUSPEEDBAKUSHIIIIN": {
+  "n": "Baku-speed! BakuSHIIIIN!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "THEWORLDISMYOYSTER": {
+  "n": "The World Is My Oyster",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PEARLESCENTDANCEOFF": {
+  "n": "Pearlescent Danceoff",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "JUSTRUNLIKECRAZY": {
+  "n": "Just Run Like Crazy!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MISCHEVIOUSMAESTRO": {
+  "n": "Mischevious Maestro",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "AFTERSCHOOLMAGICALGIRL": {
+  "n": "After-School Magical Girl",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MAGICCHARM": {
+  "n": "Magic Charm",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SWEETTRANCE": {
+  "n": "Sweet Trance",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MOTHERLYMAESTRO": {
+  "n": "Motherly Maestro",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EXPERTCARETAKER": {
+  "n": "Expert Caretaker",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MUMMYSSWEETWHISPERS": {
+  "n": "Mummy's Sweet Whispers",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UMADOLONSTAGE": {
+  "n": "Umadol★Onstage!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UMADOLCHARTTOPPER": {
+  "n": "Umadol ♪ Chart Topper!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RISINGTOUMADOLSTARDOM": {
+  "n": "Rising to Umadol Stardom!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ALWAYSCENTERSTAGE": {
+  "n": "Always Center Stage!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HALFWAYTOHEROISM": {
+  "n": "Halfway to Heroism",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SHININGSWORD": {
+  "n": "Shining Sword",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LEZZGO": {
+  "n": "Lezzgo!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TRENDSETTER": {
+  "n": "Trendsetter",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ICANTOTESSHAKEEM": {
+  "n": "I Can Totes Shake 'Em!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "IMLITERALLYTHEBEST": {
+  "n": "I'm Literally the Best!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ITSALLORNOTHING": {
+  "n": "It's All or Nothing",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TAKINEACHGAMBLE": {
+  "n": "Takin' Each Gamble",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CUTTINGEDGESENSES": {
+  "n": "Cutting-Edge Senses",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "HEARTOFAHUNTER": {
+  "n": "Heart of a Hunter",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ILLSHOWYOU": {
+  "n": "I'll Show You!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BOLTFROMTHEBRINK": {
+  "n": "Bolt from the Brink",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PETALSINTHEBREEZE": {
+  "n": "Petals in the Breeze",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BLOOMINGRESOLVE": {
+  "n": "Blooming Resolve",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FLOWERGIRLSBLESSING": {
+  "n": "Flower Girl's Blessing",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "VEILINTHESPRINGBREEZE": {
+  "n": "Veil in the Spring Breeze",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ILLKEEPTRYING": {
+  "n": "I'll Keep Trying!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "IWONTLOSE": {
+  "n": "I Won't Lose!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LOOKLOOK": {
+  "n": "Look, Look!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ILLDOMYVERYBEST": {
+  "n": "I'll Do My Very Best!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "PEAKDISCIPLINE": {
+  "n": "Peak Discipline",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "READYFORAREDHOTTECH": {
+  "n": "Ready for a Red-Hot Tech!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "REDHOTTRANSFORMARUNNER": {
+  "n": "Red-Hot Transforma-Runner!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ULTIMATEULTRASPRINT": {
+  "n": "Ultimate Ultra-Sprint!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MARVELOUSTHRILL": {
+  "n": "Marvelous ☆ Thrill",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "MAKETHEWORLDMARVELOUS": {
+  "n": "Make the World Marvelous ☆",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LUCKYSIGN": {
+  "n": "Lucky Sign!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LUCKYNUMBERSEVEN": {
+  "n": "Lucky Number Seven",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CRAZYEXTRAMEGALUCKY": {
+  "n": "Crazy Extra Mega Lucky!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BRINGONTHELUCK": {
+  "n": "Bring On the Luck!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SOARINGSTEPS": {
+  "n": "Soaring Steps",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SPRINGFROMTHEEARTH": {
+  "n": "Spring from the Earth",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RIGHTONTHEDOT": {
+  "n": "Right on the Dot",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "IIMDOINGMYBEST": {
+  "n": "I-I'm Doing My Best!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FORMYRIVAL": {
+  "n": "For My Rival!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SOULGUIDE": {
+  "n": "Soul Guide",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "COLDLOOK": {
+  "n": "Cold Look",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "QUEENOFYODO": {
+  "n": "Queen of Yodo",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "IWANTTOEXPLOREMORE": {
+  "n": "I Want to Explore More!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FIRSTSTEPFROMTHEBRINK": {
+  "n": "First Step from the Brink",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CYNICALCHARM": {
+  "n": "Cynical Charm",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BETHELEAD": {
+  "n": "Be the Lead!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "JUSTGOTTADOWHATICAN": {
+  "n": "Just Gotta Do What I Can",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "KEEPTHECHEERSCOMIN": {
+  "n": "Keep the Cheers Comin'",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SHOCKINGSWEEP": {
+  "n": "Shocking Sweep",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "KINGLYVIEW": {
+  "n": "Kingly View",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ASCENDGLORY": {
+  "n": "Ascend Glory",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SAKURABLOSSOMSINTHEBREEZE": {
+  "n": "Sakura Blossoms in the Breeze",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GOINMYWAY": {
+  "n": "Goin' My Way!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EIEIMUN": {
+  "n": "Ei, Ei, Mun!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "POSITIVESMILE": {
+  "n": "Positive Smile",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TURNINGTHINGSRIGHTAROUND": {
+  "n": "Turning Things Right Around!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "WILDAMIRITE": {
+  "n": "WILD, Amirite?",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BREAKAWAYONLOCK": {
+  "n": "Breakaway on Lock",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LOLIMONFIRE": {
+  "n": "LOL I'm on FIRE!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DWIMONIT": {
+  "n": "DW I'm on It!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "1000OUTPUT": {
+  "n": "1000% Output!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "TURBOSLEADINTHECHARGE": {
+  "n": "Turbo's Leadin' the Charge!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "INDESTRUCTABLE": {
+  "n": "Indestructable",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RONDOTOTHERIGHT": {
+  "n": "Rondo to the Right",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BEYONDMYSTATION": {
+  "n": "Beyond My Station",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "THEDAWNALWAYSCOMES": {
+  "n": "The Dawn Always Comes!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GETTHEFESTIVALGOING": {
+  "n": "Get the Festival Going!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BRIGHTBLAST": {
+  "n": "Bright Blast",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LEAPAHEADTOTHEFUTURE": {
+  "n": "Leap Ahead to the Future",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "INTRODUCINGTHEVICTOR": {
+  "n": "Introducing the Victor!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GOODYEARFORSAKURA": {
+  "n": "Good Year for Sakura!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "THESAKURABLOOMREGALLYTODAY": {
+  "n": "The Sakura Bloom Regally Today",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BLOOMDOWNTHEBRANCH": {
+  "n": "Bloom Down the Branch",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "IDONTWANNALOSE": {
+  "n": "I Don't Wanna Lose!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "UNYIELDINGASTER": {
+  "n": "Unyielding Aster",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ARABESQUEOFTHEBRIGHTESTSTAR": {
+  "n": "Arabesque of the Brightest Star",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ETERNALLIGHT": {
+  "n": "Eternal Light",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GIVETHISMOMENTEVERYTHING": {
+  "n": "Give This Moment Everything",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ELEGANTPHOSPHORESCENCE": {
+  "n": "Elegant Phosphorescence",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "FLEETINGAFTERGLOW": {
+  "n": "Fleeting Afterglow",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "GROWINGFLAME": {
+  "n": "Growing Flame",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "YAENOSFIGHTINGSPIRIT": {
+  "n": "Yaeno's Fighting Spirit",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LADYLIKERESOLVE": {
+  "n": "Ladylike Resolve",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "IMMOVABLEASAMOUNTAIN": {
+  "n": "Immovable as a Mountain",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "OPENALLTHEBUDS": {
+  "n": "Open All the Buds",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BLOSSOMFORUS": {
+  "n": "Blossom for Us!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SHEARINGGUST": {
+  "n": "Shearing Gust",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ASNATUREWILLS": {
+  "n": "As Nature Wills",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "SIMPLEANDSTURDY": {
+  "n": "Simple and Sturdy",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "IMPOSINGINNOVATION": {
+  "n": "Imposing Innovation",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "THESTORMCALLEROFDESTRUCTION": {
+  "n": "The Stormcaller of Destruction",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "INTOXICATETHEWORLD": {
+  "n": "Intoxicate the World",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "EVERGRACEFUL": {
+  "n": "Ever Graceful",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ALWAYSTHEMOSTBRILLIANT": {
+  "n": "Always the Most Brilliant",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RAISETHEPITCH": {
+  "n": "Raise the Pitch",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LEAVEAFOOTPRINTINYOURMEMORY": {
+  "n": "Leave a Footprint in Your Memory",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LUCKYRICKEY": {
+  "n": "Lucky Rickey!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "LONGMAIPULSE": {
+  "n": "Longmai Pulse",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "THINKINABOUTTOMAKOMAIFOOD": {
+  "n": "Thinkin' About Tomakomai Food",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BEAGOODAMBASSADOR": {
+  "n": "Be a Good Ambassador!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ADOSEOFAMBITION": {
+  "n": "A Dose of Ambition",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "DIVINEONTHEDIRT": {
+  "n": "Divine on the Dirt",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "ACEDIT": {
+  "n": "Aced It!",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "RUNNINTHERACESOLO": {
+  "n": "Runnin' the Race Solo",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "BEYONDTHESTARSWITHYOU": {
+  "n": "Beyond the Stars with You",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "CROSSTHESEAOFSTARS": {
+  "n": "Cross the Sea of Stars",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "NOPRESSURENORUSH": {
+  "n": "No Pressure, No Rush",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ },
+ "COLLECTALLTHELITTLEMIRACLES": {
+  "n": "Collect All the Little Miracles",
+  "g": 0,
+  "c": 0,
+  "r": 0
+ }
+}

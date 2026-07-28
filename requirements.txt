@@ -1,0 +1,6 @@
+flask>=3.0
+opencv-python==4.11.0.86
+numpy==1.26.4
+rapidfuzz>=3.0
+paddlepaddle==2.6.2
+paddleocr==2.10.0
