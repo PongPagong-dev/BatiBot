@@ -4,8 +4,10 @@ import time
 
 from flask import Flask, jsonify, request
 
+from .bot import VERSION
+
 PAGE = """<!doctype html>
-<html><head><meta charset="utf-8"><title>BatiBot</title>
+<html><head><meta charset="utf-8"><title>BatiBot v__VERSION__</title>
 <style>
  :root{--bg:#131316;--card:#1c1c20;--line:#2a2a30;--ink:#e8e8ea;--mut:#9a9a9e;--dim:#6b6b70;--blue:#2f7fd0;--green:#34c98a;--red:#d8455a}
  *{box-sizing:border-box}
@@ -141,7 +143,7 @@ PAGE = """<!doctype html>
 <div class="actions" style="justify-content:center">
  <button class="ghost" id="savebtn" onclick="saveClicked()">Save settings</button>
 </div>
-<div class="foot">BatiBot &middot; set Training Focus / Agenda / Prioritized Skills in the game once &mdash; the bot only presses Start</div>
+<div class="foot">BatiBot v__VERSION__ &middot; set Training Focus / Agenda / Prioritized Skills in the game once &mdash; the bot only presses Start</div>
 
 </div>
 <script>
@@ -348,7 +350,9 @@ def make_app(get_bot, start_bot, stop_bot, settings, save_settings, logbuf):
 
     @app.get("/")
     def index():
-        return PAGE
+        # the version is stamped in from the code, so the page can never
+        # claim a version the running bot is not actually on
+        return PAGE.replace("__VERSION__", VERSION)
 
     @app.get("/api/status")
     def status():
