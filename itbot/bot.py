@@ -69,12 +69,18 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.72"
+VERSION = "0.73"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
 FREEZE_SECONDS = 240
 FREEZE_RELAUNCH_WAIT = 90
+
+# Longest single nap while training runs. The bot takes no screenshots while
+# it sleeps, so a frozen game can only be spotted when it wakes: napping in
+# quarter-hour pieces means a freeze is caught within ~15 minutes instead of
+# at the end of the whole 45-50 minute session.
+SLEEP_CHUNK = 900
 
 # buttons the generic clicker may press
 ALLOW_BUTTONS = ["NEXT", "CLOSE", "CONFIRM", "OK", "TO HOME", "START CAREER!", "START CAREER"]
@@ -632,8 +638,10 @@ class ItBot:
             if m:
                 secs = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
                 if 60 <= secs <= 4 * 3600:
-                    self.log(f"[BOT] training on the watch screen, {secs}s left - sleeping")
-                    self._sleep(min(secs + 30, 3000))
+                    nap = min(secs + 30, SLEEP_CHUNK)
+                    self.log(f"[BOT] training on the watch screen, {secs}s left "
+                             f"- sleeping {nap}s")
+                    self._sleep(nap)
                     return
             taps = getattr(self, "_watch_menu_taps", 0) + 1
             self._watch_menu_taps = taps
@@ -1045,9 +1053,11 @@ class ItBot:
         if m:
             remaining = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
             if 0 <= remaining <= 3600:
-                self.log(f"[BOT] training, {remaining}s left ('{timer_txt.strip()}') - sleeping")
+                nap = min(remaining + 75, SLEEP_CHUNK)
+                self.log(f"[BOT] training, {remaining}s left "
+                         f"('{timer_txt.strip()}') - sleeping {nap}s")
                 self.adb.tap(*POPUP_CANCEL, "Cancel")
-                self._sleep(min(remaining + 75, 3300))
+                self._sleep(nap)
                 return
         self.log(f"[BOT] couldn't read timer ('{timer_txt.strip()}') - retry in 2 min")
         self.adb.tap(*POPUP_CANCEL, "Cancel")
