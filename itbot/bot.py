@@ -14,6 +14,7 @@ Loop per career:
   keeps the starrier set) -> results -> To Home -> next career.
 """
 import json
+import os
 import re
 import time
 import threading
@@ -64,6 +65,16 @@ CAROUSEL_LEFT = (57, 150)    # spark set carousel arrows
 CAROUSEL_RIGHT = (663, 150)
 
 TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
+
+# Printed at startup so the log always says which code is actually running.
+# (01/08: a fix looked broken for 5 hours because the bot had never been
+# restarted after the deploy - the log gave no way to tell.)
+VERSION = "0.72"
+
+# how long the picture may stay completely unchanged before we treat the
+# game as hung, and how long we wait after relaunching it
+FREEZE_SECONDS = 240
+FREEZE_RELAUNCH_WAIT = 90
 
 # buttons the generic clicker may press
 ALLOW_BUTTONS = ["NEXT", "CLOSE", "CONFIRM", "OK", "TO HOME", "START CAREER!", "START CAREER"]
@@ -189,24 +200,29 @@ class ItBot:
                 if lp:
                     labels.append((lp[0], lp[1], key))
             if len(labels) >= 3:
-                # the five stats are one horizontal row: take the numbers on
-                # that row and assign them in LEFT-TO-RIGHT order. Pairing by
-                # x-distance failed because each value sits next to its rank
-                # icon, not centred under its label (history showed only
-                # 'wit' for whole careers).
+                # the five stats sit in one horizontal row. Align labels and
+                # numbers BY ORDER (both sorted left to right) with a two
+                # pointer walk - distance matching kept mis-assigning when a
+                # value OCR'd slightly off centre (30/07: only 'wit' landed).
                 row_y = sorted(l[1] for l in labels)[len(labels) // 2]
                 on_row = sorted((cx, v) for v, cx, cy in nums
-                                if -30 <= (cy - row_y) <= 110)
+                                if -45 <= (cy - row_y) <= 140)
                 labels.sort()
                 if len(on_row) == len(labels):
                     for (_lx, _ly, key), (_cx, v) in zip(labels, on_row):
                         stats[key] = int(v)
-                else:                       # fall back to nearest-number pairing
-                    for lx, ly, key in labels:
-                        cand = [(abs(cx - lx) + abs(cy - ly) * 0.6, v) for v, cx, cy in nums
-                                if abs(cx - lx) <= 95 and -25 <= (cy - ly) <= 95]
-                        if cand and key not in stats:
-                            stats[key] = int(min(cand)[1])
+                else:
+                    i = 0
+                    for lx, _ly, key in labels:
+                        while i < len(on_row) and on_row[i][0] < lx - 90:
+                            i += 1          # this number belongs further left
+                        if i < len(on_row) and abs(on_row[i][0] - lx) <= 90:
+                            stats[key] = int(on_row[i][1])
+                            i += 1
+                if len(stats) < 5:
+                    self.log(f"[CAREER END] {len(stats)} of 5 stats read. "
+                             f"labels: {[(k, int(lx)) for lx, _l, k in labels]} "
+                             f"numbers: {[(int(c), v) for c, v in on_row]}")
             if stats:
                 self._stats = stats
             m = re.search(r"RACES\D{0,4}(\d+)\D{1,8}WINS\D{0,4}(\d+)", txt)
@@ -216,6 +232,8 @@ class ItBot:
             if m:
                 self._fans = int(m.group(1).replace(",", ""))
             if stats or getattr(self, "_fans", 0):
+                self._shot("career_end", note=f"stats {stats} fans {getattr(self, '_fans', 0)} "
+                                              f"grade {getattr(self, '_grade', '?')}")
                 self.log(f"[CAREER END] stats {stats} fans {getattr(self, '_fans', 0)} "
                          f"races {getattr(self, '_races', 0)}/{getattr(self, '_wins', 0)} wins "
                          f"grade {getattr(self, '_grade', '?')}")
@@ -248,6 +266,82 @@ class ItBot:
                 json.dump(hist, f, ensure_ascii=False, indent=1)
         except Exception as e:
             self.log(f"[BOT] history write failed: {e}")
+
+    def _game_package(self):
+        """The game's package name, looked up once from the device."""
+        if hasattr(self, "_pkg"):
+            return self._pkg
+        self._pkg = None
+        try:
+            out = self.adb._run(["shell", "pm", "list", "packages"], timeout=20) or ""
+            for line in out.splitlines():
+                p = line.strip().replace("package:", "")
+                if "umamusume" in p.lower() or "uma_gl" in p.lower():
+                    self._pkg = p
+                    self.log(f"[BOT] game package: {p}")
+                    break
+        except Exception:
+            pass
+        return self._pkg
+
+    def _launch_game(self):
+        """Start the game directly. More reliable than tapping the icon, and
+        it works even when the launcher is on another display."""
+        pkg = self._game_package()
+        if not pkg:
+            return False
+        try:
+            self.adb._run(["shell", "monkey", "-p", pkg,
+                           "-c", "android.intent.category.LAUNCHER", "1"], timeout=25)
+            self.log(f"[BOT] launched {pkg}")
+            return True
+        except Exception as e:
+            self.log(f"[BOT] could not launch the game: {e}")
+            return False
+
+    def _recover_frozen_game(self, img, txt):
+        """The picture stopped changing: close the game and start it again.
+        Three restarts inside half an hour means it is not going to recover,
+        so stop rather than burn the day."""
+        now = time.time()
+        n = getattr(self, "_freeze_restarts", 0) + 1
+        if now - getattr(self, "_last_freeze_restart", 0) > 1800:
+            n = 1                       # a calm half hour: start counting again
+        self._freeze_restarts = n
+        self._last_freeze_restart = now
+        self.log(f"[RECOVER] the screen has not changed for "
+                 f"{FREEZE_SECONDS//60} minutes - the game looks frozen "
+                 f"(restart {n} of 3); screen: {txt[:100]}")
+        self._shot("frozen", img, note=txt[:160])
+        pkg = self._game_package()
+        if n > 3 or not pkg:
+            if not pkg:
+                self.log("[RECOVER] cannot find the game package - stopping")
+            else:
+                self.log("[RECOVER] restarting did not help - stopping the bot")
+            self._stop.set()
+            return
+        try:
+            self.adb._run(["shell", "am", "force-stop", pkg], timeout=25)
+            self.log(f"[RECOVER] closed {pkg}")
+        except Exception as e:
+            self.log(f"[RECOVER] could not close the game: {e}")
+        time.sleep(3)
+        self._launch_game()
+        self._frozen_txt = None
+        self._frozen_since = time.time()
+        self.adb.repeat_taps = 0
+        self._sleep(FREEZE_RELAUNCH_WAIT)   # splash + title screen
+
+    def _game_running(self):
+        pkg = self._game_package()
+        if not pkg:
+            return None
+        try:
+            out = self.adb._run(["shell", "pidof", pkg], timeout=15) or ""
+            return bool(out.strip())
+        except Exception:
+            return None
 
     def _pick_game_display(self, reason=""):
         """Capture each display and keep the one that is NOT the emulator
@@ -290,6 +384,7 @@ class ItBot:
         self._kept_sparks = ""
         self._borrow_retry_done = False
         self._budget = None
+        self._cheapest_seen = 0
         self._skill_rounds = 0
         self._reroll_attempts = 0
         self._reroll_popup_taps = 0
@@ -310,7 +405,7 @@ class ItBot:
 
     # ---- main loop -------------------------------------------------------
     def _run(self):
-        self.log("[BOT] starting")
+        self.log(f"[BOT] BatiBot v{VERSION} starting")
         self.state = "connecting"
         if not self.adb.connect():
             self.log("[BOT] cannot connect to emulator - check ADB address in settings")
@@ -354,6 +449,19 @@ class ItBot:
         boxes = ocr_boxes(img)
         txt = _all_text(boxes)
 
+        # ---- watchdog: a hung game keeps its process alive, so the crash
+        # guard (pidof) is happy while nothing on screen ever changes. On the
+        # 01/08 run the watch screen read "0:48:43 LEFT" for five and a half
+        # hours. If the text does not change at all, restart the game.
+        now = time.time()
+        if txt and txt == getattr(self, "_frozen_txt", None):
+            if now - getattr(self, "_frozen_since", now) > FREEZE_SECONDS:
+                self._recover_frozen_game(img, txt)
+                return
+        else:
+            self._frozen_txt = txt
+            self._frozen_since = now
+
         # ---- watchdog: the same tap over and over means something invisible
         # is blocking us (e.g. a dialog we do not know). 23:00 run pressed
         # "Start Career" 350+ times over 90 minutes. Escape instead.
@@ -362,6 +470,7 @@ class ItBot:
             esc = [(360, 835), (360, 1180), (60, 1180), (517, 833), NEUTRAL_TAP]
             p = esc[(rep // 8 - 1) % len(esc)]
             self.log(f"[STUCK] same tap x{rep} - escape tap {p}; screen: {txt[:120]}")
+            self._shot("STUCK", img, note=f"tap x{rep}; screen: {txt[:160]}")
             try:
                 cv2.imwrite("logs/stuck_screen.png", img)
             except Exception:
@@ -383,6 +492,9 @@ class ItBot:
             self._launch_tries = tries
             if self._pick_game_display("launcher visible - checking the other displays"):
                 return          # found the game on another display
+            if self._launch_game():
+                time.sleep(25)          # splash + title take a while
+                return
             p = _find(boxes, "Umamusume", 78)
             if p:
                 self.log("[BOT] game is not running - launching Umamusume")
@@ -474,6 +586,7 @@ class ItBot:
                     if n > 0:
                         self.log(f"[AGENDA] verified - {n} races scheduled")
                     else:
+                        self._shot("agenda_zero", img, note="Scheduled read as 0")
                         self.log("[AGENDA] 0 races scheduled - retrying the load once")
                         self._agenda_done = False
                         return
@@ -511,9 +624,25 @@ class ItBot:
             time.sleep(4)
             return
         if "TIME LEFT" in txt and "DELETE DATA" not in txt and "MENU" not in txt:
-            # watch view (running trainee + timer, burger menu bottom right)
+            # watch view: the timer is right there, so just sleep on it. The
+            # old code tapped the burger Menu hoping for "To Home" - on the
+            # 31/07 run that tap never landed and it looped for 9 minutes.
             self._set_state("watch view")
-            self.adb.tap(645, 1230, "watch Menu")
+            m = TIMER_RE.search(txt)
+            if m:
+                secs = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
+                if 60 <= secs <= 4 * 3600:
+                    self.log(f"[BOT] training on the watch screen, {secs}s left - sleeping")
+                    self._sleep(min(secs + 30, 3000))
+                    return
+            taps = getattr(self, "_watch_menu_taps", 0) + 1
+            self._watch_menu_taps = taps
+            if taps <= 3:
+                self.adb.tap(645, 1230, "watch Menu")
+            else:
+                self.log("[BOT] cannot leave the watch screen - pressing Back")
+                self.adb.tap(60, 1180, "Back (watch screen)")
+                self._watch_menu_taps = 0
             time.sleep(2.5)
             return
 
@@ -542,6 +671,7 @@ class ItBot:
                 rows = self._scan_spark_set(img, boxes)
                 sb, bb, db = self._score_spark_set(rows)
                 self._spark_b = (sb, db)
+                self._shot("sparks_rerolled", note=f"blue={bb}* score={sb:.0f} :: {db}")
                 self.log(f"[SPARKS] rerolled set: blue={bb}* score={sb:.0f} ({db or 'nothing scored'})")
             self.adb.tap(360, 1178, "Sparks Rerolled - Next")
             time.sleep(2.5)
@@ -628,6 +758,7 @@ class ItBot:
                     sa, ba, da = self._score_spark_set(full)
                     self._spark_a = (sa, da)
                     self._blue_a = ba
+                    self._shot("sparks_original", note=f"blue={ba}* score={sa:.0f} :: {da}")
                     self.log(f"[SPARKS] original set: blue={ba}* score={sa:.0f} ({da or 'nothing scored'})")
                 # judge on the WHOLE set, not just the rows that happen to be
                 # visible - the blue spark can be scrolled out of view
@@ -647,6 +778,7 @@ class ItBot:
             else:
                 if want:
                     self.log("[SPARKS] reroll didn't take - confirming original set (debug shot saved)")
+                    self._shot("reroll_gave_up", img)
                     try:
                         cv2.imwrite("logs/sparks_noreroll.png", img)
                     except Exception:
@@ -682,10 +814,17 @@ class ItBot:
             # buy round left >=60 SP on the table, go back in (max 3 rounds).
             m = re.search(r"SKILL\s*PTS\D{0,3}(\d{2,5})", txt)
             leftover = int(m.group(1)) if m else None
-            if (self._skills_done and leftover is not None and leftover >= 60
+            # a round costs ~4 minutes, so only go back in if the leftover can
+            # actually buy something: use the cheapest price the last scan saw
+            floor = max(60, getattr(self, "_cheapest_seen", 0) or 60)
+            if (self._skills_done and leftover is not None and leftover >= floor
                     and getattr(self, "_skill_rounds", 0) < 3):
-                self.log(f"[BOT] {leftover} SP still unspent - opening skills again (round {self._skill_rounds + 1}/3)")
+                self.log(f"[BOT] {leftover} SP still unspent (cheapest seen {floor}) "
+                         f"- opening skills again (round {self._skill_rounds + 1}/3)")
                 self._skills_done = False
+            elif self._skills_done and leftover is not None and 0 < leftover < floor:
+                self.log(f"[BOT] {leftover} SP left, cheapest skill seen costs {floor} "
+                         f"- nothing worth buying, completing the career")
             if not self._skills_done and (self.s.get("skills", []) or self.s.get("spend_all_sp", True) or self.s.get("smart_skills", True)):
                 p = _find(boxes, "Skill Pts", 80, y_min=700)
                 if p:
@@ -709,6 +848,9 @@ class ItBot:
             self._tap_text(boxes, "To Home")
             self.careers_done += 1
             self.log(f"[BOT] === career #{self.careers_done} complete ===")
+            self._shot("career_complete", img,
+                       note=f"#{self.careers_done} {getattr(self, '_trainee', '')} "
+                            f"rating {getattr(self, '_rating', 0)} grade {getattr(self, '_grade', '?')}")
             self._add_history()
             self._new_career_flags()
             maxc = int(self.s.get("max_careers", 0) or 0)
@@ -835,8 +977,21 @@ class ItBot:
 
         # nothing recognized: neutral tap advances splash screens (rank, CARE COMPLETE...)
         self._set_state("unknown screen")
+        # crash guard: if we have been staring at something unrecognisable for
+        # a while, check whether the game is still running at all and restart
+        # it if not (31/07: the game died mid-session while the bot tapped on)
+        if self._same_state_count and self._same_state_count % 12 == 0:
+            alive = self._game_running()
+            if alive is False:
+                self.log("[BOT] the game is not running any more - restarting it")
+                self._shot("game_crashed", img, note=txt[:160])
+                if self._launch_game():
+                    time.sleep(30)
+                    return
         if self._same_state_count in (3, 8):
             self.log(f"[BOT] unknown screen x{self._same_state_count}, text: {txt[:150]}")
+            if self._same_state_count == 3:
+                self._shot("unknown_screen", img, note=txt[:200])
         if not txt.strip():
             # OCR sees NOTHING - either a loading/black frame or we're
             # capturing the wrong display. Never tap blind on an empty
@@ -943,6 +1098,8 @@ class ItBot:
             self.log(f"[BORROW] '{want}' still not found after the retry "
                      f"(closest OCR: '{self._borrow_best[0]}' {self._borrow_best[1]:.0f}) - taking first card")
         self._scroll_list_to_top(self.BAR_BORROW, 300, 1000, tag="BORROW")
+        self._shot("borrow_fallback", note=f"wanted '{want}', closest OCR "
+                                          f"'{self._borrow_best[0]}' {self._borrow_best[1]:.0f}")
         self.adb.tap(360, 300, "first borrow card (fallback)")
         self._borrow_done = True
         time.sleep(2.5)
@@ -1247,8 +1404,11 @@ class ItBot:
         When the emulator runs above 720p the band is cropped from the
         NATIVE frame instead, so the text OCRs at full sharpness, and the
         boxes are scaled back down."""
+        # native-resolution OCR (v0.48) cost 2.25x the pixels at 1080p for no
+        # measured accuracy gain - 720 is what every row threshold was tuned
+        # on. Set BATIBOT_NATIVE_OCR=1 to try the sharp path again.
         nat, sx, sy = self.adb.native, self.adb.sx, self.adb.sy
-        if nat is not None and sy > 1.05:
+        if nat is not None and sy > 1.05 and os.environ.get("BATIBOT_NATIVE_OCR"):
             crop = nat[int(420 * sy):int(1030 * sy)]
             return [(t, cx / sx, cy / sy + 420, x1 / sx, y1 / sy + 420,
                      x2 / sx, y2 / sy + 420)
@@ -1442,6 +1602,36 @@ class ItBot:
                 name = max(cands, key=lambda c: ccy - c[1])[0]
                 rows.append((name, cost, 650, ccy))
         return rows
+
+    def _shot(self, name, im=None, note=""):
+        """Save a debug screenshot + a note, when debug_shots is enabled
+        (off by default - only Bon's install turns it on). Keeps the last
+        80 files so it cannot fill the disk."""
+        if not self.s.get("debug_shots"):
+            return
+        try:
+            import glob
+            import os
+            d = os.path.join("logs", "shots")
+            os.makedirs(d, exist_ok=True)
+            if im is None:
+                im = self.adb.screenshot()
+            if im is None:
+                return
+            stamp = time.strftime("%H%M%S")
+            path = os.path.join(d, f"{stamp}_{name}.png")
+            cv2.imwrite(path, im)
+            if note:
+                with open(os.path.join(d, "notes.txt"), "a", encoding="utf-8") as f:
+                    f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {name}: {note}\n")
+            files = sorted(glob.glob(os.path.join(d, "*.png")))
+            for old_file in files[:-200]:
+                try:
+                    os.remove(old_file)
+                except Exception:
+                    pass
+        except Exception as e:
+            self.log(f"[SHOT] could not save {name}: {e}")
 
     def _invalidate_budget(self):
         self._budget = None
@@ -1663,6 +1853,10 @@ class ItBot:
             if before != len(entries):
                 self.log(f"[BOT] smart skills: {before - len(entries)} blocked skill(s) excluded")
         self.log(f"[BOT] smart skills: scanned {len(entries)} skills with prices")
+        self._shot("skills_scan", note=f"{len(entries)} rows: " +
+                   "; ".join(f"{n}={c}" for n, c in entries[:14]))
+        if entries:
+            self._cheapest_seen = min(c for _n, c in entries)
         self.log("[BOT] scan saw: " + "; ".join(f"{n}={c}" for n, c in entries))
 
         # --- compute basket --------------------------------------------------
@@ -1765,10 +1959,18 @@ class ItBot:
                 buy_same = 0
             prev_buy_h = h
         self.log(f"[BOT] smart buy pass done - tapped {len(tapped_names)} rows")
+        if not tapped_names:
+            self._shot("buy_pass_empty", note=f"chose {len(chosen)} skills but tapped none")
 
         # second pass for anything chosen but not yet tapped
         missing = [cn for cn in chosen_names
                    if not any(fuzz.ratio(cn, p) >= 90 for p in tapped_names)]
+        # skills the scan never saw are not in this uma's pool - re-sweeping
+        # for them costs ~75s and finds nothing (30/07 log: round 2 second
+        # pass tapped 0 rows). Only chase things the scan actually saw.
+        seen_names = [e[0] for e in entries]
+        missing = [cn for cn in missing
+                   if any(fuzz.ratio(cn, sn) >= 88 for sn in seen_names)]
         if missing:
             self.log(f"[BOT] {len(missing)} chosen skill(s) missed - second pass for: "
                      + ", ".join(missing[:5]))

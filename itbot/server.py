@@ -40,7 +40,8 @@ PAGE = """<!doctype html>
  .actions{display:flex;gap:8px;margin-top:14px}
  .ghost{background:transparent;border:1px solid var(--line);color:#b8b8bd;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer}
  .histsum{font-size:12px;color:var(--mut);padding:8px 0 10px}
- .histwrap{overflow-x:auto}
+ .histwrap{overflow-x:auto;overflow-y:auto;max-height:470px}
+ table.hist thead th{position:sticky;top:0;background:var(--card);z-index:1}
  table.hist{width:100%;border-collapse:collapse;font-size:12.5px}
  table.hist th{text-align:left;font-weight:600;color:var(--mut);font-size:11px;
    text-transform:uppercase;letter-spacing:.4px;padding:0 8px 6px 0;white-space:nowrap}
@@ -318,7 +319,8 @@ async function loadHistory(){
   document.getElementById('history').innerHTML = `
    <div class="histsum">${h.length} career${h.length>1?'s':''}
      &middot; ${totalFans.toLocaleString()} fans total
-     &middot; best rating ${best?best.toLocaleString():'-'}</div>
+     &middot; best rating ${best?best.toLocaleString():'-'}
+     ${h.length>10?'&middot; newest first, scroll for older':''}</div>
    <div class="histwrap"><table class="hist">
     <thead><tr><th>#</th><th>Trainee / sparks kept</th><th>Grade</th>
       <th>SPD / STA / POW / GUT / WIT</th><th>Wins</th><th>Fans</th><th>Finished</th></tr></thead>

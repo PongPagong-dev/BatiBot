@@ -22,6 +22,7 @@ DEFAULTS = {
     "recover_tp": False,
     "recover_tp_carats_only": False,
     "it_focus": "",
+    "debug_shots": False,   # save screenshots of what the bot reads (logs/shots)
     "max_careers": 0,
     "borrow_sweeps": 6,
 }
