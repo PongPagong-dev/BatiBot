@@ -189,7 +189,12 @@ class Adb:
                 self.repeat_taps = 0
                 self._last_tap = key
             if desc:
-                self.log(f"[TAP] ({int(x)},{int(y)}) {desc}")
+                # how long the bot spent between this tap and the last one,
+                # so a slow session can be read straight off the log
+                now = time.time()
+                gap = now - getattr(self, "_last_tap_t", now)
+                self._last_tap_t = now
+                self.log(f"[TAP] ({int(x)},{int(y)}) {desc} +{gap:.1f}s")
             time.sleep(0.25)
         except Exception as e:
             self.log(f"[ADB] tap error: {e}")

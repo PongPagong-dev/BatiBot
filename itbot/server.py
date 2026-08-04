@@ -235,7 +235,11 @@ async function refresh(){
   const lg=document.getElementById('log'); const atBottom=lg.scrollTop+lg.clientHeight>=lg.scrollHeight-30;
   lg.textContent=d.log.join('\\n'); if(atBottom) lg.scrollTop=lg.scrollHeight;
   const lines=d.log||[];
-  document.getElementById('tickertext').textContent = lines.length? lines[lines.length-1] : 'no activity yet';
+  // the ticker shows what the bot is DOING - skip the per-frame [STEP]
+  // timing lines, they would otherwise hide every real message
+  let show='no activity yet';
+  for(let i=lines.length-1;i>=0;i--){ if(lines[i].indexOf('[STEP]')<0){ show=lines[i]; break; } }
+  document.getElementById('tickertext').textContent = show;
   const mini=document.getElementById('mini');
   const last8=lines.slice(-8);
   mini.innerHTML = last8.map((l,i)=>`<div${i===last8.length-1?' style="color:#d6dde5"':''}>${l.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div>`).join('');

@@ -69,7 +69,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.73"
+VERSION = "0.74"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -172,6 +172,35 @@ class ItBot:
             self._same_state_count = 0
             self._last_state = st
         self.state = st
+
+    # ---- step timing -----------------------------------------------------
+    # Every named step logs how long it took, and the times are added up per
+    # career, so "why is it slow" can be answered from the log alone.
+    def _mark(self, name, bucket=None):
+        """Close off the step that was running and start timing a new one."""
+        now = time.time()
+        prev = getattr(self, "_mark_name", None)
+        if prev:
+            secs = now - getattr(self, "_mark_t", now)
+            self.log(f"[TIME] {prev} took {secs:.0f}s")
+            b = getattr(self, "_mark_bucket", None)
+            if b:
+                self._career_time[b] = self._career_time.get(b, 0.0) + secs
+        self._mark_name = name
+        self._mark_bucket = bucket
+        self._mark_t = now
+
+    def _career_time_summary(self):
+        """One line per career: where the time actually went."""
+        self._mark(None)                     # close the step still running
+        t = self._career_time
+        total = time.time() - getattr(self, "_career_started", time.time())
+        parts = " ".join(f"{k} {v/60:.1f}" for k, v in sorted(
+            t.items(), key=lambda kv: -kv[1]) if v >= 30)
+        self.log(f"[TIME] career took {total/60:.1f}min "
+                 f"(minutes: {parts or 'n/a'})")
+        self._career_time = {}
+        self._career_started = time.time()
 
     def _sleep(self, seconds):
         """Interruptible sleep."""
@@ -381,6 +410,9 @@ class ItBot:
         return False
 
     def _new_career_flags(self):
+        if not hasattr(self, "_career_time"):
+            self._career_time = {}
+            self._career_started = time.time()
         self._trainee = ""
         self._rating = 0
         self._stats = {}
@@ -448,12 +480,22 @@ class ItBot:
         self.log("[BOT] stopped")
 
     def _tick(self):
+        t0 = time.time()
         img = self.adb.screenshot()
+        t1 = time.time()
         if img is None:
             time.sleep(4)
             return
         boxes = ocr_boxes(img)
+        t2 = time.time()
         txt = _all_text(boxes)
+        # one line per look at the screen: the gap since the last look, and
+        # how much of it was the emulator (shot) versus reading it (ocr)
+        self._ticks = getattr(self, "_ticks", 0) + 1
+        gap = t0 - getattr(self, "_tick_t", t0)
+        self._tick_t = t0
+        self.log(f"[STEP] #{self._ticks} +{gap:.1f}s "
+                 f"(shot {t1 - t0:.1f}s ocr {t2 - t1:.1f}s) {self.state}")
 
         # ---- watchdog: a hung game keeps its process alive, so the crash
         # guard (pidof) is happy while nothing on screen ever changes. On the
@@ -617,6 +659,7 @@ class ItBot:
                 self.adb.tap(*IT_START, "Start! (retry)")
                 time.sleep(6)
             self._session_started = True
+            self._mark("training", "training")
             self.log("[BOT] IT session started - first status check in 4 min")
             self._sleep(240)
             return
@@ -842,6 +885,7 @@ class ItBot:
                     return
                 self.log("[BOT] couldn't find Skill Pts button - completing without skill buys")
                 self._skills_done = True
+            self._mark("sparks + rewards", "sparks")
             p = _find(boxes, "Complete Career", 82, y_min=700)
             if p:
                 self.adb.tap(*p, "Complete Career!")
@@ -856,6 +900,8 @@ class ItBot:
             self._tap_text(boxes, "To Home")
             self.careers_done += 1
             self.log(f"[BOT] === career #{self.careers_done} complete ===")
+            self._career_time_summary()
+            self._mark("next career setup", "setup")
             self._shot("career_complete", img,
                        note=f"#{self.careers_done} {getattr(self, '_trainee', '')} "
                             f"rating {getattr(self, '_rating', 0)} grade {getattr(self, '_grade', '?')}")
@@ -1044,6 +1090,7 @@ class ItBot:
         orange = self._orange_pixels(left)
         left_txt = " ".join(b[0] for b in boxes if 675 <= b[2] <= 775 and b[1] < 350).upper()
         if "COMPLETE" in left_txt or orange > 400:
+            self._mark("career-end screens", "menus")
             self.log(f"[BOT] TRAINING COMPLETE (orange={orange}) - entering career completion")
             self.adb.tap(*POPUP_CAREER, "Career")
             time.sleep(5)
@@ -1804,6 +1851,8 @@ class ItBot:
             self.log("[BOT] smart skills: could not read SP budget - falling back to simple sweep")
             return False
         self._budget = budget
+        self._mark(f"skill scan (round {getattr(self, '_skill_rounds', 0) + 1})",
+                   "skills")
         self.log(f"[BOT] smart skills: SP budget {budget}")
 
         # --- scan sweep: names + displayed costs ----------------------------
@@ -1862,6 +1911,7 @@ class ItBot:
                        if not any(fuzz.ratio(tu, b) >= 88 or b in tu for b in blocked)]
             if before != len(entries):
                 self.log(f"[BOT] smart skills: {before - len(entries)} blocked skill(s) excluded")
+        self._mark("skill choosing", "skills")
         self.log(f"[BOT] smart skills: scanned {len(entries)} skills with prices")
         self._shot("skills_scan", note=f"{len(entries)} rows: " +
                    "; ".join(f"{n}={c}" for n, c in entries[:14]))
@@ -1917,6 +1967,7 @@ class ItBot:
                 chosen.append((text_u, cost))
                 remaining -= cost
                 exp_rating += grade
+        self._mark("skill buy pass", "skills")
         self.log(f"[BOT] smart skills: buying {len(chosen)} skills, spending "
                  f"{budget - remaining}/{budget} SP, ~{exp_rating} rating")
         if not chosen:
@@ -1968,6 +2019,7 @@ class ItBot:
             else:
                 buy_same = 0
             prev_buy_h = h
+        self._mark("skill hunt + confirm", "skills")
         self.log(f"[BOT] smart buy pass done - tapped {len(tapped_names)} rows")
         if not tapped_names:
             self._shot("buy_pass_empty", note=f"chose {len(chosen)} skills but tapped none")
