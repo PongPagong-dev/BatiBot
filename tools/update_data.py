@@ -114,8 +114,12 @@ def main():
         nm = names_by_id.get(sid)
         if nm and rar in (1, 2):
             by_group.setdefault(grp, {})[rar] = nm
+    # x-skills (the negative ones) are paired too, but their names differ
+    # from the good ○ version by a single character - keeping them makes
+    # fuzzy matching confuse "Right-Handed ○" with "Right-Handed ×"
     pairs = {g[2].upper(): g[1].upper()
-             for g in by_group.values() if 1 in g and 2 in g}
+             for g in by_group.values() if 1 in g and 2 in g
+             and "×" not in g[1] and "×" not in g[2]}
     write(os.path.join(ROOT, "skill_pairs.json"), pairs)
     print(f"skill_pairs.json  {len(pairs)} gold->white upgrade pairs")
 

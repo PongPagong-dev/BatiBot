@@ -85,7 +85,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.76"
+VERSION = "0.77"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -202,6 +202,10 @@ class ItBot:
             return gold
         best, best_r = None, 0
         for white, g in self.gold_of.items():
+            # "Right-Handed ○" and "Right-Handed ×" differ by one character
+            # but are opposite skills - never let one match the other
+            if ("×" in key) != ("×" in white) or ("○" in key) != ("○" in white):
+                continue
             r = fuzz.ratio(key, white)
             if r >= 88 and r > best_r:
                 best, best_r = g, r
@@ -1987,6 +1991,10 @@ class ItBot:
                 for text_u, cost in entries:
                     if fuzz.ratio(text_u, gold) < 86:
                         continue
+                    # a row that looks more like the white itself is the
+                    # white, not its gold (OCR: "RIGHT-HANDED O")
+                    if fuzz.ratio(text_u, w.upper()) >= fuzz.ratio(text_u, gold):
+                        continue
                     if any(c[0] == text_u for c in chosen):
                         found = True          # gold already reserved earlier
                     elif cost <= remaining:
@@ -2044,7 +2052,9 @@ class ItBot:
         freed = 0
         for white_u, cost in list(chosen):
             gold = self._gold_for(white_u)
-            if gold and any(fuzz.ratio(c[0], gold) >= 86 for c in chosen):
+            # "its own gold" is nonsense - a row cannot supersede itself
+            if gold and any(fuzz.ratio(c[0], gold) >= 86 and c[0] != white_u
+                            and fuzz.ratio(c[0], white_u) < 86 for c in chosen):
                 chosen.remove((white_u, cost))
                 remaining += cost
                 freed += cost
