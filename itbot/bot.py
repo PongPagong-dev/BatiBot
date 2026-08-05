@@ -85,7 +85,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.77"
+VERSION = "0.78"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -904,17 +904,21 @@ class ItBot:
             # buy round left >=60 SP on the table, go back in (max 3 rounds).
             m = re.search(r"SKILL\s*PTS\D{0,3}(\d{2,5})", txt)
             leftover = int(m.group(1)) if m else None
-            # a round costs ~4 minutes, so only go back in if the leftover can
-            # actually buy something: use the cheapest price the last scan saw
-            floor = max(60, getattr(self, "_cheapest_seen", 0) or 60)
+            # Another round means re-reading the whole skill list: ~3 minutes
+            # for one cheap skill (06/08 log: 74 SP left -> 3 min -> +174
+            # rating on a ~7900 career). So it must be able to buy something
+            # worthwhile, not merely something.
+            floor = max(int(self.s.get("min_leftover_sp", 150) or 0),
+                        getattr(self, "_cheapest_seen", 0) or 0, 60)
             if (self._skills_done and leftover is not None and leftover >= floor
                     and getattr(self, "_skill_rounds", 0) < 3):
-                self.log(f"[BOT] {leftover} SP still unspent (cheapest seen {floor}) "
-                         f"- opening skills again (round {self._skill_rounds + 1}/3)")
+                self.log(f"[BOT] {leftover} SP still unspent (worth another round "
+                         f"above {floor}) - opening skills again "
+                         f"(round {self._skill_rounds + 1}/3)")
                 self._skills_done = False
             elif self._skills_done and leftover is not None and 0 < leftover < floor:
-                self.log(f"[BOT] {leftover} SP left, cheapest skill seen costs {floor} "
-                         f"- nothing worth buying, completing the career")
+                self.log(f"[BOT] {leftover} SP left - not worth another 3-minute "
+                         f"pass through the list (needs {floor}), completing the career")
             if not self._skills_done and (self.s.get("skills", []) or self.s.get("spend_all_sp", True) or self.s.get("smart_skills", True)):
                 p = _find(boxes, "Skill Pts", 80, y_min=700)
                 if p:
