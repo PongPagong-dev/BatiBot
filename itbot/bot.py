@@ -44,6 +44,22 @@ def _load_cards():
         return {}
 
 
+def _load_skill_pairs():
+    """skill_pairs.json: GOLD NAME -> WHITE NAME, from the game's master
+    data (skills that share a group_id; rarity 1 = white, 2 = gold).
+
+    Buying the gold gives you the white as well and the white's row then
+    vanishes from the shop, so the bot must never set skill points aside
+    for a white whose gold it is already buying - that money strands, the
+    white gets reported "missed", and the hunt pass goes looking for a row
+    that cannot exist."""
+    try:
+        with open("skill_pairs.json", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
 def _load_skill_values():
     """skill_values.json: normalized name -> {n: display, g: rating grade,
     c: base cost, r: rarity}. Extracted from the game's master data."""
@@ -69,7 +85,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.75"
+VERSION = "0.76"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -130,6 +146,7 @@ class ItBot:
         self._thread = None
         self.values = _load_skill_values()
         self.cards = _load_cards()
+        self.gold_of = {w: g for g, w in _load_skill_pairs().items()}
         # UI status
         self.state = "idle"
         self.careers_done = 0
@@ -172,6 +189,23 @@ class ItBot:
             self._same_state_count = 0
             self._last_state = st
         self.state = st
+
+    def _gold_for(self, white_name):
+        """The gold upgrade that already includes this white skill, or None.
+        Row text comes from OCR ("PLAYTIME'S OVER!." with a stray dot), so an
+        exact dictionary lookup is not enough - fall back to a fuzzy match."""
+        if not white_name:
+            return None
+        key = str(white_name).strip().upper()
+        gold = self.gold_of.get(key)
+        if gold:
+            return gold
+        best, best_r = None, 0
+        for white, g in self.gold_of.items():
+            r = fuzz.ratio(key, white)
+            if r >= 88 and r > best_r:
+                best, best_r = g, r
+        return best
 
     # ---- step timing -----------------------------------------------------
     # Every named step logs how long it took, and the times are added up per
@@ -1944,6 +1978,28 @@ class ItBot:
         # skill was skipped)
         for w in want:
             found = False
+            # a listed white whose GOLD is on offer: buy the gold, it comes
+            # with the white attached. Reserving points for the white as
+            # well would strand them - the white's row disappears the moment
+            # the gold is selected.
+            gold = self._gold_for(w)
+            if gold:
+                for text_u, cost in entries:
+                    if fuzz.ratio(text_u, gold) < 86:
+                        continue
+                    if any(c[0] == text_u for c in chosen):
+                        found = True          # gold already reserved earlier
+                    elif cost <= remaining:
+                        chosen.append((text_u, cost))
+                        remaining -= cost
+                        found = True
+                        self.log(f"[PAIR] buying gold '{text_u}' ({cost} SP) - it "
+                                 f"includes listed skill '{w}'")
+                    if found:
+                        bought.add(w)
+                    break
+            if found:
+                continue
             for text_u, cost in entries:
                 if any(c[0] == text_u for c in chosen):
                     continue
@@ -1965,11 +2021,38 @@ class ItBot:
                 if not any(c[0] == text_u for c in chosen)]
         rest.sort(key=lambda e: e[2] / max(e[1], 1), reverse=True)
         exp_rating = sum(grade_of(c[0])[0] for c in chosen)
-        for text_u, cost, grade in rest:
-            if cost <= remaining:
+
+        def fill():
+            """Spend what is left on the best rating-per-SP rows going."""
+            nonlocal remaining, exp_rating
+            for text_u, cost, grade in rest:
+                if cost > remaining or any(c[0] == text_u for c in chosen):
+                    continue
+                # never pay for a white whose gold is already on the list -
+                # the gold includes it and the white's row will disappear
+                gold = self._gold_for(text_u)
+                if gold and any(fuzz.ratio(c[0], gold) >= 86 for c in chosen):
+                    continue
                 chosen.append((text_u, cost))
                 remaining -= cost
                 exp_rating += grade
+
+        fill()
+        # ...and the reverse order: a gold picked during the fill makes an
+        # already-reserved white unbuyable, so refund it and spend the money
+        # on something real instead of leaving it stranded for another round
+        freed = 0
+        for white_u, cost in list(chosen):
+            gold = self._gold_for(white_u)
+            if gold and any(fuzz.ratio(c[0], gold) >= 86 for c in chosen):
+                chosen.remove((white_u, cost))
+                remaining += cost
+                freed += cost
+                exp_rating -= grade_of(white_u)[0]
+                self.log(f"[PAIR] dropping '{white_u}' ({cost} SP) - its gold "
+                         f"'{gold}' is already being bought and includes it")
+        if freed:
+            fill()
         self._mark("skill buy pass", "skills")
         self.log(f"[BOT] smart skills: buying {len(chosen)} skills, spending "
                  f"{budget - remaining}/{budget} SP, ~{exp_rating} rating")
@@ -2046,6 +2129,23 @@ class ItBot:
         seen_names = [e[0] for e in entries]
         missing = [cn for cn in missing
                    if any(fuzz.ratio(cn, sn) >= 88 for sn in seen_names)]
+        # a white whose gold we just bought is NOT missing - we own it, and
+        # its row left the shop the moment the gold was selected
+        covered = [cn for cn in missing
+                   if self._gold_for(cn)
+                   and any(fuzz.ratio(p, self._gold_for(cn)) >= 86 for p in tapped_names)]
+        if covered:
+            self.log("[PAIR] already owned via their gold upgrade: "
+                     + ", ".join(covered[:5]))
+            missing = [cn for cn in missing if cn not in covered]
+        # if the sweep reached the bottom every row was already examined, so
+        # walking the same list again buys nothing - 01-05/08 logs: 242 hunt
+        # passes, 7.2 hours, and the ones after a full sweep bought 0
+        if missing and stop_reason.endswith("bottom"):
+            self.log(f"[BOT] {len(missing)} chosen skill(s) not tapped "
+                     f"({', '.join(missing[:5])}) - the sweep reached the bottom, "
+                     f"so they are not buyable; skipping the hunt pass")
+            missing = []
         if missing:
             self.log(f"[BOT] {len(missing)} chosen skill(s) missed - second pass for: "
                      + ", ".join(missing[:5]))

@@ -99,6 +99,26 @@ def main():
     graded = sum(1 for v in values.values() if v["g"] > 0)
     print(f"skill_values.json {len(values)} entries ({graded} with a rating grade)")
 
+    # ---- gold -> white upgrade pairs ----
+    # Skills come in pairs that share a group_id: rarity 1 is the white
+    # version, rarity 2 the gold upgrade. Buying the gold gives you the
+    # white as well, and the white's row then disappears from the shop -
+    # so the bot must not reserve skill points for a white whose gold it
+    # is already buying.
+    names_by_id = {sid: (t or "").strip()
+                   for sid, t in db.execute(
+                       "select [index], text from text_data where category=47")}
+    by_group = {}
+    for sid, rar, grp in db.execute(
+            "select id, rarity, group_id from skill_data where group_id is not null"):
+        nm = names_by_id.get(sid)
+        if nm and rar in (1, 2):
+            by_group.setdefault(grp, {})[rar] = nm
+    pairs = {g[2].upper(): g[1].upper()
+             for g in by_group.values() if 1 in g and 2 in g}
+    write(os.path.join(ROOT, "skill_pairs.json"), pairs)
+    print(f"skill_pairs.json  {len(pairs)} gold->white upgrade pairs")
+
     # ---- career rank thresholds (rating -> letter grade) ----
     # ladder confirmed from the game (20,556 shows "UG2 RANK"): the 18
     # ordinary ranks, then TEN tiers per U-letter - UG, UG1..UG9, UF,
