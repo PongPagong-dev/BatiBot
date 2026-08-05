@@ -69,7 +69,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.74"
+VERSION = "0.75"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -424,6 +424,7 @@ class ItBot:
         self._budget = None
         self._cheapest_seen = 0
         self._skill_rounds = 0
+        self._scan_no = 0
         self._reroll_attempts = 0
         self._reroll_popup_taps = 0
         self._reroll_pressed = False
@@ -1851,8 +1852,10 @@ class ItBot:
             self.log("[BOT] smart skills: could not read SP budget - falling back to simple sweep")
             return False
         self._budget = budget
-        self._mark(f"skill scan (round {getattr(self, '_skill_rounds', 0) + 1})",
-                   "skills")
+        # count the scans ourselves - _skill_rounds is already 1 by the time
+        # the first scan runs, which made every log line read one round high
+        self._scan_no = getattr(self, "_scan_no", 0) + 1
+        self._mark(f"skill scan (round {self._scan_no})", "skills")
         self.log(f"[BOT] smart skills: SP budget {budget}")
 
         # --- scan sweep: names + displayed costs ----------------------------
@@ -1982,6 +1985,8 @@ class ItBot:
         chosen_names = [c[0] for c in chosen] + hunted
         prev_buy_h = None
         buy_same = 0
+        stop_reason = "screen cap (20)"
+        last_rows = []
         for sweep_i in range(20):
             if self._stop.is_set():
                 return False
@@ -1993,6 +1998,7 @@ class ItBot:
                 continue
             nb = len(tapped_names)
             rows_here = self._rows(im)
+            last_rows = [r[0] for r in rows_here]
             for t, cost, px, py in rows_here:
                 tt = t.strip().upper()
                 if any(fuzz.ratio(tt, p) >= 90 for p in tapped_names):
@@ -2010,15 +2016,22 @@ class ItBot:
                     except Exception:
                         pass
             if hit_bottom is True or self._list_at_bottom(im):
+                stop_reason = ("scrollbar says bottom" if hit_bottom is True
+                               else "list looks like the bottom")
                 break
             h = self._list_hash(im)
             if h is not None and h == prev_buy_h and nb == len(tapped_names):
                 buy_same += 1
                 if buy_same >= 2:
+                    stop_reason = "list stopped moving (2 identical screens)"
                     break
             else:
                 buy_same = 0
             prev_buy_h = h
+        # why the sweep ended, and what was on the last screen it looked at -
+        # the hunt pass keeps finding bottom-of-list skills the sweep skipped
+        self.log(f"[BUYEND] sweep ended after {sweep_i + 1} screens - {stop_reason}; "
+                 f"last screen: {'; '.join(last_rows[:6]) or '(no rows)'}")
         self._mark("skill hunt + confirm", "skills")
         self.log(f"[BOT] smart buy pass done - tapped {len(tapped_names)} rows")
         if not tapped_names:
@@ -2038,7 +2051,10 @@ class ItBot:
                      + ", ".join(missing[:5]))
             self._scroll_to_top()
             prev2, same2 = None, 0
+            hunt_start = len(tapped_names)
+            hunt_screens = 0
             for sweep_i in range(20):
+                hunt_screens = sweep_i + 1
                 if self._stop.is_set():
                     return False
                 hit_bottom = None
@@ -2066,6 +2082,9 @@ class ItBot:
                 else:
                     same2 = 0
                 prev2 = h2
+            self.log(f"[HUNTEND] hunt pass covered {hunt_screens} screens and "
+                     f"bought {len(tapped_names) - hunt_start} of "
+                     f"{len(missing)} missed skills")
         return len(tapped_names) > 0
 
     def _load_agenda(self):
