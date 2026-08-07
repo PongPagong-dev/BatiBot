@@ -24,7 +24,7 @@ import numpy as np
 from rapidfuzz import fuzz
 
 from .adb import Adb
-from .ocr import ocr_boxes
+from .ocr import ocr_boxes, reset_ocr
 
 
 def _norm_name(n):
@@ -85,7 +85,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.78"
+VERSION = "0.79"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -189,6 +189,31 @@ class ItBot:
             self._same_state_count = 0
             self._last_state = st
         self.state = st
+
+    def _refresh_ocr_if_slow(self):
+        """Rebuild the OCR reader when it has drifted slower than the fresh
+        one was. Called between careers, where 10s of model loading costs
+        nothing - during a career it would be 10s of a stalled screen."""
+        times = sorted(getattr(self, "_ocr_times", []))
+        if len(times) < 20:
+            return
+        now = times[len(times) // 2]
+        base = getattr(self, "_ocr_base", None)
+        if base is None:                       # first career sets the baseline
+            self._ocr_base = now
+            self.log(f"[OCR] baseline read time {now:.2f}s per screen")
+            return
+        stale = self.careers_done - getattr(self, "_ocr_refreshed_at", 0) >= 6
+        if now > base * 1.5 or stale:
+            why = "drifted" if now > base * 1.5 else "6 careers since the last one"
+            self.log(f"[OCR] refreshing the reader ({why}): {now:.2f}s per "
+                     f"screen vs {base:.2f}s when fresh")
+            t0 = time.time()
+            reset_ocr()
+            self._ocr_times = []
+            self._ocr_refreshed_at = self.careers_done
+            self.log(f"[OCR] reader dropped in {time.time() - t0:.1f}s - the next "
+                     f"read rebuilds it")
 
     def _gold_for(self, white_name):
         """The gold upgrade that already includes this white skill, or None.
@@ -535,6 +560,7 @@ class ItBot:
         self._tick_t = t0
         self.log(f"[STEP] #{self._ticks} +{gap:.1f}s "
                  f"(shot {t1 - t0:.1f}s ocr {t2 - t1:.1f}s) {self.state}")
+        self._ocr_times = (getattr(self, "_ocr_times", []) + [t2 - t1])[-60:]
 
         # ---- watchdog: a hung game keeps its process alive, so the crash
         # guard (pidof) is happy while nothing on screen ever changes. On the
@@ -944,6 +970,7 @@ class ItBot:
             self.careers_done += 1
             self.log(f"[BOT] === career #{self.careers_done} complete ===")
             self._career_time_summary()
+            self._refresh_ocr_if_slow()
             self._mark("next career setup", "setup")
             self._shot("career_complete", img,
                        note=f"#{self.careers_done} {getattr(self, '_trainee', '')} "
@@ -1517,6 +1544,8 @@ class ItBot:
         return [(t, cx, cy + 420, x1, y1 + 420, x2, y2 + 420)
                 for t, cx, cy, x1, y1, x2, y2 in ocr_boxes(crop)]
 
+    _settled_frame = None
+
     def _swipe_step_down(self):
         """One 300px down-drag. Samples the scrollbar RIGHT after the drag
         - the thumb fades out before the settle ends, which is why checking
@@ -1530,7 +1559,9 @@ class ItBot:
         time.sleep(0.2)
         im = self.adb.screenshot()
         bottom = self._list_at_bottom(im) if im is not None else None
-        self._settle(prev=im)
+        # keep the frame the settle proved was stable: the caller would
+        # otherwise take another screenshot of the very same still list
+        self._settled_frame = self._settle(prev=im)
         return bottom
 
     def _settle(self, prev=None, timeout=1.2):
@@ -1791,7 +1822,9 @@ class ItBot:
                 hit_bottom = None
                 if sweep_i > 0:
                     hit_bottom = self._swipe_step_down()
-                im = self.adb.screenshot()
+                im = (self._settled_frame if self._settled_frame is not None
+                      else self.adb.screenshot())
+                self._settled_frame = None
                 if im is None:
                     continue
                 before_taps = len(tapped_names)
@@ -1917,7 +1950,10 @@ class ItBot:
             hit_bottom = None
             if sweep_i > 0:
                 hit_bottom = self._swipe_step_down()
-            im = self.adb.screenshot()
+            # reuse the settled frame from the drag when we have one
+            im = (self._settled_frame if self._settled_frame is not None
+                  else self.adb.screenshot())
+            self._settled_frame = None
             if im is None:
                 continue
             n_before = len(entries)
@@ -2090,7 +2126,10 @@ class ItBot:
             hit_bottom = None
             if sweep_i > 0:
                 hit_bottom = self._swipe_step_down()
-            im = self.adb.screenshot()
+            # reuse the settled frame from the drag when we have one
+            im = (self._settled_frame if self._settled_frame is not None
+                  else self.adb.screenshot())
+            self._settled_frame = None
             if im is None:
                 continue
             nb = len(tapped_names)
@@ -2174,7 +2213,9 @@ class ItBot:
                 hit_bottom = None
                 if sweep_i > 0:
                     hit_bottom = self._swipe_step_down()
-                im = self.adb.screenshot()
+                im = (self._settled_frame if self._settled_frame is not None
+                      else self.adb.screenshot())
+                self._settled_frame = None
                 if im is None:
                     continue
                 nb2 = len(tapped_names)

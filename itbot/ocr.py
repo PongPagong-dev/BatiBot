@@ -18,6 +18,20 @@ def _get_ocr():
         return _ocr
 
 
+def reset_ocr():
+    """Throw the reader away so the next read builds a fresh one.
+
+    PaddleOCR gets slower the longer it lives: on the 06/08 run the median
+    read grew from 1.2s to 2.0s over ten hours while screenshot time stayed
+    flat at 0.3s, and restarting the bot reset it. Rebuilding costs ~10s of
+    model loading, which a few careers of drift pays for many times over."""
+    global _ocr
+    with _lock:
+        _ocr = None
+    import gc
+    gc.collect()
+
+
 _err_count = 0
 
 
