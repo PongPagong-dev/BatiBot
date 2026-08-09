@@ -85,7 +85,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.79"
+VERSION = "0.80"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -489,6 +489,8 @@ class ItBot:
         self._skill_rounds = 0
         self._scan_no = 0
         self._reroll_attempts = 0
+        self._reroll_gave_up = False
+        self._pingpong = 0
         self._reroll_popup_taps = 0
         self._reroll_pressed = False
         self._carousel_wait = 0
@@ -578,6 +580,30 @@ class ItBot:
         # ---- watchdog: the same tap over and over means something invisible
         # is blocking us (e.g. a dialog we do not know). 23:00 run pressed
         # "Start Career" 350+ times over 90 minutes. Escape instead.
+        # ---- watchdog: A-B-A-B ping-pong. Two screens that undo each other
+        # (07/08: sparks Confirm <-> keep-popup Cancel, 1557 vs 1577 taps
+        # over four hours; and Next <-> CLOSE). The repeat counter below is
+        # blind to these because the taps alternate.
+        taps = getattr(self.adb, "recent_taps", [])
+        if len(taps) >= 12:
+            last = taps[-12:]
+            if len(set(last)) == 2 and all(p == last[i % 2]
+                                           for i, p in enumerate(last)):
+                n = getattr(self, "_pingpong", 0) + 1
+                self._pingpong = n
+                self.log(f"[PINGPONG] {last[0]} and {last[1]} are undoing each "
+                         f"other ({n}/3); screen: {txt[:110]}")
+                self._shot("pingpong", img, note=txt[:160])
+                self.adb.recent_taps = []
+                if n >= 3:
+                    self.log("[PINGPONG] still looping - restarting the game")
+                    self._pingpong = 0
+                    self._recover_frozen_game(img, txt)
+                else:
+                    self.adb.tap(60, 1180, "Back (ping-pong escape)")
+                    time.sleep(2.5)
+                return
+
         rep = getattr(self.adb, "repeat_taps", 0)
         if rep and rep % 8 == 0:
             esc = [(360, 835), (360, 1180), (60, 1180), (517, 833), NEUTRAL_TAP]
@@ -837,7 +863,8 @@ class ItBot:
                     self.adb.tap(*cancel_p, "Cancel")
                 time.sleep(2.5)
                 return
-            if "KEEP THIS SET OF SPARKS" in txt and cancel_p and want:  # B
+            if ("KEEP THIS SET OF SPARKS" in txt and cancel_p and want
+                    and not getattr(self, "_reroll_gave_up", False)):  # B
                 self._set_state("sparks keep popup")
                 self.log("[SPARKS] keep-this-set popup - cancelling, still want to reroll")
                 self.adb.tap(*cancel_p, "Cancel")
@@ -893,6 +920,11 @@ class ItBot:
                 self.adb.tap(205, 1178, "Reroll Sparks")
             else:
                 if want:
+                    # give up for THIS career: without this the keep-this-set
+                    # popup keeps cancelling our own Confirm, and the two
+                    # screens ping-pong forever (07/08: 1,557 Confirms vs
+                    # 1,577 Cancels over four hours)
+                    self._reroll_gave_up = True
                     self.log("[SPARKS] reroll didn't take - confirming original set (debug shot saved)")
                     self._shot("reroll_gave_up", img)
                     try:

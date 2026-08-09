@@ -182,6 +182,11 @@ class Adb:
         try:
             self._run(["shell", "input", "tap",
                        str(int(x * self.sx)), str(int(y * self.sy))])
+            # last few tap positions, so the bot can spot two screens
+            # undoing each other (Confirm <-> Cancel) - repeat_taps below
+            # only ever sees the SAME tap repeated
+            self.recent_taps = (getattr(self, "recent_taps", [])
+                                + [(int(x), int(y))])[-16:]
             key = (int(x), int(y), desc)
             if key == getattr(self, "_last_tap", None):
                 self.repeat_taps = getattr(self, "repeat_taps", 0) + 1
