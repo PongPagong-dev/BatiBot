@@ -85,7 +85,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.80"
+VERSION = "0.81"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -491,6 +491,7 @@ class ItBot:
         self._reroll_attempts = 0
         self._reroll_gave_up = False
         self._pingpong = 0
+        self._tp_restores = 0
         self._reroll_popup_taps = 0
         self._reroll_pressed = False
         self._carousel_wait = 0
@@ -669,8 +670,22 @@ class ItBot:
                 or ("MORE TP" in txt and "REROLL" in txt)):
             self._set_state("restore TP prompt")
             if self.s.get("recover_tp", False):
-                self.log("[TP] short on TP - pressing Restore")
-                self.adb.tap(517, 833, "Restore")
+                tries = getattr(self, "_tp_restores", 0) + 1
+                self._tp_restores = tries
+                # being told "not enough TP to reroll" a SECOND time in one
+                # career means the first restore added nothing - out of
+                # carats, or a purchase limit. 07/08: the buy silently
+                # failed, the reroll then failed, and the sparks screens
+                # ping-ponged for four hours.
+                if "REROLL" in txt and tries > 1:
+                    self.log("[TP] restore added no TP (out of carats or a "
+                             "purchase limit?) - no more rerolls this career")
+                    self._reroll_attempts = 99
+                    self._reroll_gave_up = True
+                    self.adb.tap(201, 833, "No")
+                else:
+                    self.log(f"[TP] short on TP - pressing Restore (try {tries})")
+                    self.adb.tap(517, 833, "Restore")
             elif "REROLL" in txt:
                 self.log("[TP] short on TP for the reroll and TP refill is OFF - skipping reroll")
                 self._reroll_attempts = 99   # stop trying this career
