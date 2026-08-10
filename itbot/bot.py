@@ -85,7 +85,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.81"
+VERSION = "0.82"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -214,6 +214,26 @@ class ItBot:
             self._ocr_refreshed_at = self.careers_done
             self.log(f"[OCR] reader dropped in {time.time() - t0:.1f}s - the next "
                      f"read rebuilds it")
+
+    def _training_remaining(self, secs):
+        """Sanity-check the countdown against real time.
+
+        Training counts down in real time, so a reading can never be HIGHER
+        than what the previous reading allows. When it is, the frame is stale
+        - a frozen client, or an OCR slip - and napping on it wastes up to a
+        whole chunk (10/08: read 1159s when at most 953s could remain, and a
+        frozen screen claiming 14 minutes while the game had already
+        finished). Keep whichever is smaller."""
+        now = time.time()
+        deadline = getattr(self, "_train_deadline", None)
+        if deadline is not None:
+            allowed = deadline - now
+            if secs > allowed + 30:
+                self.log(f"[TIMER] screen says {secs}s left but at most "
+                         f"{max(0, int(allowed))}s can remain - trusting the clock")
+                secs = max(0, int(allowed))
+        self._train_deadline = now + secs
+        return secs
 
     def _gold_for(self, white_name):
         """The gold upgrade that already includes this white skill, or None.
@@ -765,6 +785,7 @@ class ItBot:
                 self.adb.tap(*IT_START, "Start! (retry)")
                 time.sleep(6)
             self._session_started = True
+            self._train_deadline = None
             self._mark("training", "training")
             self.log("[BOT] IT session started - first status check in 4 min")
             self._sleep(240)
@@ -787,6 +808,7 @@ class ItBot:
             if m:
                 secs = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
                 if 60 <= secs <= 4 * 3600:
+                    secs = self._training_remaining(secs)
                     nap = min(secs + 30, SLEEP_CHUNK)
                     self.log(f"[BOT] training on the watch screen, {secs}s left "
                              f"- sleeping {nap}s")
@@ -1217,6 +1239,7 @@ class ItBot:
         if m:
             remaining = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
             if 0 <= remaining <= 3600:
+                remaining = self._training_remaining(remaining)
                 nap = min(remaining + 75, SLEEP_CHUNK)
                 self.log(f"[BOT] training, {remaining}s left "
                          f"('{timer_txt.strip()}') - sleeping {nap}s")
