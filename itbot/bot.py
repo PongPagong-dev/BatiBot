@@ -85,7 +85,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.82"
+VERSION = "0.83"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -1634,6 +1634,45 @@ class ItBot:
         self._settled_frame = self._settle(prev=im)
         return bottom
 
+    def _swipe_step_up(self):
+        """One step back UP the list - the mirror of _swipe_step_down."""
+        self.adb.swipe(360, 650, 360, 950, dur_ms=900)
+        time.sleep(0.2)
+        im = self.adb.screenshot()
+        self._settled_frame = self._settle(prev=im)
+
+    def _rescue_missing_upward(self, missing, tapped_names):
+        """Catch chosen rows the downward sweep walked past.
+
+        A row whose cost line lands below y1000 on one screen and above y470
+        on the next is never tappable on the way down - it falls in the gap.
+        10/08: two careers ended with a 320 SP skill unbought, which pushed
+        the leftover over 150 and cost a 3-4 minute extra round. Three steps
+        back up costs ~20s and looks exactly where such rows hide."""
+        got = 0
+        for _ in range(3):
+            if self._stop.is_set():
+                break
+            self._swipe_step_up()
+            im = (self._settled_frame if self._settled_frame is not None
+                  else self.adb.screenshot())
+            self._settled_frame = None
+            if im is None:
+                continue
+            for t, cost, px, py in self._rows(im):
+                tt = t.strip().upper()
+                if any(fuzz.ratio(tt, p) >= 90 for p in tapped_names):
+                    continue
+                if any(fuzz.ratio(tt, cn) >= 90 for cn in missing):
+                    tapped_names.append(tt)
+                    if self._tap_skill_plus(t, px, py, cost):
+                        got += 1
+                    else:
+                        tapped_names.remove(tt)
+        self.log(f"[RESCUE] walked back up 3 screens - bought {got} of "
+                 f"{len(missing)} skill(s) the sweep had missed")
+        return got
+
     def _settle(self, prev=None, timeout=1.2):
         """Wait until two consecutive frames of the list are identical."""
         end = time.time() + timeout
@@ -2141,16 +2180,47 @@ class ItBot:
         exp_rating = sum(grade_of(c[0])[0] for c in chosen)
 
         def fill():
-            """Spend what is left on the best rating-per-SP rows going."""
+            """Spend what is left as well as it can be spent.
+
+            Greedy rating-per-SP is fast but leaves awkward gaps - 10/08 run:
+            14-139 SP stranded most careers, and five careers crossed the
+            150 SP mark and paid 3-4 minutes for another round. This is the
+            same job as a knapsack, and a knapsack of ~40 rows against a
+            ~4000 SP budget solves in a few hundredths of a second, so solve
+            it properly."""
             nonlocal remaining, exp_rating
+            cap = int(remaining)
+            if cap <= 0:
+                return
+            items = []
             for text_u, cost, grade in rest:
-                if cost > remaining or any(c[0] == text_u for c in chosen):
+                cost = int(cost)
+                if cost <= 0 or cost > cap or any(c[0] == text_u for c in chosen):
                     continue
                 # never pay for a white whose gold is already on the list -
                 # the gold includes it and the white's row will disappear
                 gold = self._gold_for(text_u)
                 if gold and any(fuzz.ratio(c[0], gold) >= 86 for c in chosen):
                     continue
+                items.append((text_u, cost, grade))
+            if not items:
+                return
+            best = [0] * (cap + 1)
+            keep = [bytearray(cap + 1) for _ in items]
+            for i, (_t, cost, grade) in enumerate(items):
+                row = keep[i]
+                for w in range(cap, cost - 1, -1):
+                    cand = best[w - cost] + grade
+                    if cand > best[w]:
+                        best[w] = cand
+                        row[w] = 1
+            w = cap
+            picked = []
+            for i in range(len(items) - 1, -1, -1):
+                if keep[i][w]:
+                    picked.append(items[i])
+                    w -= items[i][1]
+            for text_u, cost, grade in reversed(picked):
                 chosen.append((text_u, cost))
                 remaining -= cost
                 exp_rating += grade
@@ -2266,8 +2336,11 @@ class ItBot:
         # passes, 7.2 hours, and the ones after a full sweep bought 0
         if missing and stop_reason.endswith("bottom"):
             self.log(f"[BOT] {len(missing)} chosen skill(s) not tapped "
-                     f"({', '.join(missing[:5])}) - the sweep reached the bottom, "
-                     f"so they are not buyable; skipping the hunt pass")
+                     f"({', '.join(missing[:5])}) - checking the last screens "
+                     f"on the way back up before giving up")
+            self._rescue_missing_upward(missing, tapped_names)
+            # a full re-walk of a list we already reached the bottom of buys
+            # nothing (242 hunt passes, 7.2 hours, zero skills)
             missing = []
         if missing:
             self.log(f"[BOT] {len(missing)} chosen skill(s) missed - second pass for: "
