@@ -77,6 +77,8 @@ POPUP_CAREER = (517, 833)
 HOME_CAREER = (545, 1075)    # CAREER button on home
 GUEST_SLOT = (570, 680)      # friend/guest slot on Support Formation
 NEUTRAL_TAP = (360, 1150)    # advance splash screens
+HOME_TAB = (360, 1225)       # Home in the bottom bar - the way back from
+                             # anywhere in the main menus
 CAROUSEL_LEFT = (57, 150)    # spark set carousel arrows
 CAROUSEL_RIGHT = (663, 150)
 
@@ -85,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.83"
+VERSION = "0.84"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -183,6 +185,8 @@ class ItBot:
         return self._thread is not None and self._thread.is_alive()
 
     def _set_state(self, st):
+        if st != "unknown screen":
+            self._lost_tries = 0
         if st == self._last_state:
             self._same_state_count += 1
         else:
@@ -584,6 +588,7 @@ class ItBot:
         self.log(f"[STEP] #{self._ticks} +{gap:.1f}s "
                  f"(shot {t1 - t0:.1f}s ocr {t2 - t1:.1f}s) {self.state}")
         self._ocr_times = (getattr(self, "_ocr_times", []) + [t2 - t1])[-60:]
+        self._screen_log = (getattr(self, "_screen_log", []) + [txt[:160]])[-6:]
 
         # ---- watchdog: a hung game keeps its process alive, so the crash
         # guard (pidof) is happy while nothing on screen ever changes. On the
@@ -612,8 +617,12 @@ class ItBot:
                                            for i, p in enumerate(last)):
                 n = getattr(self, "_pingpong", 0) + 1
                 self._pingpong = n
+                seen = getattr(self, "_screen_log", [])
+                other = next((t for t in reversed(seen) if t[:40] != txt[:40]), "")
                 self.log(f"[PINGPONG] {last[0]} and {last[1]} are undoing each "
-                         f"other ({n}/3); screen: {txt[:110]}")
+                         f"other ({n}/3)")
+                self.log(f"[PINGPONG]   screen A: {txt[:110]}")
+                self.log(f"[PINGPONG]   screen B: {other[:110] or '(not captured)'}")
                 self._shot("pingpong", img, note=txt[:160])
                 self.adb.recent_taps = []
                 if n >= 3:
@@ -621,8 +630,10 @@ class ItBot:
                     self._pingpong = 0
                     self._recover_frozen_game(img, txt)
                 else:
-                    self.adb.tap(60, 1180, "Back (ping-pong escape)")
-                    time.sleep(2.5)
+                    # NOT Back - that is what pushed the bot out of the career
+                    # flow and into the main menus on 11/08
+                    self.adb.tap(*HOME_TAB, "Home tab (ping-pong escape)")
+                    time.sleep(3)
                 return
 
         rep = getattr(self.adb, "repeat_taps", 0)
@@ -1200,6 +1211,26 @@ class ItBot:
                 except Exception:
                     pass
             time.sleep(3)
+            return
+        # Lost: a dozen unrecognised ticks means the blind taps have carried
+        # us somewhere the bot has no business being. 11/08: a ping-pong
+        # escape dropped it into Enhance -> Card Storage ("exchange support
+        # cards for cleats") and it tapped there for five hours. The Home tab
+        # is a deterministic way back; if even that fails, restart the game.
+        n = self._same_state_count
+        if n and n % 12 == 0:
+            lost = getattr(self, "_lost_tries", 0) + 1
+            self._lost_tries = lost
+            self._shot("lost", img, note=txt[:200])
+            if lost >= 3:
+                self.log("[LOST] still adrift after Home taps - restarting the game")
+                self._lost_tries = 0
+                self._recover_frozen_game(img, txt)
+            else:
+                self.log(f"[LOST] unrecognised screen for {n} ticks - tapping the "
+                         f"Home tab ({lost}/3); screen: {txt[:90]}")
+                self.adb.tap(*HOME_TAB, "Home tab (lost)")
+                time.sleep(3)
             return
         self.adb.tap(*NEUTRAL_TAP, "")
         time.sleep(2.2)
