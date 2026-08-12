@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.86"
+VERSION = "0.87"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -563,6 +563,7 @@ class ItBot:
         self._plan_rating = 0
         self._plan_spend = 0
         self._stats_shot_done = False
+        self._pp_shots = 0
         self._sp_budget_first = 0
         self._reroll_attempts = 0
         self._reroll_gave_up = False
@@ -663,6 +664,14 @@ class ItBot:
         # over four hours; and Next <-> CLOSE). The repeat counter below is
         # blind to these because the taps alternate.
         taps = getattr(self.adb, "recent_taps", [])
+        if len(taps) >= 4 and getattr(self, "_pp_shots", 0) < 8:
+            l4 = taps[-4:]
+            if len(set(l4)) == 2 and all(p == l4[i % 2] for i, p in enumerate(l4)):
+                # a loop is forming: shoot every frame for a moment so both
+                # screens end up on disk, not just whichever one is showing
+                # when the watchdog trips
+                self._pp_shots = getattr(self, "_pp_shots", 0) + 1
+                self._shot("pp_watch", img, note=f"{self.state}: {txt[:150]}")
         if len(taps) >= 12:
             last = taps[-12:]
             if len(set(last)) == 2 and all(p == last[i % 2]
@@ -1098,6 +1107,12 @@ class ItBot:
                 p = _find(boxes, "Skill Pts", 80, y_min=700)
                 if p:
                     self._skill_rounds = getattr(self, "_skill_rounds", 0) + 1
+                    # Bon: the stats are on screen here, before the skill
+                    # list opens. The training-log reader only manages 1-3 of
+                    # 5, so keep this frame - it is the one to read them from.
+                    if self._skill_rounds == 1:
+                        self._shot("career_end_menu", img, note=f"stats so far: "
+                                   f"{getattr(self, '_stats', {})}; text {txt[:150]}")
                     self.adb.tap(*p, "open skills")
                     time.sleep(3)
                     return
@@ -1966,7 +1981,8 @@ class ItBot:
                 with open(os.path.join(d, "notes.txt"), "a", encoding="utf-8") as f:
                     f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {name}: {note}\n")
             files = sorted(glob.glob(os.path.join(d, "*.png")))
-            for old_file in files[:-200]:
+            keep = int(self.s.get('shot_keep', 400) or 400)
+            for old_file in files[:-keep]:
                 try:
                     os.remove(old_file)
                 except Exception:
