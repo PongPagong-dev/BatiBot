@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.88"
+VERSION = "0.89"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -104,7 +104,10 @@ SLEEP_CHUNK = 900
 ALLOW_BUTTONS = ["NEXT", "CLOSE", "CONFIRM", "OK", "TO HOME", "START CAREER!", "START CAREER"]
 # buttons that must NEVER be pressed, anywhere, ever
 # ("Save Here" would overwrite the user's saved agenda with the current one)
-BLOCKLIST = ["DELETE DATA", "GIVE UP", "RECOVER", "EDIT TEAM", "RETIRE", "SAVE HERE"]
+BLOCKLIST = ["DELETE DATA", "GIVE UP", "RECOVER", "EDIT TEAM", "RETIRE", "SAVE HERE",
+             # Aug 2026 Trainer Aptitude Test event: "Event Home" walks the
+             # bot out of the career flow and into the event screens
+             "EVENT HOME"]
 
 
 def _find(boxes, label, min_ratio=85, y_min=0, y_max=1280):
@@ -579,6 +582,7 @@ class ItBot:
         self._plan_spend = 0
         self._stats_shot_done = False
         self._pp_shots = 0
+        self._career_mode_taps = 0
         self._sp_budget_first = 0
         self._reroll_attempts = 0
         self._reroll_gave_up = False
@@ -893,6 +897,40 @@ class ItBot:
             self._mark("training", "training")
             self.log("[BOT] IT session started - first status check in 4 min")
             self._sleep(240)
+            return
+
+        # ---- "Choose Career Mode" (Aug 2026 Trainer Aptitude Test event) ----
+        # Pressing Next on Scenario Select now opens this, with the APTITUDE
+        # TEST pre-selected. Confirming it would run a different career, and
+        # the bot's generic clicker used to wander from here into the event
+        # popup and back - the Next <-> CLOSE loop of 11/08. Always Normal
+        # Mode. Confirm moves down the screen when a test is selected, so it
+        # is found by text rather than by fixed position.
+        if "CHOOSE CAREER MODE" in txt:
+            self._set_state("career mode dialog")
+            picked = getattr(self, "_career_mode_taps", 0)
+            p = _find(boxes, "Normal Mode", 85)
+            if p and picked < 1:
+                self._career_mode_taps = picked + 1
+                self.log("[MODE] Choose Career Mode - selecting Normal Mode")
+                self.adb.tap(*p, "Normal Mode")
+                time.sleep(1.8)
+                return
+            c = _find(boxes, "Confirm", 88, y_min=700)
+            if c:
+                self.log("[MODE] confirming Normal Mode")
+                self.adb.tap(*c, "Confirm (career mode)")
+                time.sleep(3)
+                return
+            self._shot("career_mode_stuck", img, note=txt[:200])
+
+        # ---- the event's own "Return to the event home screen?" popup ------
+        if "RETURN TO THE EVENT HOME" in txt:
+            self._set_state("event home popup")
+            p = _find(boxes, "Close", 88) or (201, 834)
+            self.log("[MODE] event popup - closing it, staying in the career flow")
+            self.adb.tap(*p, "Close (event popup)")
+            time.sleep(2.5)
             return
 
         # ---- 3. watch view / its menu ---------------------------------------
