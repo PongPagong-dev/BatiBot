@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.89"
+VERSION = "0.90"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -908,17 +908,25 @@ class ItBot:
         # is found by text rather than by fixed position.
         if "CHOOSE CAREER MODE" in txt:
             self._set_state("career mode dialog")
-            picked = getattr(self, "_career_mode_taps", 0)
-            p = _find(boxes, "Normal Mode", 85)
-            if p and picked < 1:
-                self._career_mode_taps = picked + 1
-                self.log("[MODE] Choose Career Mode - selecting Normal Mode")
-                self.adb.tap(*p, "Normal Mode")
-                time.sleep(1.8)
-                return
+            # Bon wants the Trainer Aptitude Test runs, and the event has it
+            # pre-selected - so leave the selection alone and just Confirm.
+            # Set "career_mode": "normal" in settings.json to pick Normal
+            # Mode instead. Confirm sits lower when a test is chosen
+            # (720x1280: ~(517,918) plain, ~(517,1182) with a test), so it is
+            # found by text rather than by fixed position.
+            if str(self.s.get("career_mode", "")).lower().startswith("normal"):
+                p = _find(boxes, "Normal Mode", 85)
+                if p and not getattr(self, "_career_mode_taps", 0):
+                    self._career_mode_taps = 1
+                    self.log("[MODE] Choose Career Mode - selecting Normal Mode")
+                    self.adb.tap(*p, "Normal Mode")
+                    time.sleep(1.8)
+                    return
             c = _find(boxes, "Confirm", 88, y_min=700)
             if c:
-                self.log("[MODE] confirming Normal Mode")
+                test = "Normal Mode" if str(self.s.get("career_mode", "")).lower() \
+                    .startswith("normal") else "the selected Aptitude Test"
+                self.log(f"[MODE] Choose Career Mode - confirming {test}")
                 self.adb.tap(*c, "Confirm (career mode)")
                 time.sleep(3)
                 return

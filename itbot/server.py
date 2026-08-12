@@ -91,6 +91,11 @@ PAGE = """<!doctype html>
    <option value="Stamina">Stamina</option>
    <option value="Sprint">Sprint</option>
   </select>
+  <label>Career mode (the Trainer Aptitude Test event adds a "Choose Career Mode" dialog)</label>
+  <select id="career_mode" style="width:100%;background:#232328;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px">
+   <option value="">Take the Aptitude Test (whatever test is selected in-game)</option>
+   <option value="normal">Normal Mode (no test)</option>
+  </select>
   <div class="toggle"><input type="checkbox" id="load_agenda"><span>Load my FIRST saved agenda before each career (save your schedule in-game once: Agenda &gt; My Agendas &gt; Save Here on the top slot)</span></div>
   <div class="toggle"><input type="checkbox" id="auto_reroll"><span>Auto-reroll sparks once per career (costs 30 TP; keeps the starrier set)</span></div>
   <div class="toggle"><input type="checkbox" id="recover_tp"><span>Refill TP when it runs out &mdash; uses TP Drinks first, then <b>buys with carats</b> (Max). Off = bot stops when TP is empty.</span></div>
@@ -265,6 +270,7 @@ async function loadSettings(){
  document.getElementById('recover_tp').checked=!!s.recover_tp;
  document.getElementById('recover_tp_carats_only').checked=!!s.recover_tp_carats_only;
  document.getElementById('it_focus').value=s.it_focus||'';
+ document.getElementById('career_mode').value=s.career_mode||'';
  document.getElementById('borrow_backup').value=s.borrow_backup||'';
  document.getElementById('spend_all_sp').checked=s.spend_all_sp!==false;
  document.getElementById('smart_skills').checked=s.smart_skills!==false;
@@ -289,6 +295,7 @@ async function save(){
   recover_tp:document.getElementById('recover_tp').checked,
   recover_tp_carats_only:document.getElementById('recover_tp_carats_only').checked,
   it_focus:document.getElementById('it_focus').value,
+  career_mode:document.getElementById('career_mode').value,
   borrow_backup:document.getElementById('borrow_backup').value.trim()
  };
  await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(s)});
