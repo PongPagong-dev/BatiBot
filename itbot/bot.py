@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.87"
+VERSION = "0.88"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -327,10 +327,25 @@ class ItBot:
                 # pointer walk - distance matching kept mis-assigning when a
                 # value OCR'd slightly off centre (30/07: only 'wit' landed).
                 row_y = sorted(l[1] for l in labels)[len(labels) // 2]
+                # "Skill Pts" shares the row on the results screen and its
+                # value is not a stat - keep everything left of it
+                sp_p = _find(boxes, "Skill Pts", 80)
+                sp_x = sp_p[0] if sp_p else None
                 on_row = sorted((cx, v) for v, cx, cy in nums
-                                if -45 <= (cy - row_y) <= 140)
+                                if -45 <= (cy - row_y) <= 140
+                                and (sp_x is None or cx < sp_x - 40))
                 labels.sort()
-                if len(on_row) == len(labels):
+                # The results screen always reads Speed, Stamina, Power,
+                # Guts, Wit left to right. When five values are on the row,
+                # ORDER is the truth - matching each number to its nearest
+                # label kept failing because Stamina and Power resolve to
+                # almost the same x and one collision loses two stats
+                # (12/08 log: "3 of 5 read", labels sta and pow both at 247).
+                if len(on_row) == 5:
+                    for key, (_cx, v) in zip(("spd", "sta", "pow", "gut", "wit"),
+                                             on_row):
+                        stats[key] = int(v)
+                elif len(on_row) == len(labels):
                     for (_lx, _ly, key), (_cx, v) in zip(labels, on_row):
                         stats[key] = int(v)
                 else:
