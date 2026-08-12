@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.84"
+VERSION = "0.85"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -795,6 +795,23 @@ class ItBot:
             if img2 is not None and "FINAL CONFIRMATION" in _all_text(ocr_boxes(img2)):
                 self.adb.tap(*IT_START, "Start! (retry)")
                 time.sleep(6)
+            # Starting a session is the ONE reliable career boundary. The
+            # "Career Complete" screen can be missed - 12/08, after a freeze
+            # restart, the bot went from the reward screens straight into the
+            # next career, so _new_career_flags never ran, _rerolled stayed
+            # True, and the NEXT career skipped its reroll entirely
+            # ("[SPARKS] confirming sparks"). Two careers were also counted
+            # as one 119-minute career.
+            if getattr(self, "_career_open", False):
+                self.careers_done += 1
+                self.log(f"[BOT] === career #{self.careers_done} complete "
+                         f"(no Career Complete screen - closed out at the next "
+                         f"session) ===")
+                self._add_history()
+                self._career_time_summary()
+                self._refresh_ocr_if_slow()
+            self._new_career_flags()
+            self._career_open = True
             self._session_started = True
             self._train_deadline = None
             self._mark("training", "training")
@@ -1047,6 +1064,7 @@ class ItBot:
         if "CAREER COMPLETE" in txt and _has(boxes, "To Home"):
             self._set_state("career complete")
             self._tap_text(boxes, "To Home")
+            self._career_open = False
             self.careers_done += 1
             self.log(f"[BOT] === career #{self.careers_done} complete ===")
             self._career_time_summary()
