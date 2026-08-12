@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.85"
+VERSION = "0.86"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -345,6 +345,15 @@ class ItBot:
                     self.log(f"[CAREER END] {len(stats)} of 5 stats read. "
                              f"labels: {[(k, int(lx)) for lx, _l, k in labels]} "
                              f"numbers: {[(int(c), v) for c, v in on_row]}")
+                    # the labels are found but the NUMBERS often are not, and
+                    # a career without all five is no use as a rating sample.
+                    # Keep one picture per career so the reader can be fixed.
+                    if not getattr(self, "_stats_shot_done", False):
+                        self._stats_shot_done = True
+                        self._shot("stats_incomplete", img,
+                                   note=f"{len(stats)}/5 read; labels "
+                                        f"{[(k, int(lx)) for lx, _l, k in labels]}; "
+                                        f"numbers {[(int(c), v) for c, v in on_row]}")
             if stats:
                 self._stats = stats
             m = re.search(r"RACES\D{0,4}(\d+)\D{1,8}WINS\D{0,4}(\d+)", txt)
@@ -361,6 +370,44 @@ class ItBot:
                          f"grade {getattr(self, '_grade', '?')}")
         except Exception as e:
             self.log(f"[BOT] career-end capture failed: {e}")
+
+    def _record_rating_sample(self):
+        """One row per career for working out how rating is built.
+
+        Rating = stats score + skill score + unique bonus, and the game only
+        shows the total AFTER the career ends - so the bot cannot currently
+        tell whether spending more points would cross a rank tier (only
+        400-500 rating wide in the UG range, while an extra skill round buys
+        174-565). Every career here records what we knew and what the game
+        finally said; enough rows and the stats-to-rating relationship can be
+        fitted from our own careers, with no third-party formula to trust and
+        automatic re-learning if the game changes.
+        Analyse with: python tools/rating_fit.py"""
+        rating = getattr(self, "_rating", 0) or 0
+        stats = getattr(self, "_stats", {}) or {}
+        if not rating or len(stats) < 5:
+            self.log(f"[DATA] career not usable as a rating sample "
+                     f"(rating={rating or 'unread'}, {len(stats)}/5 stats read)")
+            return
+        try:
+            row = {
+                "ts": time.strftime("%Y-%m-%d %H:%M"),
+                "trainee": getattr(self, "_trainee", "") or "",
+                "rating": rating,
+                "grade": getattr(self, "_grade", "") or "",
+                "stats": stats,
+                "skill_rating": int(getattr(self, "_plan_rating", 0) or 0),
+                "sp_budget": int(getattr(self, "_sp_budget_first", 0) or 0),
+                "sp_spent": int(getattr(self, "_plan_spend", 0) or 0),
+            }
+            with open("logs/rating_samples.jsonl", "a", encoding="utf-8") as f:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+            n = sum(1 for _ in open("logs/rating_samples.jsonl", encoding="utf-8"))
+            self.log(f"[DATA] rating sample #{n} saved - rating {rating} "
+                     f"({row['grade'] or '?'}), skills ~{row['skill_rating']}, "
+                     f"stats {sum(stats.values())}")
+        except Exception as e:
+            self.log(f"[DATA] could not save the rating sample: {e}")
 
     def _add_history(self):
         """Append this career to history.json (trainee + rating, best
@@ -382,6 +429,7 @@ class ItBot:
                     hist = json.load(f)
             except Exception:
                 hist = []
+            self._record_rating_sample()
             hist.append(entry)
             hist = hist[-300:]
             with open("history.json", "w", encoding="utf-8") as f:
@@ -512,6 +560,10 @@ class ItBot:
         self._cheapest_seen = 0
         self._skill_rounds = 0
         self._scan_no = 0
+        self._plan_rating = 0
+        self._plan_spend = 0
+        self._stats_shot_done = False
+        self._sp_budget_first = 0
         self._reroll_attempts = 0
         self._reroll_gave_up = False
         self._pingpong = 0
@@ -2295,6 +2347,11 @@ class ItBot:
         self._mark("skill buy pass", "skills")
         self.log(f"[BOT] smart skills: buying {len(chosen)} skills, spending "
                  f"{budget - remaining}/{budget} SP, ~{exp_rating} rating")
+        # per-career totals for the rating samples (see _record_rating_sample)
+        if not getattr(self, "_sp_budget_first", 0):
+            self._sp_budget_first = budget
+        self._plan_rating = getattr(self, "_plan_rating", 0) + exp_rating
+        self._plan_spend = getattr(self, "_plan_spend", 0) + (budget - remaining)
         if not chosen:
             return False
 
