@@ -185,9 +185,13 @@ class Adb:
             # last few tap positions, so the bot can spot two screens
             # undoing each other (Confirm <-> Cancel) - repeat_taps below
             # only ever sees the SAME tap repeated
-            self.recent_taps = (getattr(self, "recent_taps", [])
-                                + [(int(x), int(y))])[-16:]
-            key = (int(x), int(y), desc)
+            # OCR-located buttons wobble by a pixel between frames, and an
+            # exact comparison then hides a loop completely: 13/08 tapped
+            # "Start Career" 387 times over 30 minutes at (394..395,1078..1079)
+            # without either watchdog noticing. Compare on an 8px grid.
+            spot = (int(x) // 8, int(y) // 8)
+            self.recent_taps = (getattr(self, "recent_taps", []) + [spot])[-16:]
+            key = (spot, desc)
             if key == getattr(self, "_last_tap", None):
                 self.repeat_taps = getattr(self, "repeat_taps", 0) + 1
             else:

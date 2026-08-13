@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.90"
+VERSION = "0.91"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -368,7 +368,11 @@ class ItBot:
                     # Keep one picture per career so the reader can be fixed.
                     if not getattr(self, "_stats_shot_done", False):
                         self._stats_shot_done = True
-                        self._shot("stats_incomplete", img,
+                        # NOTE: no `img` in this method - passing one here
+                        # raised NameError inside the enclosing try, which
+                        # silently threw the stats away (v0.87-v0.90 read
+                        # 0 of 5). _shot() grabs its own frame when given None.
+                        self._shot("stats_incomplete", None,
                                    note=f"{len(stats)}/5 read; labels "
                                         f"{[(k, int(lx)) for lx, _l, k in labels]}; "
                                         f"numbers {[(int(c), v) for c, v in on_row]}")
@@ -699,7 +703,8 @@ class ItBot:
                 self._pingpong = n
                 seen = getattr(self, "_screen_log", [])
                 other = next((t for t in reversed(seen) if t[:40] != txt[:40]), "")
-                self.log(f"[PINGPONG] {last[0]} and {last[1]} are undoing each "
+                a, b = [tuple(v * 8 for v in p) for p in (last[0], last[1])]
+                self.log(f"[PINGPONG] ~{a} and ~{b} are undoing each "
                          f"other ({n}/3)")
                 self.log(f"[PINGPONG]   screen A: {txt[:110]}")
                 self.log(f"[PINGPONG]   screen B: {other[:110] or '(not captured)'}")
