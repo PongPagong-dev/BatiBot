@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.91"
+VERSION = "0.92"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -301,6 +301,52 @@ class ItBot:
         self.sleep_until = 0
         return not self._stop.is_set()
 
+    def _read_stats_row(self, row_y):
+        """Read the five stat numbers from the Training Log band alone.
+
+        Full-frame OCR reliably loses two of the five - 13/08 returned only
+        Stamina, Guts and Wit (x 206/444/554) and never Speed or Power, both
+        of which sit hard against a wide grade badge (S, A). Cropping the
+        band and reading it on its own is what already makes Skill Pts
+        read every time (_read_budget). The crop is taken from the NATIVE
+        1080p frame when there is one, so the digits stay sharp, and it is
+        anchored to the label row rather than fixed coordinates because the
+        results panel scrolls.
+
+        Returns {} unless all five are found - a partial row is worse than
+        none, since the caller can still fall back to label matching."""
+        im = self.adb.native
+        sx, sy = self.adb.sx, self.adb.sy
+        if im is None:
+            im = self.adb.screenshot()
+            sx = sy = 1.0
+        if im is None:
+            return {}
+        h, w = im.shape[:2]
+        y1 = max(0, int((row_y + 8) * sy))
+        y2 = min(h, int((row_y + 62) * sy))
+        x1, x2 = max(0, int(20 * sx)), min(w, int(595 * sx))   # left of Skill Pts
+        if y2 - y1 < 10 or x2 - x1 < 100:
+            return {}
+        crop = im[y1:y2, x1:x2]
+        if crop.shape[1] < 900:                 # small crops OCR better enlarged
+            crop = cv2.resize(crop, None, fx=2.0, fy=2.0,
+                              interpolation=cv2.INTER_CUBIC)
+        vals = []
+        for t, cx, cy, *_ in ocr_boxes(crop):
+            raw = t.replace(",", "").strip()
+            m = re.search(r"([0-9]{2,4})\s*$", raw)   # "S1007" / "A+924" -> digits
+            d = m.group(1) if m else re.sub(r"[^0-9]", "", raw)
+            if d and 2 <= len(d) <= 4 and 1 <= int(d) <= 2000:
+                vals.append((cx, int(d)))
+        vals.sort()
+        if len(vals) == 5:
+            got = dict(zip(("spd", "sta", "pow", "gut", "wit"),
+                           [v for _cx, v in vals]))
+            self.log(f"[CAREER END] stats row read from the band: {got}")
+            return got
+        return {}
+
     def _capture_training_log(self, boxes, txt):
         """Pull the final numbers off whichever end-of-career screen we are
         on (Training Log Overview, or the results/details screen - they use
@@ -359,6 +405,10 @@ class ItBot:
                         if i < len(on_row) and abs(on_row[i][0] - lx) <= 90:
                             stats[key] = int(on_row[i][1])
                             i += 1
+                if len(stats) < 5:
+                    banded = self._read_stats_row(row_y)
+                    if banded:
+                        stats.update(banded)
                 if len(stats) < 5:
                     self.log(f"[CAREER END] {len(stats)} of 5 stats read. "
                              f"labels: {[(k, int(lx)) for lx, _l, k in labels]} "
