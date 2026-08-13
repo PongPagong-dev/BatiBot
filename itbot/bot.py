@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.94"
+VERSION = "0.95"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -2149,6 +2149,19 @@ class ItBot:
         would DESELECT it). Then one Confirm."""
         self._set_state("skill buying")
         self._invalidate_budget()
+        # Nothing in the shop costs less than ~50 SP, so a budget below that
+        # means the whole sweep is a waste. 14/08: a restart landed here with
+        # 7 SP left and the bot walked the entire list logging 28 "cost >
+        # budget 7" skips before giving up.
+        b0, _im0 = self._read_budget()
+        self._budget = b0
+        if b0 is not None and b0 < 50:
+            self.log(f"[BOT] only {b0} SP left - cheaper than anything in the "
+                     f"shop, skipping the sweep")
+            self._skills_done = True
+            self.adb.tap(60, 1180, "Back (nothing affordable)")
+            time.sleep(2.5)
+            return
         want = [s.strip() for s in self.s.get("skills", []) if s.strip()]
         blocked = [s.strip().upper() for s in self.s.get("skills_blocked", []) if s.strip()]
         # blocklist wins over the buy list
@@ -2297,6 +2310,20 @@ class ItBot:
                 budget = int(digits)
                 break
         if budget is None:
+            # One bad frame should not cost the whole scan. Re-read the strip
+            # a couple of times first - 14/08: a restart with the skill screen
+            # already open failed the read once, fell through to the simple
+            # sweep, and that swept the entire list against a STALE cached
+            # budget of 7 SP, skipping 28 skills for nothing.
+            for _try in range(3):
+                time.sleep(0.6)
+                again, _im = self._read_budget()
+                if again:
+                    budget = again
+                    self.log(f"[BOT] smart skills: SP budget read on retry {_try + 1}")
+                    break
+        if budget is None:
+            self._budget = None          # never sweep against a stale number
             self.log("[BOT] smart skills: could not read SP budget - falling back to simple sweep")
             return False
         self._budget = budget
