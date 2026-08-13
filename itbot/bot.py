@@ -44,6 +44,16 @@ def _load_cards():
         return {}
 
 
+def _load_ranks():
+    """ranks.json: [[min, max, name], ...] from master.mdb single_mode_rank.
+    The game's own tiers, so a rating always maps to the right letter."""
+    try:
+        with open("ranks.json", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+
 def _load_skill_pairs():
     """skill_pairs.json: GOLD NAME -> WHITE NAME, from the game's master
     data (skills that share a group_id; rarity 1 = white, 2 = gold).
@@ -87,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.93"
+VERSION = "0.94"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -158,6 +168,7 @@ class ItBot:
         self.values = _load_skill_values()
         self.cards = _load_cards()
         self.gold_of = {w: g for g, w in _load_skill_pairs().items()}
+        self.ranks = _load_ranks()
         # UI status
         self.state = "idle"
         self.careers_done = 0
@@ -641,6 +652,7 @@ class ItBot:
         self._plan_rating = 0
         self._plan_spend = 0
         self._stats_shot_done = False
+        self._rating_shot_done = False
         self._pp_shots = 0
         self._career_mode_taps = 0
         self._sp_budget_first = 0
@@ -1362,17 +1374,30 @@ class ItBot:
                     if any("RATING" in b[0].upper() and abs(b[2] - cy) < 60 for b in boxes):
                         self._rating = int(digits)
                         break
-            if not getattr(self, "_grade", ""):
+            # The letter is taken from the RATING, using the game's own
+            # tier table - reading a letter off the screen picked up stray
+            # aptitude grades ("A" on the spark carousel for a 17,309
+            # rating, which is SS). The screen letter is only logged, as a
+            # cross-check on where the number came from.
+            rat = getattr(self, "_rating", 0)
+            if rat and not getattr(self, "_grade", ""):
+                for lo, hi, name in self.ranks:
+                    if lo <= rat <= hi:
+                        self._grade = name
+                        break
+                seen = ""
                 for t, *_rest in boxes:
                     g = t.strip().upper().replace(" ", "").replace("RANK", "")
-                    # numbered U-ranks allowed (UG1..UG9): the game's rating
-                    # table has 80 tiers above SS+, far more than a plain
-                    # UG/UG+/UF ladder, so the real names carry numbers
                     if re.fullmatch(r"(U[GFEDCBA][0-9]?|SS|S|A|B|C|D|E|F|G)\+?", g):
-                        self._grade = g
-                        if getattr(self, "_rating", 0):
-                            self.log(f"[GRADE] screen shows '{g}' for rating {self._rating}")
+                        seen = g
                         break
+                self.log(f"[GRADE] rating {rat} -> {self._grade or '?'}"
+                         + (f" (screen also shows '{seen}')" if seen and seen != self._grade
+                            else ""))
+                if not getattr(self, "_rating_shot_done", False):
+                    self._rating_shot_done = True
+                    self._shot("rating_seen", img,
+                               note=f"rating {rat} -> {self._grade}; screen: {txt[:170]}")
 
         # ---- 11. generic advance -------------------------------------------------------
         # bottom button band first: labels like "Next Reward"/"Next Story" and
