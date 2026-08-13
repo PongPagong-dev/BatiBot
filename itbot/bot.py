@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.95"
+VERSION = "0.96"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -970,6 +970,18 @@ class ItBot:
             self._mark("training", "training")
             self.log("[BOT] IT session started - first status check in 4 min")
             self._sleep(240)
+            return
+
+        # ---- "Overwrite the current schedule?" ------------------------------
+        # Bon: always apply the top saved agenda. Title and button share the
+        # word, so take the bottom one.
+        if "OVERWRITE THE CURRENT SCHEDULE" in txt:
+            self._set_state("overwrite schedule dialog")
+            p_ok = _find(boxes, "Overwrite", 88, y_min=700)
+            self.log("[AGENDA] overwrite prompt - keeping my saved schedule")
+            self.adb.tap(*(p_ok or (518, 918)),
+                         "Overwrite" if p_ok else "Overwrite (fixed)")
+            time.sleep(2.5)
             return
 
         # ---- "Choose Career Mode" (Aug 2026 Trainer Aptitude Test event) ----
@@ -2722,16 +2734,29 @@ class ItBot:
         if loads:
             lx, ly = min(loads, key=lambda p: p[1])  # topmost = first slot
             self.adb.tap(lx, ly, "Load List (first slot)")
-            time.sleep(2.2)
-            img = self.adb.screenshot()
-            boxes = ocr_boxes(img) if img is not None else []
-            if "OVERWRITE" in _all_text(boxes):
-                self._tap_text(boxes, "Overwrite")
+            # POLL for the Overwrite prompt instead of taking one look 2.2s
+            # later: across 129 loads the single screenshot caught it only 3
+            # times, so most careers silently kept the old schedule (verified
+            # counts wandered 21/24/26/35/36 when the saved agenda is 36).
+            confirmed = False
+            for _try in range(6):
+                time.sleep(1.0)
+                img = self.adb.screenshot()
+                boxes = ocr_boxes(img) if img is not None else []
+                if "OVERWRITE" not in _all_text(boxes):
+                    continue
+                # the dialog TITLE is also "Overwrite" - the button is the
+                # one at the bottom (720x1280: ~(518,918))
+                p_ok = _find(boxes, "Overwrite", 88, y_min=700)
+                self.adb.tap(*(p_ok or (518, 918)),
+                             "Overwrite" if p_ok else "Overwrite (fixed)")
                 self.log("[BOT] first saved agenda loaded (overwrote current schedule)")
+                confirmed = True
                 time.sleep(2)
-            else:
+                break
+            if not confirmed:
                 # no prompt = current schedule was empty, load was instant
-                self.log("[BOT] first saved agenda loaded")
+                self.log("[BOT] first saved agenda loaded (no overwrite prompt)")
             loaded = True
         if not loaded:
             self.log("[BOT] no Load List button found in My Agendas - career runs with goal races only")
