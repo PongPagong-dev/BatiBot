@@ -87,7 +87,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.92"
+VERSION = "0.93"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -99,6 +99,12 @@ FREEZE_RELAUNCH_WAIT = 90
 # quarter-hour pieces means a freeze is caught within ~15 minutes instead of
 # at the end of the whole 45-50 minute session.
 SLEEP_CHUNK = 900
+
+# How long past the countdown to sleep before looking again. Waking early
+# is cheap - one screenshot and another short nap - while waking late is
+# dead time on every career, so keep it small. (13/08: "32s left ->
+# sleeping 107s" then TRAINING COMPLETE, about a minute of nothing.)
+END_BUFFER = 10
 
 # buttons the generic clicker may press
 ALLOW_BUTTONS = ["NEXT", "CLOSE", "CONFIRM", "OK", "TO HOME", "START CAREER!", "START CAREER"]
@@ -1014,7 +1020,7 @@ class ItBot:
                 secs = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
                 if 60 <= secs <= 4 * 3600:
                     secs = self._training_remaining(secs)
-                    nap = min(secs + 30, SLEEP_CHUNK)
+                    nap = max(15, min(secs + END_BUFFER, SLEEP_CHUNK))
                     self.log(f"[BOT] training on the watch screen, {secs}s left "
                              f"- sleeping {nap}s")
                     self._sleep(nap)
@@ -1472,7 +1478,7 @@ class ItBot:
             remaining = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
             if 0 <= remaining <= 3600:
                 remaining = self._training_remaining(remaining)
-                nap = min(remaining + 75, SLEEP_CHUNK)
+                nap = max(15, min(remaining + END_BUFFER, SLEEP_CHUNK))
                 self.log(f"[BOT] training, {remaining}s left "
                          f"('{timer_txt.strip()}') - sleeping {nap}s")
                 self.adb.tap(*POPUP_CANCEL, "Cancel")
