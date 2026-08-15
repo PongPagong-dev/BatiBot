@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.96"
+VERSION = "0.97"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -972,6 +972,29 @@ class ItBot:
             self._sleep(240)
             return
 
+        # ---- the game wants to reload its data --------------------------------
+        # "New data is available. Returning to title screen." with a single
+        # TITLE SCREEN button. 14/08 20:32: the bot did not know it and sat
+        # tapping the middle of the screen.
+        if "NEW DATA IS AVAILABLE" in txt or "RETURNING TO TITLE" in txt:
+            self._set_state("data update")
+            p_ok = _find(boxes, "Title Screen", 85) or _find(boxes, "OK", 90)
+            self.log("[BOT] game data update - going back to the title screen")
+            self.adb.tap(*(p_ok or (360, 835)), "Title Screen (data update)")
+            time.sleep(6)
+            return
+
+        # ---- a race is playing ------------------------------------------------
+        # Races run themselves; the commentary bar is the giveaway. Tapping
+        # during one does nothing useful, and on 14/08 the [LOST] rule tapped
+        # the Home tab mid-race after 12 unrecognised ticks. Just wait.
+        if "COMMENTARY" in txt:
+            self._set_state("race running")
+            self._same_state_count = 0        # never count a race as lost
+            self.log("[BOT] race in progress - waiting it out")
+            self._sleep(20)
+            return
+
         # ---- "Overwrite the current schedule?" ------------------------------
         # Bon: always apply the top saved agenda. Title and button share the
         # word, so take the bottom one.
@@ -1809,7 +1832,9 @@ class ItBot:
             if im is not None and self._at_top(im, bar) is True:
                 time.sleep(0.3)
                 return True
-            im2 = self._settle(prev=im, timeout=0.9) or self.adb.screenshot()
+            im2 = self._settle(prev=im, timeout=0.9)
+            if im2 is None:            # numpy arrays have no truthiness
+                im2 = self.adb.screenshot()
             h = self._list_hash(im2) if im2 is not None else None
             if h is not None and h == prev:
                 same += 1
@@ -1841,7 +1866,9 @@ class ItBot:
                 time.sleep(0.4)
                 self.log(f"[SCROLL] back at top after {i + 1} drags")
                 return True
-            im2 = self._settle(prev=im, timeout=0.9) or self.adb.screenshot()
+            im2 = self._settle(prev=im, timeout=0.9)
+            if im2 is None:            # numpy arrays have no truthiness
+                im2 = self.adb.screenshot()
             h = self._list_hash(im2) if im2 is not None else None
             if h is not None and h == prev:
                 same += 1

@@ -134,6 +134,7 @@ PAGE = """<!doctype html>
  <summary>History</summary>
  <div class="body">
   <div id="history" style="font-size:13px; padding-top:10px;"><span class="muted">no careers finished yet</span></div>
+  <button class="mini" onclick="clearHistory()" style="margin-top:10px;background:#3a2028;color:#e6a4b0">Clear career history</button>
  </div>
 </details>
 
@@ -142,6 +143,8 @@ PAGE = """<!doctype html>
  <div class="body">
   <pre id="log"></pre>
   <button class="mini" onclick="clearLog()" style="margin-top:10px">Clear log</button>
+  <button class="mini" onclick="clearFiles()" style="margin-top:10px;background:#3a2028;color:#e6a4b0">Delete log files &amp; screenshots on disk</button>
+  <div class="muted" id="diskinfo" style="margin-top:6px"></div>
  </div>
 </details>
 
@@ -306,6 +309,18 @@ async function clearLog(){
  document.getElementById('mini').innerHTML='';
  document.getElementById('tickertext').textContent='log cleared';
 }
+async function clearHistory(){
+ if(!confirm('Delete every career from the history table? This cannot be undone.')) return;
+ const r=await (await fetch('/api/clearhistory',{method:'POST'})).json();
+ lastHist=-1; loadHistory();
+ document.getElementById('tickertext').textContent='history cleared ('+r.removed+' careers)';
+}
+async function clearFiles(){
+ if(!confirm('Delete the run logs and debug screenshots from the logs folder?')) return;
+ const r=await (await fetch('/api/clearfiles',{method:'POST'})).json();
+ document.getElementById('diskinfo').textContent =
+   'deleted '+r.files+' files ('+r.mb+' MB freed)';
+}
 let lastHist=0;
 async function loadHistory(){
  try{
@@ -423,6 +438,47 @@ def make_app(get_bot, start_bot, stop_bot, settings, save_settings, logbuf):
     def clearlog():
         del logbuf[:]
         return jsonify({"ok": True})
+
+    @app.post("/api/clearhistory")
+    def clearhistory():
+        """Empty history.json (the career table). Keeps the file so the bot
+        can keep appending."""
+        n = 0
+        try:
+            with open("history.json", encoding="utf-8") as f:
+                n = len(json.load(f))
+        except Exception:
+            pass
+        try:
+            with open("history.json", "w", encoding="utf-8") as f:
+                json.dump([], f)
+        except Exception as e:
+            return jsonify({"ok": False, "error": str(e), "removed": 0})
+        return jsonify({"ok": True, "removed": n})
+
+    @app.post("/api/clearfiles")
+    def clearfiles():
+        """Delete run logs and debug screenshots from logs/ - everything
+        except the log being written right now."""
+        import glob
+        import os
+        files, freed = 0, 0
+        live = max(glob.glob(os.path.join("logs", "run_*.log")),
+                   key=os.path.getmtime, default=None)
+        targets = (glob.glob(os.path.join("logs", "run_*.log"))
+                   + glob.glob(os.path.join("logs", "*.png"))
+                   + glob.glob(os.path.join("logs", "shots", "*")))
+        for path in targets:
+            if live and os.path.abspath(path) == os.path.abspath(live):
+                continue
+            try:
+                size = os.path.getsize(path)
+                os.remove(path)
+                files += 1
+                freed += size
+            except Exception:
+                pass
+        return jsonify({"ok": True, "files": files, "mb": round(freed / 1048576, 1)})
 
     @app.get("/api/settings")
     def get_settings():
