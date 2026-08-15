@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.97"
+VERSION = "0.98"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -956,6 +956,11 @@ class ItBot:
             # ("[SPARKS] confirming sparks"). Two careers were also counted
             # as one 119-minute career.
             if getattr(self, "_career_open", False):
+                # the Aptitude Test career ends without a "Career Complete"
+                # screen, so this is also where the setup timing starts -
+                # without it the whole next-career setup is billed to sparks
+                self._mark("next career setup", "setup")
+                self._shot("no_complete_screen", img, note=txt[:200])
                 self.careers_done += 1
                 self.log(f"[BOT] === career #{self.careers_done} complete "
                          f"(no Career Complete screen - closed out at the next "
