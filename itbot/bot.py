@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.98"
+VERSION = "0.99"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -660,6 +660,7 @@ class ItBot:
         self._reroll_gave_up = False
         self._pingpong = 0
         self._tp_restores = 0
+        self._tp_ticks = 0
         self._reroll_popup_taps = 0
         self._reroll_pressed = False
         self._carousel_wait = 0
@@ -975,6 +976,19 @@ class ItBot:
             self._mark("training", "training")
             self.log("[BOT] IT session started - first status check in 4 min")
             self._sleep(240)
+            return
+
+        # ---- veteran list full ------------------------------------------------
+        # 19/08 05:31: "VETERAN UMAMUSUME MAX. YOU CANNOT ADD ANY MORE
+        # VETERAN UMAMUSUME. 260/260" blocked every career start, and the bot
+        # ping-ponged between the dialog and the menu until it gave up. It
+        # cannot be fixed from here - only Bon can free slots - so say so.
+        if "CANNOT ADD ANY MORE VETERAN" in txt or "VETERAN UMAMUSUME MAX" in txt:
+            self._set_state("veterans full")
+            self._shot("veterans_full", img, note=txt[:200])
+            self.log("[BOT] the veteran list is FULL (260/260) - the game will not "
+                     "start another career until you free some slots. Stopping.")
+            self._stop.set()
             return
 
         # ---- the game wants to reload its data --------------------------------
@@ -2807,6 +2821,20 @@ class ItBot:
         self._set_state("recovering TP")
         self._tp_ticks = getattr(self, "_tp_ticks", 0) + 1
         if self._tp_ticks > 15:
+            # Only the reroll wanted this TP - the career itself is fine, so
+            # skip the reroll and carry on. (18/08 22:43: the bot stopped 5s
+            # into its FIRST restore of the career because _tp_ticks had been
+            # counting up all day - 9 restores, not one "recovery complete"
+            # screen to reset it.)
+            if getattr(self, "_reroll_attempts", 0):
+                self.log("[TP] cannot top up TP for the reroll - keeping this "
+                         "spark set and carrying on")
+                self._reroll_attempts = 99
+                self._reroll_gave_up = True
+                self._tp_ticks = 0
+                self.adb.tap(201, 833, "No (TP for reroll)")
+                time.sleep(2.5)
+                return
             self.log("[BOT] TP recovery seems stuck (not enough carats?) - stopping.")
             self._stop.set()
             return
