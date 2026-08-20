@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "0.99"
+VERSION = "1.00"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -978,6 +978,18 @@ class ItBot:
             self._sleep(240)
             return
 
+        # ---- the game will not start the career -------------------------------
+        # 21/08: an empty deck slot made "Start Career" a no-op; the bot
+        # tapped it 25 times and stopped without a word about why.
+        if (self.state == "support formation"
+                and getattr(self.adb, "repeat_taps", 0) >= 10):
+            self._shot("start_career_refused", img, note=txt[:200])
+            self.log("[BOT] the game is not accepting Start Career - usually an "
+                     "EMPTY SUPPORT SLOT in the deck (check the formation "
+                     "screen). Stopping so nothing else is disturbed.")
+            self._stop.set()
+            return
+
         # ---- veteran list full ------------------------------------------------
         # 19/08 05:31: "VETERAN UMAMUSUME MAX. YOU CANNOT ADD ANY MORE
         # VETERAN UMAMUSUME. 260/260" blocked every career start, and the bot
@@ -1731,6 +1743,22 @@ class ItBot:
                     else:
                         self.log(f"[BORROW] match row '{rtext[:48]}' ~ '{target}'"
                                  + (f" / {self.cards.get(want_n)}" if chara_n else ""))
+                        # NEVER tap a row unless the borrow list is really
+                        # open. 21/08: the deck came back with the top-middle
+                        # slot EMPTY and the game then refused to start the
+                        # career (25 dead "Start Career" taps). A row tap at
+                        # (360,419) lands exactly on that slot on the Support
+                        # Formation screen, and tapping a card there removes
+                        # it from the deck.
+                        listed = _all_text(boxes)
+                        if not any(k in listed for k in
+                                   ("LAST LOGIN", "FOLLOWING", "MUTUAL",
+                                    "DUPLICATE SUPPORT")):
+                            self.log("[BORROW] the guest list is not on screen "
+                                     "any more - not tapping (that would strip a "
+                                     "card out of the deck)")
+                            self._shot("borrow_list_gone", note=listed[:200])
+                            return False
                         self.adb.tap(360, rcy, "borrow card")
                     self._borrow_done = True
                     time.sleep(2.5)
