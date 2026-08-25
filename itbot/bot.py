@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.01"
+VERSION = "1.02"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -649,6 +649,8 @@ class ItBot:
         self._cheapest_seen = 0
         self._skill_rounds = 0
         self._scan_no = 0
+        self._scan_cache = None
+        self._career_tapped = []
         self._plan_rating = 0
         self._plan_spend = 0
         self._stats_shot_done = False
@@ -1996,13 +1998,17 @@ class ItBot:
         return bottom
 
     def _swipe_step_up(self):
-        """One step back UP the list - the mirror of _swipe_step_down."""
+        """One step back UP the list - the mirror of _swipe_step_down.
+        Returns True at the top of the list, False mid-list, None if the
+        scrollbar was unreadable."""
         self.adb.swipe(360, 650, 360, 950, dur_ms=900)
         time.sleep(0.2)
         im = self.adb.screenshot()
+        top = self._list_at_top(im) if im is not None else None
         self._settled_frame = self._settle(prev=im)
+        return top
 
-    def _rescue_missing_upward(self, missing, tapped_names):
+    def _rescue_missing_upward(self, missing, tapped_names, upward=True):
         """Catch chosen rows the downward sweep walked past.
 
         A row whose cost line lands below y1000 on one screen and above y470
@@ -2014,7 +2020,10 @@ class ItBot:
         for _ in range(3):
             if self._stop.is_set():
                 break
-            self._swipe_step_up()
+            if upward:
+                self._swipe_step_up()
+            else:
+                self._swipe_step_down()
             im = (self._settled_frame if self._settled_frame is not None
                   else self.adb.screenshot())
             self._settled_frame = None
@@ -2030,8 +2039,8 @@ class ItBot:
                         got += 1
                     else:
                         tapped_names.remove(tt)
-        self.log(f"[RESCUE] walked back up 3 screens - bought {got} of "
-                 f"{len(missing)} skill(s) the sweep had missed")
+        self.log(f"[RESCUE] walked back {'up' if upward else 'down'} 3 screens "
+                 f"- bought {got} of {len(missing)} skill(s) the sweep had missed")
         return got
 
     def _settle(self, prev=None, timeout=1.2):
@@ -2094,7 +2103,7 @@ class ItBot:
             self.log(f"[BOT] skipping '{name}' - cost {cost} > budget {b0}")
             return False  # can't afford - don't waste taps
         self.adb.tap(px, py, "skill +")
-        time.sleep(0.55)
+        time.sleep(0.35)
         b1, im = self._read_budget()
         self._budget = b1
         if b0 is None or b1 is None or b1 < b0:
@@ -2103,7 +2112,7 @@ class ItBot:
             for t2, c2, px2, py2 in self._rows(im):
                 if fuzz.ratio(t2.upper(), name.upper()) >= 90:
                     self.adb.tap(px2, py2, "skill + retry")
-                    time.sleep(0.55)
+                    time.sleep(0.35)
                     b2, _ = self._read_budget()
                     self._budget = b2
                     ok = b2 is not None and b2 < b0
@@ -2431,56 +2440,77 @@ class ItBot:
         self._mark(f"skill scan (round {self._scan_no})", "skills")
         self.log(f"[BOT] smart skills: SP budget {budget}")
 
+        # --- round 2 can reuse round 1's scan -------------------------------
+        # Prices do not change between rounds of the same career-end visit;
+        # the only difference is that bought rows are gone. Re-reading the
+        # whole list to spend a couple hundred leftover SP cost ~80s per
+        # round (4.2h across the 145-career baseline). Round 3 still does a
+        # real scan, in case buying revealed upgraded skills the cache has
+        # never seen (e.g. Lucky Seven -> Super Lucky Seven).
+        cached = None
+        if self._scan_no == 2 and getattr(self, "_scan_cache", None):
+            left = [e for e in self._scan_cache
+                    if not any(fuzz.ratio(e[0], t) >= 90
+                               for t in self._career_tapped)]
+            if left:
+                self.log(f"[BOT] smart skills: reusing round 1's scan - "
+                         f"{len(left)} of {len(self._scan_cache)} rows still "
+                         f"unbought, skipping the rescan")
+                cached = left
+
         # --- scan sweep: names + displayed costs ----------------------------
-        self._scroll_to_top()   # never assume the list is where we left it
         entries = []  # (text_upper, cost)
-        prev_scan_h = None
-        scan_same = 0
-        barren = 0
+        if cached is not None:
+            entries = cached
+        else:
+            self._scroll_to_top()   # never assume the list is where we left it
+            prev_scan_h = None
+            scan_same = 0
+            barren = 0
 
-        def _scanned(t):
-            tu = t.upper()
-            return any(fuzz.ratio(tu, e[0]) >= 90 for e in entries)
+            def _scanned(t):
+                tu = t.upper()
+                return any(fuzz.ratio(tu, e[0]) >= 90 for e in entries)
 
-        for sweep_i in range(20):
-            if self._stop.is_set():
-                return False
-            hit_bottom = None
-            if sweep_i > 0:
-                hit_bottom = self._swipe_step_down()
-            # reuse the settled frame from the drag when we have one
-            im = (self._settled_frame if self._settled_frame is not None
-                  else self.adb.screenshot())
-            self._settled_frame = None
-            if im is None:
-                continue
-            n_before = len(entries)
-            for name, cost, px, py in self._rows(im):
-                if not _scanned(name):
-                    entries.append((name.upper(), cost))
-            if hit_bottom is True or self._list_at_bottom(im):
-                break
-            # UAT-style content check (Kisegami): a screen whose skills are
-            # ALL already recorded means the list stopped moving. They break
-            # on the first duplicate; our viewports overlap on purpose, so we
-            # need 3 barren screens in a row - a third safety net that works
-            # even when the scrollbar is hidden and the frame keeps animating.
-            if n_before == len(entries):
-                barren += 1
-                if barren >= 3:
-                    self.log("[BOT] scan: 3 screens with no new skills - end of list")
+            for sweep_i in range(20):
+                if self._stop.is_set():
+                    return False
+                hit_bottom = None
+                if sweep_i > 0:
+                    hit_bottom = self._swipe_step_down()
+                # reuse the settled frame from the drag when we have one
+                im = (self._settled_frame if self._settled_frame is not None
+                      else self.adb.screenshot())
+                self._settled_frame = None
+                if im is None:
+                    continue
+                n_before = len(entries)
+                for name, cost, px, py in self._rows(im):
+                    if not _scanned(name):
+                        entries.append((name.upper(), cost))
+                if hit_bottom is True or self._list_at_bottom(im):
                     break
-            else:
-                barren = 0
-            h = self._list_hash(im)
-            if h is not None and h == prev_scan_h and n_before == len(entries):
-                scan_same += 1
-                if scan_same >= 2:
-                    break
-            else:
-                scan_same = 0
-            prev_scan_h = h
-        if len(entries) < 3:
+                # UAT-style content check (Kisegami): a screen whose skills are
+                # ALL already recorded means the list stopped moving. They break
+                # on the first duplicate; our viewports overlap on purpose, so we
+                # need 3 barren screens in a row - a third safety net that works
+                # even when the scrollbar is hidden and the frame keeps animating.
+                if n_before == len(entries):
+                    barren += 1
+                    if barren >= 3:
+                        self.log("[BOT] scan: 3 screens with no new skills - end of list")
+                        break
+                else:
+                    barren = 0
+                h = self._list_hash(im)
+                if h is not None and h == prev_scan_h and n_before == len(entries):
+                    scan_same += 1
+                    if scan_same >= 2:
+                        break
+                else:
+                    scan_same = 0
+                prev_scan_h = h
+        if cached is None and len(entries) < 3:
             self.log(f"[BOT] smart skills: scan found only {len(entries)} priced rows - falling back")
             return False
         blocked = getattr(self, "_blocked_skills", [])
@@ -2648,7 +2678,11 @@ class ItBot:
         # Skill Points strip - drags there do NOTHING (v0.38 bug: the buy
         # pass ran with the list still at the bottom, tapped 0 rows).
         self._set_state("skill buying (smart)")
-        self._scroll_to_top()
+        # Direction: a real scan just walked the list DOWN and left it at the
+        # bottom, so buy on the way back UP and save the ~20s verified
+        # scroll-to-top. A cache-reused round skipped the scan, so the
+        # freshly opened list is still at the top - buy downward as before.
+        buy_upward = cached is None
         chosen_names = [c[0] for c in chosen] + hunted
         prev_buy_h = None
         buy_same = 0
@@ -2659,7 +2693,8 @@ class ItBot:
                 return False
             hit_bottom = None
             if sweep_i > 0:
-                hit_bottom = self._swipe_step_down()
+                hit_bottom = (self._swipe_step_up() if buy_upward
+                              else self._swipe_step_down())
             # reuse the settled frame from the drag when we have one
             im = (self._settled_frame if self._settled_frame is not None
                   else self.adb.screenshot())
@@ -2685,9 +2720,12 @@ class ItBot:
                         cv2.imwrite("logs/buydbg0.png", im)
                     except Exception:
                         pass
-            if hit_bottom is True or self._list_at_bottom(im):
-                stop_reason = ("scrollbar says bottom" if hit_bottom is True
-                               else "list looks like the bottom")
+            at_edge = (self._list_at_top(im) if buy_upward
+                       else self._list_at_bottom(im))
+            if hit_bottom is True or at_edge:
+                edge = "top" if buy_upward else "bottom"
+                stop_reason = (f"scrollbar says {edge}" if hit_bottom is True
+                               else f"list looks like the {edge}")
                 break
             h = self._list_hash(im)
             if h is not None and h == prev_buy_h and nb == len(tapped_names):
@@ -2704,6 +2742,12 @@ class ItBot:
                  f"last screen: {'; '.join(last_rows[:6]) or '(no rows)'}")
         self._mark("skill hunt + confirm", "skills")
         self.log(f"[BOT] smart buy pass done - tapped {len(tapped_names)} rows")
+        # remember this round's scan + what has been bought, so round 2 can
+        # skip its rescan (see the `cached` branch above)
+        if cached is None:
+            self._scan_cache = list(entries)
+        self._career_tapped = list(self._career_tapped) + [
+            t for t in tapped_names if t not in self._career_tapped]
         if not tapped_names:
             self._shot("buy_pass_empty", note=f"chose {len(chosen)} skills but tapped none")
 
@@ -2728,11 +2772,12 @@ class ItBot:
         # if the sweep reached the bottom every row was already examined, so
         # walking the same list again buys nothing - 01-05/08 logs: 242 hunt
         # passes, 7.2 hours, and the ones after a full sweep bought 0
-        if missing and stop_reason.endswith("bottom"):
+        if missing and (stop_reason.endswith("bottom") or stop_reason.endswith("top")):
             self.log(f"[BOT] {len(missing)} chosen skill(s) not tapped "
                      f"({', '.join(missing[:5])}) - checking the last screens "
                      f"on the way back up before giving up")
-            self._rescue_missing_upward(missing, tapped_names)
+            self._rescue_missing_upward(missing, tapped_names,
+                                        upward=not buy_upward)
             # a full re-walk of a list we already reached the bottom of buys
             # nothing (242 hunt passes, 7.2 hours, zero skills)
             missing = []
