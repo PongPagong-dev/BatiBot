@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.00"
+VERSION = "1.01"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -1013,6 +1013,18 @@ class ItBot:
             self.log("[BOT] game data update - going back to the title screen")
             self.adb.tap(*(p_ok or (360, 835)), "Title Screen (data update)")
             time.sleep(6)
+            return
+
+        # ---- loading screen ---------------------------------------------------
+        # 23/08: "NOW LOADING..." was treated as being lost - Home taps, then
+        # a game restart, over a screen that only needed patience. Waiting is
+        # the ONLY correct move here; the freeze guard still catches a load
+        # that truly never ends, because the screen text stops changing.
+        if "NOW LOADING" in txt or txt.strip() == "LOADING":
+            self._set_state("loading")
+            self._same_state_count = 0
+            self.adb.repeat_taps = 0
+            time.sleep(5)
             return
 
         # ---- a race is playing ------------------------------------------------
