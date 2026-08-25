@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.02"
+VERSION = "1.03"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -2441,17 +2441,50 @@ class ItBot:
         self.log(f"[BOT] smart skills: SP budget {budget}")
 
         # --- round 2 can reuse round 1's scan -------------------------------
-        # Prices do not change between rounds of the same career-end visit;
-        # the only difference is that bought rows are gone. Re-reading the
+        # Bought rows vanish between rounds, and a gold whose white was
+        # bought gets cheaper (handled below) - everything else keeps its
+        # price within the same career-end visit. Re-reading the
         # whole list to spend a couple hundred leftover SP cost ~80s per
         # round (4.2h across the 145-career baseline). Round 3 still does a
         # real scan, in case buying revealed upgraded skills the cache has
         # never seen (e.g. Lucky Seven -> Super Lucky Seven).
         cached = None
         if self._scan_no == 2 and getattr(self, "_scan_cache", None):
-            left = [e for e in self._scan_cache
-                    if not any(fuzz.ratio(e[0], t) >= 90
-                               for t in self._career_tapped)]
+            def _gone(name):
+                # bought directly...
+                if any(fuzz.ratio(name, t) >= 90 for t in self._career_tapped):
+                    return True
+                # ...or owned via its gold: buying the gold removes the
+                # white's row from the shop (v0.76), so it cannot be chosen
+                g = self._gold_for(name)
+                return bool(g) and any(fuzz.ratio(g, t) >= 88
+                                       for t in self._career_tapped)
+            left = [e for e in self._scan_cache if not _gone(e[0])]
+            # Bon: prices DO change once you buy - a gold's displayed cost
+            # includes its white, so buying the white drops the gold by
+            # exactly the white's price (06/08 log: No Stopping Me! 300 in
+            # round 1, 150 in round 2 after Nimble Navigator at 150).
+            # Adjust those golds instead of trusting the stale number; the
+            # tap itself always uses the live on-screen price either way.
+            if left:
+                price_of = {n: c for n, c in self._scan_cache}
+                adjusted = []
+                for name, cost in left:
+                    for white, gold in self.gold_of.items():
+                        if fuzz.ratio(name, gold) < 88:
+                            continue
+                        bought_white = any(fuzz.ratio(white, t) >= 88
+                                           for t in self._career_tapped)
+                        wp = next((c for n, c in price_of.items()
+                                   if fuzz.ratio(n, white) >= 88), 0)
+                        if bought_white and wp and wp < cost:
+                            self.log(f"[PAIR] '{name}' should now cost "
+                                     f"{cost - wp} (was {cost}) - its white "
+                                     f"was bought this career")
+                            cost = cost - wp
+                        break
+                    adjusted.append((name, cost))
+                left = adjusted
             if left:
                 self.log(f"[BOT] smart skills: reusing round 1's scan - "
                          f"{len(left)} of {len(self._scan_cache)} rows still "
