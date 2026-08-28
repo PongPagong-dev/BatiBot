@@ -352,17 +352,22 @@ async function loadHistory(){
   if(!h.length){ return; }
   let totalFans=0, best=0;
   h.forEach(e=>{ totalFans+=Number(e.fans)||0; best=Math.max(best, Number(e.rating)||0); });
-  const rows = h.slice().reverse().map(e=>{
+  const rows = h.slice().reverse().map((e,idx)=>{
+   const num = h.length - idx;
    const st=e.stats||{};
-   const stats=['spd','sta','pow','gut','wit'].map(k=>st[k]==null?'-':st[k]).join(' / ');
+   const stats=['spd','sta','pow','gut','wit'].map(k=>st[k]==null?'-':st[k]).join('/');
    const grade=e.grade?`<span class="grade">${e.grade}</span>`:'';
    const rec=e.races?`${e.wins||0}/${e.races}`:'-';
    const raw=(e.sparks||'');
    const chips=sparkChips(raw);
    const sphtml=chips || (raw?`<div class="sparks" title="${raw.replace(/"/g,'&quot;')}">${raw.replace(/</g,'&lt;')}</div>`:'');
    return `<tr>
-     <td class="dim">${e.n||''}<div style="font-size:10px">${(e.ts||'').slice(5,16)}</div></td>
-     <td>${(e.trainee||'unknown').replace(/</g,'&lt;')}
+     <td class="dim nowrap">${num}<div style="font-size:10px;white-space:nowrap">${(e.ts||'').slice(5,10)}<br>${(e.ts||'').slice(11,16)}</div></td>
+     <td style="min-width:190px">${(function(){
+        const t=(e.trainee||'unknown').replace(/</g,'&lt;');
+        const mm=t.match(/^\[(.*)\]\s*(.*)$/);
+        return mm?`<span title="[${mm[1]}]">${mm[2]}</span>`:t;
+       })()}
        ${sphtml?`<div>${sphtml}</div>`:''}</td>
      <td class="num">${grade||'<span class="dim">-</span>'}${e.rating?`<div class="dim">${Number(e.rating).toLocaleString()}</div>`:''}</td>
      <td class="num mono">${stats}</td>
@@ -376,7 +381,7 @@ async function loadHistory(){
      ${h.length>10?'&middot; newest first, scroll for older':''}</div>
    <div class="histwrap"><table class="hist">
     <thead><tr><th>#</th><th>Trainee / sparks kept</th><th>Grade</th>
-      <th>SPD / STA / POW / GUT / WIT</th><th>Wins</th><th>Fans</th></tr></thead>
+      <th>SPD/STA/POW/GUT/WIT</th><th>Wins</th><th>Fans</th></tr></thead>
     <tbody>${rows}</tbody></table></div>`;
  }catch(e){}
 }
