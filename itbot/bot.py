@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.04"
+VERSION = "1.05"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -3032,6 +3032,8 @@ class ItBot:
                                  if abs(by - cy) <= 26 and bx < 540).strip()
             kind = (self._spark_kind(name_here) or by_colour(cy)
                     or self._green_by_rarity(name_here) or "white")
+            if kind == "misread":
+                continue
             stars = 0
             for sx in (566, 598, 630):
                 sb, sg, sr = patch(sx, cy)
@@ -3080,7 +3082,17 @@ class ItBot:
                 r = fuzz.ratio(k, vk)
                 if r >= 90 and r > best_r:
                     e, best_r = vv, r
-        return "green" if e and e.get("r", 0) >= 3 else None
+        if e and e.get("r", 0) >= 3:
+            return "green"
+        # Bon's rule: GOLD skills never produce white sparks - only the
+        # white version of a skill (and races) can. A gold name (rarity 2)
+        # in a spark scan is therefore an OCR misread; flag it so it is
+        # dropped rather than counted and scored as a white.
+        if e and e.get("r", 0) == 2:
+            self.log(f"[SPARKS] '{name}' reads as a GOLD skill - golds never "
+                     f"appear as sparks, dropping the row as a misread")
+            return "misread"
+        return None
 
     def _scan_spark_set(self, im=None, boxes=None):
         """Scan one carousel page: visible rows, one scroll for the whites
