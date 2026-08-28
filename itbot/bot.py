@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.05"
+VERSION = "1.06"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -3162,13 +3162,17 @@ class ItBot:
                 parts.append(f"pink {name} {stars}*={pts}")
             elif kind == "green":
                 score += stars
+                # name the green - it is the inheritable unique, the one
+                # thing Bon looks for when choosing parents
+                parts.append(f"green {name} {stars}*")
             else:
                 # 85, not 72: at 72 "Ignited Spirit: Speed +" earned the
                 # bonus for a list holding Ignited Spirit PWR/WIT
                 bonus = 10 if any(fuzz.ratio(nu, p) >= 85 for p in prio) else 0
                 score += stars + bonus
-                if bonus:
-                    parts.append(f"white {name} {stars}*+{bonus}")
+                # record EVERY white by name (Bon wants them on hover in the
+                # history), with the +10 marking the buy-list ones
+                parts.append(f"white {name} {stars}*" + (f"+{bonus}" if bonus else ""))
         kinds = {}
         for k, _n, _s in rows:
             kinds[k] = kinds.get(k, 0) + 1

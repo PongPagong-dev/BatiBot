@@ -338,12 +338,12 @@ function sparkChips(sp){
   const mm=seg.trim().match(/^(blue|pink|green|white)\s+(.+?)\s+(\d)\*/);
   if(!mm) return;
   const name=esc(mm[2].replace(/\.+$/,'')), stars=mm[3]+'\u2605';
-  if(mm[1]==='white'){ whites.push(name+' '+stars); return; }
+  if(mm[1]==='white'){ whites.push(name+' '+stars+(seg.includes('+10')?' (your list)':'')); return; }
   chips.push('<span class="spk '+mm[1][0]+'">'+name+' '+stars+'</span>');
  });
  const wN=(counts.white!=null)?counts.white:whites.length;
- if(wN) chips.push('<span class="spk w" title="on your buy list: '+
-   (whites.join(', ')||'none')+'">'+wN+' white'+(wN>1?'s':'')+'</span>');
+ if(wN) chips.push('<span class="spk w" title="'+
+   (whites.join('\u000A')||'names not recorded for this career')+'">'+wN+' white'+(wN>1?'s':'')+'</span>');
  return chips.join('');
 }
 async function loadHistory(){
