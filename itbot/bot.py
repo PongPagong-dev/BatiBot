@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.03"
+VERSION = "1.04"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -3030,7 +3030,8 @@ class ItBot:
         for cy in anchors:
             name_here = " ".join(t for t, bx, by, *_ in (boxes or [])
                                  if abs(by - cy) <= 26 and bx < 540).strip()
-            kind = self._spark_kind(name_here) or by_colour(cy) or "white"
+            kind = (self._spark_kind(name_here) or by_colour(cy)
+                    or self._green_by_rarity(name_here) or "white")
             stars = 0
             for sx in (566, 598, 630):
                 sb, sg, sr = patch(sx, cy)
@@ -3063,6 +3064,24 @@ class ItBot:
                 return "pink"
         return None
 
+    def _green_by_rarity(self, name):
+        """Unique-skill sparks are GREEN, and their names are rarity >= 3 in
+        the game data (Angling and Scheming = 5; whites 1, golds 2). The
+        colour sampler misses rows when the frame is mid-scroll, and the
+        fallback then called them white - Bon's Seiun Sky set showed
+        blue:1 pink:1 white:17 for what was really 1 green + 15 whites."""
+        k = _norm_name(name)
+        if not k:
+            return None
+        e = self.values.get(k)
+        if e is None:
+            best_r = 0
+            for vk, vv in self.values.items():
+                r = fuzz.ratio(k, vk)
+                if r >= 90 and r > best_r:
+                    e, best_r = vv, r
+        return "green" if e and e.get("r", 0) >= 3 else None
+
     def _scan_spark_set(self, im=None, boxes=None):
         """Scan one carousel page: visible rows, one scroll for the whites
         below the fold, dedupe by name."""
@@ -3077,7 +3096,11 @@ class ItBot:
                 boxes = ocr_boxes(im)
             before = len(rows)
             for kind, name, stars in self._spark_rows(im, boxes):
-                rows.setdefault(name.upper(), (kind, name, stars))
+                # key on the normalized name: OCR renders the same row as
+                # "Front Runner" and "Front Runner." between passes, and an
+                # exact key counted both (28/08: history said white:17 for a
+                # set Bon could count 15 whites on)
+                rows.setdefault(_norm_name(name), (kind, name, stars))
             added = len(rows) - before
             self.log(f"[SPARKS] scan pass {pass_i}: +{added} (total {len(rows)})")
             if pass_i and added == 0:
