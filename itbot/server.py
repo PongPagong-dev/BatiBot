@@ -343,7 +343,7 @@ function sparkChips(sp){
  });
  const wN=(counts.white!=null)?counts.white:whites.length;
  if(wN) chips.push('<span class="spk w" title="'+
-   (whites.join('\u000A')||'names not recorded for this career')+'">'+wN+' white'+(wN>1?'s':'')+'</span>');
+   (whites.join(String.fromCharCode(10))||'names not recorded for this career')+'">'+wN+' white'+(wN>1?'s':'')+'</span>');
  return chips.join('');
 }
 async function loadHistory(){
