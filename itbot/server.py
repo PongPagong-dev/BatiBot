@@ -56,6 +56,12 @@ PAGE = """<!doctype html>
    padding:1px 7px;font-weight:700}
  .sparks{color:#8fa8c4;font-size:11px;margin-top:3px;max-width:260px;
    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .spk{display:inline-block;border-radius:10px;padding:1px 8px;margin:3px 3px 0 0;
+   font-size:11px;font-weight:600;white-space:nowrap}
+ .spk.b{background:#1f3a5c;color:#8fc1f2}
+ .spk.p{background:#4a2438;color:#eba7c9}
+ .spk.g{background:#1e4034;color:#7fe0b2}
+ .spk.w{background:#2a2a30;color:#b5b5bc;cursor:help}
  pre{background:#0c0c0e;color:#c9d2dd;border-radius:8px;padding:12px;height:240px;overflow-y:auto;font-size:12px;white-space:pre-wrap;margin:12px 0 0}
  .foot{text-align:center;font-size:11.5px;color:var(--dim);margin-top:18px}
 </style></head><body>
@@ -322,6 +328,24 @@ async function clearFiles(){
    'deleted '+r.files+' files ('+r.mb+' MB freed)';
 }
 let lastHist=0;
+function sparkChips(sp){
+ if(!sp) return '';
+ const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+ let counts={}; const m=sp.match(/rows (.*)$/);
+ if(m){ m[1].split(/\s+/).forEach(t=>{const a=t.split(':'); if(a.length==2) counts[a[0]]=+a[1];}); }
+ const chips=[], whites=[];
+ sp.replace(/;?\s*rows .*$/,'').split(';').forEach(seg=>{
+  const mm=seg.trim().match(/^(blue|pink|green|white)\s+(.+?)\s+(\d)\*/);
+  if(!mm) return;
+  const name=esc(mm[2].replace(/\.+$/,'')), stars=mm[3]+'\u2605';
+  if(mm[1]==='white'){ whites.push(name+' '+stars); return; }
+  chips.push('<span class="spk '+mm[1][0]+'">'+name+' '+stars+'</span>');
+ });
+ const wN=(counts.white!=null)?counts.white:whites.length;
+ if(wN) chips.push('<span class="spk w" title="on your buy list: '+
+   (whites.join(', ')||'none')+'">'+wN+' white'+(wN>1?'s':'')+'</span>');
+ return chips.join('');
+}
 async function loadHistory(){
  try{
   const r=await fetch('/api/history'); const h=await r.json();
@@ -333,16 +357,17 @@ async function loadHistory(){
    const stats=['spd','sta','pow','gut','wit'].map(k=>st[k]==null?'-':st[k]).join(' / ');
    const grade=e.grade?`<span class="grade">${e.grade}</span>`:'';
    const rec=e.races?`${e.wins||0}/${e.races}`:'-';
-   const sp=(e.sparks||'').replace(/</g,'&lt;');
+   const raw=(e.sparks||'');
+   const chips=sparkChips(raw);
+   const sphtml=chips || (raw?`<div class="sparks" title="${raw.replace(/"/g,'&quot;')}">${raw.replace(/</g,'&lt;')}</div>`:'');
    return `<tr>
-     <td class="dim">${e.n||''}</td>
+     <td class="dim">${e.n||''}<div style="font-size:10px">${(e.ts||'').slice(5,16)}</div></td>
      <td>${(e.trainee||'unknown').replace(/</g,'&lt;')}
-       ${sp?`<div class="sparks" title="${sp.replace(/"/g,'&quot;')}">${sp}</div>`:''}</td>
+       ${sphtml?`<div>${sphtml}</div>`:''}</td>
      <td class="num">${grade||'<span class="dim">-</span>'}${e.rating?`<div class="dim">${Number(e.rating).toLocaleString()}</div>`:''}</td>
      <td class="num mono">${stats}</td>
      <td class="num">${rec}</td>
      <td class="num">${e.fans?Number(e.fans).toLocaleString():'-'}</td>
-     <td class="dim nowrap">${e.ts||''}</td>
    </tr>`;}).join('');
   document.getElementById('history').innerHTML = `
    <div class="histsum">${h.length} career${h.length>1?'s':''}
@@ -351,7 +376,7 @@ async function loadHistory(){
      ${h.length>10?'&middot; newest first, scroll for older':''}</div>
    <div class="histwrap"><table class="hist">
     <thead><tr><th>#</th><th>Trainee / sparks kept</th><th>Grade</th>
-      <th>SPD / STA / POW / GUT / WIT</th><th>Wins</th><th>Fans</th><th>Finished</th></tr></thead>
+      <th>SPD / STA / POW / GUT / WIT</th><th>Wins</th><th>Fans</th></tr></thead>
     <tbody>${rows}</tbody></table></div>`;
  }catch(e){}
 }
