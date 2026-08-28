@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.06"
+VERSION = "1.07"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -3030,6 +3030,9 @@ class ItBot:
         for cy in anchors:
             name_here = " ".join(t for t, bx, by, *_ in (boxes or [])
                                  if abs(by - cy) <= 26 and bx < 540).strip()
+            # the row's radio button OCRs as a leading "O "/"0 " - not part
+            # of any name ("O Moving Past, and Beyond" on 29/08)
+            name_here = re.sub(r"^[O0QC©®()\.\s]{1,2}\s+(?=\S)", "", name_here)
             kind = (self._spark_kind(name_here) or by_colour(cy)
                     or self._green_by_rarity(name_here) or "white")
             if kind == "misread":
@@ -3065,6 +3068,22 @@ class ItBot:
             if n == p or fuzz.ratio(n, p) >= 90:
                 return "pink"
         return None
+
+    @staticmethod
+    def _spark_key(name):
+        """Dedupe key for spark rows, hardened against OCR glyph noise.
+
+        The row's radio button reads as a leading "O "/"0 " ("O Moving
+        Past, and Beyond"), and the circle mark at the END of a skill name
+        reads as O, C or 0 interchangeably ("Summer Runner C" and "Summer
+        Runner O" in the SAME scan, 29/08 - that pair alone made Bon's
+        count 17 when the game showed 16). Standalone single-letter glyph
+        tokens at either end are not part of any real name, so strip them
+        before normalizing."""
+        t = str(name).strip().upper()
+        t = re.sub(r"^[O0QC©®()\.\s]{1,2}\s+(?=\S)", "", t)   # leading radio
+        t = re.sub(r"\s+[O0QC©®()\.]{1,2}$", "", t)             # trailing circle
+        return _norm_name(t)
 
     def _green_by_rarity(self, name):
         """Unique-skill sparks are GREEN, and their names are rarity >= 3 in
@@ -3108,11 +3127,10 @@ class ItBot:
                 boxes = ocr_boxes(im)
             before = len(rows)
             for kind, name, stars in self._spark_rows(im, boxes):
-                # key on the normalized name: OCR renders the same row as
-                # "Front Runner" and "Front Runner." between passes, and an
-                # exact key counted both (28/08: history said white:17 for a
-                # set Bon could count 15 whites on)
-                rows.setdefault(_norm_name(name), (kind, name, stars))
+                # key hardened against OCR variants of the same row:
+                # trailing dots, the leading radio-button glyph, and the
+                # circle mark reading as O/C/0 (see _spark_key)
+                rows.setdefault(self._spark_key(name), (kind, name, stars))
             added = len(rows) - before
             self.log(f"[SPARKS] scan pass {pass_i}: +{added} (total {len(rows)})")
             if pass_i and added == 0:
