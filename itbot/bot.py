@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.07"
+VERSION = "1.08"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -3128,9 +3128,22 @@ class ItBot:
             before = len(rows)
             for kind, name, stars in self._spark_rows(im, boxes):
                 # key hardened against OCR variants of the same row:
-                # trailing dots, the leading radio-button glyph, and the
-                # circle mark reading as O/C/0 (see _spark_key)
-                rows.setdefault(self._spark_key(name), (kind, name, stars))
+                # trailing dots, the leading radio-button glyph, the circle
+                # mark reading as O/C/0 (_spark_key), and - since exact keys
+                # cannot catch letter-level misreads ("Savvv" for "Savvy",
+                # 29/08) - a fuzzy match against the keys already collected.
+                # Threshold 91: measured variants score >=92.9 while the
+                # closest REAL pair (Ignited Spirit PWR vs WIT) is 87.5.
+                k = self._spark_key(name)
+                hit = next((ek for ek in rows
+                            if ek == k or fuzz.ratio(ek, k) >= 91), None)
+                if hit is None:
+                    rows[k] = (kind, name, stars)
+                elif (_norm_name(name) in self.values
+                      and _norm_name(rows[hit][1]) not in self.values):
+                    # same row seen again with a CLEANER name - keep that
+                    # spelling for the history display
+                    rows[hit] = (rows[hit][0], name, rows[hit][2])
             added = len(rows) - before
             self.log(f"[SPARKS] scan pass {pass_i}: +{added} (total {len(rows)})")
             if pass_i and added == 0:
