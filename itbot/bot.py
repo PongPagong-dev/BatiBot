@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.08"
+VERSION = "1.10"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -794,6 +794,35 @@ class ItBot:
 
         rep = getattr(self.adb, "repeat_taps", 0)
         if rep and rep % 8 == 0:
+            # v1.10: the escape tap is a different position, so it RESET the
+            # same-tap counter - the >=10 refused-guard and the >=60 give-up
+            # below could never fire. 31/08: 288 escapes in place on Support
+            # Formation, 4 hours lost. Track the whole episode instead.
+            now = time.time()
+            sig = txt[:80]
+            if (sig == getattr(self, "_stuck_sig", "")
+                    and now - getattr(self, "_stuck_last", 0) < 300):
+                self._stuck_eps = getattr(self, "_stuck_eps", 0) + 1
+            else:
+                self._stuck_sig, self._stuck_eps = sig, 1
+            self._stuck_last = now
+            if self._stuck_eps == 3:
+                self.log("[STUCK] 3 escapes on the same screen - going Home "
+                         "to reset the flow")
+                self._shot("stuck_home_reset", img, note=txt[:160])
+                self.adb.repeat_taps = 0
+                self.adb.tap(*HOME_TAB, "Home tab (stuck reset)")
+                time.sleep(4)
+                return
+            if self._stuck_eps >= 5:
+                self._shot("stuck_gave_up", img, note=txt[:200])
+                self.log("[STUCK] the same screen keeps coming back even "
+                         "after a Home reset - stopping so nothing is wasted. "
+                         "On Support Formation this usually means the game "
+                         "refused Start Career (TP/RP, an empty deck slot, or "
+                         "a hidden popup) - see the stuck_gave_up screenshot.")
+                self._stop.set()
+                return
             esc = [(360, 835), (360, 1180), (60, 1180), (517, 833), NEUTRAL_TAP]
             p = esc[(rep // 8 - 1) % len(esc)]
             self.log(f"[STUCK] same tap x{rep} - escape tap {p}; screen: {txt[:120]}")
@@ -1249,7 +1278,12 @@ class ItBot:
                              max([st for k, _, st in rows_a if k == "blue"], default=0))
                 if b_best >= 3:
                     self.log(f"[SPARKS] blue spark already {b_best}* - keeping this set, saving 30 TP")
-                    self._kept_sparks = self._score_spark_set(self._spark_rows(img, boxes))[2]
+                    # use the FULL scrolled scan's description - re-scoring
+                    # just the visible frame recorded 6 of 9 whites on every
+                    # 3-star-blue career (30/08, Mejiro Ryan 17,634)
+                    self._kept_sparks = (self._spark_a[1] if self._spark_a
+                                         else self._score_spark_set(
+                                             self._spark_rows(img, boxes))[2])
                     self._rerolled = True
                     self.adb.tap(513, 1178, "Confirm")
                     time.sleep(2.5)
