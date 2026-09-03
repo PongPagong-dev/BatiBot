@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.12"
+VERSION = "1.13"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -1175,6 +1175,23 @@ class ItBot:
                 secs = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
                 if 60 <= secs <= 4 * 3600:
                     secs = self._training_remaining(secs)
+                    # v1.13: the watch view's countdown FREEZES at its last
+                    # value (892s on 04/09) and the results never appear on
+                    # this screen - Back is the only way out. Napping 15s at
+                    # a time here cost +5min on every watch-screen career.
+                    if secs <= 0:
+                        z = getattr(self, "_watch_zero_polls", 0) + 1
+                        self._watch_zero_polls = z
+                        if z >= 2:
+                            self.log("[BOT] training is over but the watch "
+                                     "view is frozen - pressing Back to "
+                                     "collect the result")
+                            self.adb.tap(60, 1180, "Back (watch screen)")
+                            self._watch_zero_polls = 0
+                            time.sleep(3)
+                            return
+                    else:
+                        self._watch_zero_polls = 0
                     nap = max(15, min(secs + END_BUFFER, SLEEP_CHUNK))
                     self.log(f"[BOT] training on the watch screen, {secs}s left "
                              f"- sleeping {nap}s")
