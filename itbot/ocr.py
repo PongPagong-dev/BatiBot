@@ -18,6 +18,12 @@ def _get_ocr():
         return _ocr
 
 
+# v1.11: the OCR speed baseline must survive UI Stop/Start (which makes a
+# new Bot object in the SAME process) - kept here at module level so a
+# restarted Bot cannot re-baseline at an already-drifted speed.
+PROCESS_BASELINE = [None]
+
+
 def reset_ocr():
     """Throw the reader away so the next read builds a fresh one.
 

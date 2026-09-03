@@ -24,7 +24,7 @@ import numpy as np
 from rapidfuzz import fuzz
 
 from .adb import Adb
-from .ocr import ocr_boxes, reset_ocr
+from .ocr import ocr_boxes, reset_ocr, PROCESS_BASELINE
 
 
 def _norm_name(n):
@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.10"
+VERSION = "1.11"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -222,13 +222,28 @@ class ItBot:
         if len(times) < 20:
             return
         now = times[len(times) // 2]
-        base = getattr(self, "_ocr_base", None)
-        if base is None:                       # first career sets the baseline
-            self._ocr_base = now
+        # v1.11: baseline at PROCESS level. UI Stop/Start makes a new Bot in
+        # the same process, and re-baselining at the already-drifted speed
+        # let the drift ratchet unchecked (0.43 -> 0.70 -> 1.45 on 02-04/09).
+        if PROCESS_BASELINE[0] is None:
+            PROCESS_BASELINE[0] = now
             self.log(f"[OCR] baseline read time {now:.2f}s per screen")
             return
+        base = PROCESS_BASELINE[0]
         stale = self.careers_done - getattr(self, "_ocr_refreshed_at", 0) >= 6
         if now > base * 1.5 or stale:
+            # rebuilds only PARTIALLY restore speed - when two in a row fail
+            # to get back near fresh-process speed, say what actually works
+            if getattr(self, "_ocr_rebuilt_last", False) and now > base * 1.5:
+                self._ocr_rebuild_fails = getattr(self, "_ocr_rebuild_fails", 0) + 1
+            else:
+                self._ocr_rebuild_fails = 0
+            if self._ocr_rebuild_fails >= 2:
+                self.log(f"[OCR] rebuilds are NOT restoring speed ({now:.2f}s "
+                         f"vs {base:.2f}s fresh) - only closing and reopening "
+                         "the bot app fully resets this; Stop/Start in the "
+                         "UI is not enough")
+                self._ocr_rebuild_fails = 0
             why = "drifted" if now > base * 1.5 else "6 careers since the last one"
             self.log(f"[OCR] refreshing the reader ({why}): {now:.2f}s per "
                      f"screen vs {base:.2f}s when fresh")
@@ -236,8 +251,11 @@ class ItBot:
             reset_ocr()
             self._ocr_times = []
             self._ocr_refreshed_at = self.careers_done
+            self._ocr_rebuilt_last = True
             self.log(f"[OCR] reader dropped in {time.time() - t0:.1f}s - the next "
                      f"read rebuilds it")
+        else:
+            self._ocr_rebuilt_last = False
 
     def _training_remaining(self, secs):
         """Sanity-check the countdown against real time.
@@ -3169,8 +3187,18 @@ class ItBot:
                 # Threshold 91: measured variants score >=92.9 while the
                 # closest REAL pair (Ignited Spirit PWR vs WIT) is 87.5.
                 k = self._spark_key(name)
-                hit = next((ek for ek in rows
-                            if ek == k or fuzz.ratio(ek, k) >= 91), None)
+                kraw = _norm_name(name)
+                # v1.11: compare BOTH the stripped key and the raw normalized
+                # name. "Champions C.e" vs "Champions C" (04/09): the strip
+                # removed the real trailing C from one variant only, pushing
+                # the stripped pair to 90.0 - just under 91 - while the raw
+                # pair scores 95.2. Closest real pairs stay safe: Ignited
+                # Spirit PWR/WIT 87.5, Mile Ch. vs NHK Mile C. 85.7.
+                def _same_row(ek, ev):
+                    return (ek == k or fuzz.ratio(ek, k) >= 91
+                            or fuzz.ratio(_norm_name(ev[1]), kraw) >= 91)
+                hit = next((ek for ek, ev in rows.items()
+                            if _same_row(ek, ev)), None)
                 if hit is None:
                     rows[k] = (kind, name, stars)
                 elif (_norm_name(name) in self.values
