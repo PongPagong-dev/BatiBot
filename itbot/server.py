@@ -71,6 +71,7 @@ PAGE = """<!doctype html>
  <div class="eyebrow" id="eyebrow">Ready</div>
  <div class="timer" id="timer">--:--</div>
  <div class="sub" id="sub">press start to begin looping careers</div>
+ <div id="warnbanner" style="display:none;background:#4a3410;color:#ffcf7d;border:1px solid #7a5a20;border-radius:8px;padding:7px 12px;margin:8px auto;max-width:640px;font-size:13px;text-align:left"></div>
  <button class="bigbtn" id="mainbtn" onclick="mainAction()">Start</button>
  <div id="ticker" onclick="toggleMini()" title="Click to expand recent log"
   style="cursor:pointer;font-family:Consolas,monospace;font-size:11.5px;color:#b3b3b8;margin-top:16px;padding:5px 10px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
@@ -254,6 +255,10 @@ async function refresh(){
   let show='no activity yet';
   for(let i=lines.length-1;i>=0;i--){ if(lines[i].indexOf('[STEP]')<0){ show=lines[i]; break; } }
   document.getElementById('tickertext').textContent = show;
+  const wb=document.getElementById('warnbanner');
+  const wtxt=d.warning||'';
+  if(wtxt){ wb.style.display='block'; wb.textContent='RESTART ADVISED: '+wtxt; }
+  else { wb.style.display='none'; }
   const mini=document.getElementById('mini');
   const last8=lines.slice(-8);
   mini.innerHTML = last8.map((l,i)=>`<div${i===last8.length-1?' style="color:#d6dde5"':''}>${l.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div>`).join('');
@@ -420,6 +425,7 @@ def make_app(get_bot, start_bot, stop_bot, settings, save_settings, logbuf):
             "running": bool(bot and bot.running()),
             "state": bot.state if bot else "idle",
             "careers_done": bot.careers_done if bot else 0,
+            "warning": getattr(bot, "ui_warning", "") if bot else "",
             "sleep_remaining": rem,
             "log": logbuf[-200:],
         })

@@ -97,7 +97,7 @@ TIMER_RE = re.compile(r"(\d+)\D(\d{1,2})\D(\d{1,2})")
 # Printed at startup so the log always says which code is actually running.
 # (01/08: a fix looked broken for 5 hours because the bot had never been
 # restarted after the deploy - the log gave no way to tell.)
-VERSION = "1.11"
+VERSION = "1.12"
 
 # how long the picture may stay completely unchanged before we treat the
 # game as hung, and how long we wait after relaunching it
@@ -324,6 +324,22 @@ class ItBot:
             t.items(), key=lambda kv: -kv[1]) if v >= 30)
         self.log(f"[TIME] career took {total/60:.1f}min "
                  f"(minutes: {parts or 'n/a'})")
+        # v1.12 (Bon's request): visible UI warning when a career ran over
+        # an hour AND screen reading is measurably slow - restarting the
+        # bot APP gets the time back. Over an hour with healthy OCR is the
+        # game running a longer training sim, so no warning then.
+        times = sorted(getattr(self, "_ocr_times", []))
+        med = times[len(times) // 2] if len(times) >= 10 else None
+        base = PROCESS_BASELINE[0]
+        if total >= 3600 and med and base and med > base * 1.5:
+            self.ui_warning = (
+                f"last career took {total/60:.0f} min - screen reading has "
+                f"slowed to {med:.1f}s vs {base:.1f}s fresh. Close and reopen "
+                "the bot app to get back to ~57 min careers (Stop/Start is "
+                "not enough).")
+            self.log("[WARN] " + self.ui_warning)
+        elif total < 3600:
+            self.ui_warning = ""
         self._career_time = {}
         self._career_started = time.time()
 
